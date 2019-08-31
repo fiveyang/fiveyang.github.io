@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>hugo 博客搭建步骤 &middot; Icarus</title>
+    <meta name="generator" content="Hugo 0.57.2" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="fiveyang">
+    
+      <meta name="description" content="fiveyang的hugo静态博客">
+    
+    
+    <link rel="canonical" href="https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/"/>
+    <link rel="icon" href="https://fiveyang.github.io/favicon.ico">
+    <link rel="apple-touch-icon" href="https://fiveyang.github.io/apple-touch-icon.png"/>
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/style.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/monokai.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/fancybox/jquery.fancybox.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+    <meta property="og:title" content="hugo 博客搭建步骤" />
+<meta property="og:description" content="1 安装Hugo hugo下载地址 下载64位，查看hugo是否安装成功
+hugo version  2 使用Hugo来生成博客 hugo new site myblog  这样我的User/win 10/里面就生成了一个mybolg 文件夹，那么这个文件夹就代表着我们的博客网站 这里需要这一点，我们的电脑上面必须要安装并配置好了Git，配置到用户名和密码就结束了，具体参见廖雪峰教程。我的username 程杨,email 872742416@qq.com
+3 下载并设置主题 点击下载主题这里以 m10c 为例 在myblog目录下运行这一段代码
+git clone https://github.com/vaga/hugo-theme-m10c.git themes/m10c  然后在myblog/theme下面就有一个m10c的文件夹了，表示我们的主题已经下载完成了
+4 在本地启动个人博客 hugo server -t m10c --buildDrafts  这时候就可以通过点击这里（http://localhost:1313/）访问了，但这时候我们的博客网站是空的。
+5 实际写一篇文章 hugo new post/blog.md  意思是我们在post目录下创建了一个名为blog的博客文件,他被存放在了content目录下面,content/post/blog.md, .md是 markdown 的缩写,很多博客网站都支持markdown编辑器，比如CSDN 写博客导入这个文件然后进行编辑，也可以下载 markdownPad 还有VScode等等。 我们可以尝试把我的CSDN博客复制一篇放进blog.md 面 然后我们在本地启动，依然是刚才的代码
+hugo server -t m10c --buildDrafts  这时候我们的blog.md文件夹就被放进了我们的博客网站，访问刚才的网址就会发现多了一篇博客 到这里我们的博客网站就搭建完成了，但是这个时候我们的博客网站只能在本地访问
+6 将个人博客部署到远端服务器 点击右上角的加号 选择新建仓库 New repository 名称必须是这个利用下面的代码将进行部署" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/" />
+<meta property="article:published_time" content="2019-08-31T15:21:52+08:00" />
+<meta property="article:modified_time" content="2019-08-31T15:21:52+08:00" />
+
+    
+    <meta itemprop="name" content="hugo 博客搭建步骤">
+<meta itemprop="description" content="1 安装Hugo hugo下载地址 下载64位，查看hugo是否安装成功
+hugo version  2 使用Hugo来生成博客 hugo new site myblog  这样我的User/win 10/里面就生成了一个mybolg 文件夹，那么这个文件夹就代表着我们的博客网站 这里需要这一点，我们的电脑上面必须要安装并配置好了Git，配置到用户名和密码就结束了，具体参见廖雪峰教程。我的username 程杨,email 872742416@qq.com
+3 下载并设置主题 点击下载主题这里以 m10c 为例 在myblog目录下运行这一段代码
+git clone https://github.com/vaga/hugo-theme-m10c.git themes/m10c  然后在myblog/theme下面就有一个m10c的文件夹了，表示我们的主题已经下载完成了
+4 在本地启动个人博客 hugo server -t m10c --buildDrafts  这时候就可以通过点击这里（http://localhost:1313/）访问了，但这时候我们的博客网站是空的。
+5 实际写一篇文章 hugo new post/blog.md  意思是我们在post目录下创建了一个名为blog的博客文件,他被存放在了content目录下面,content/post/blog.md, .md是 markdown 的缩写,很多博客网站都支持markdown编辑器，比如CSDN 写博客导入这个文件然后进行编辑，也可以下载 markdownPad 还有VScode等等。 我们可以尝试把我的CSDN博客复制一篇放进blog.md 面 然后我们在本地启动，依然是刚才的代码
+hugo server -t m10c --buildDrafts  这时候我们的blog.md文件夹就被放进了我们的博客网站，访问刚才的网址就会发现多了一篇博客 到这里我们的博客网站就搭建完成了，但是这个时候我们的博客网站只能在本地访问
+6 将个人博客部署到远端服务器 点击右上角的加号 选择新建仓库 New repository 名称必须是这个利用下面的代码将进行部署">
+
+
+<meta itemprop="datePublished" content="2019-08-31T15:21:52&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-31T15:21:52&#43;08:00" />
+<meta itemprop="wordCount" content="98">
+
+
+
+<meta itemprop="keywords" content="" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="hugo 博客搭建步骤"/>
+<meta name="twitter:description" content="1 安装Hugo hugo下载地址 下载64位，查看hugo是否安装成功
+hugo version  2 使用Hugo来生成博客 hugo new site myblog  这样我的User/win 10/里面就生成了一个mybolg 文件夹，那么这个文件夹就代表着我们的博客网站 这里需要这一点，我们的电脑上面必须要安装并配置好了Git，配置到用户名和密码就结束了，具体参见廖雪峰教程。我的username 程杨,email 872742416@qq.com
+3 下载并设置主题 点击下载主题这里以 m10c 为例 在myblog目录下运行这一段代码
+git clone https://github.com/vaga/hugo-theme-m10c.git themes/m10c  然后在myblog/theme下面就有一个m10c的文件夹了，表示我们的主题已经下载完成了
+4 在本地启动个人博客 hugo server -t m10c --buildDrafts  这时候就可以通过点击这里（http://localhost:1313/）访问了，但这时候我们的博客网站是空的。
+5 实际写一篇文章 hugo new post/blog.md  意思是我们在post目录下创建了一个名为blog的博客文件,他被存放在了content目录下面,content/post/blog.md, .md是 markdown 的缩写,很多博客网站都支持markdown编辑器，比如CSDN 写博客导入这个文件然后进行编辑，也可以下载 markdownPad 还有VScode等等。 我们可以尝试把我的CSDN博客复制一篇放进blog.md 面 然后我们在本地启动，依然是刚才的代码
+hugo server -t m10c --buildDrafts  这时候我们的blog.md文件夹就被放进了我们的博客网站，访问刚才的网址就会发现多了一篇博客 到这里我们的博客网站就搭建完成了，但是这个时候我们的博客网站只能在本地访问
+6 将个人博客部署到远端服务器 点击右上角的加号 选择新建仓库 New repository 名称必须是这个利用下面的代码将进行部署"/>
+<meta name="twitter:site" content="@spf13"/>
+
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+
+<div id="container">
+	<header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="https://fiveyang.github.io" id="logo">
+          
+          <i class="logo" style="background-image: url('https://fiveyang.github.io/css/images/logo.png')"></i>
+          
+          <span class="site-title">Icarus</span>
+      </a>
+      <nav id="main-nav">
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/">Home</a>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/tags/">Tags</a>
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/categories/">Categories</a>
+          
+          
+      </nav>
+        <nav id="sub-nav">
+          <div class="profile" id="profile-nav">
+            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="https://fiveyang.github.io/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+          </div>
+        </nav>
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+              <input type="search" name="q" class="search-form-input" placeholder="">
+              <button type="submit" class="search-form-submit">
+              </button>
+              <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+         </form>
+        </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tbody>
+          <tr>
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/">Home</a></td>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/tags/">Tags</a></td>
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/categories/">Categories</a></td>
+          
+          
+          <td>
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+          <input type="search" name="q" class="search-form-input" placeholder="Search">
+          <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</header>
+
+   	
+   	<div class="outer">
+   	
+    	<aside id="profile">
+  <div class="inner profile-inner">
+    <div class="base-info profile-block">
+      
+      <img id="avatar" src="https://www.gravatar.com/avatar/4fca794da0cf08804f99048d3c8b39c1?s=100&d=identicon"/>
+      
+      <h2 id="name">fiveyang</h2>
+      <h3 id="title">Blogger - Programmer - Gopher</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>China</span>
+      
+          <a id="follow" href="https://github.com/digitalcraftsman">
+              
+          </a>
+      
+    </div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        1
+        <span></span>
+      </div>
+      <div class="article-info-block">
+        
+          0
+        
+        <span>
+            
+        </span>
+      </div>
+    </div>
+    <div class="profile-block social-links">
+      <table>
+        <tr>
+          
+<td><a href="//github.com/digitalcraftsman" target="_blank" title="GitHub"><i class="fa fa-github"></i></a></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<td><a href="//twitter.com/spf13" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></td>
+
+
+          <td><a href="https://fiveyang.github.io/index.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</aside>
+
+    
+
+    <section id="main">
+    
+    <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/">
+    <h1 class="article-title" itemprop="name">
+        hugo 博客搭建步骤
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-08-31 15:21:52 &#43;0800 CST" itemprop="datePublished">2019-08-31</time>
+            &middot;
+            98
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+<p><img src="https://img-blog.csdnimg.cn/20190831162915607.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" /></p>
+
+<h2 id="1-安装hugo">1 安装Hugo</h2>
+
+<p><a href="https://github.com/gohugoio/hugo/releases">hugo下载地址</a>
+下载64位，查看hugo是否安装成功</p>
+
+<pre><code>hugo version
+</code></pre>
+
+<h2 id="2-使用hugo来生成博客">2 使用Hugo来生成博客</h2>
+
+<pre><code>hugo new site myblog
+</code></pre>
+
+<p>这样我的User/win 10/里面就生成了一个mybolg 文件夹，那么这个文件夹就代表着我们的博客网站
+<img src="https://img-blog.csdnimg.cn/20190830193045738.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="myblog" />这里需要这一点，我们的电脑上面必须要<strong>安装并配置好了Git</strong>，配置到用户名和密码就结束了，具体参见廖雪峰教程。我的username   程杨,email  872742416@qq.com</p>
+
+<h2 id="3-下载并设置主题">3  下载并设置主题</h2>
+
+<p><a href="https://themes.gohugo.io/hugo-theme-m10c/">点击下载主题</a>这里以 m10c 为例
+<img src="https://img-blog.csdnimg.cn/20190830193752299.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" />在myblog目录下运行这一段代码</p>
+
+<pre><code>git clone https://github.com/vaga/hugo-theme-m10c.git themes/m10c
+</code></pre>
+
+<p>然后在myblog/theme下面就有一个m10c的文件夹了，表示我们的主题已经下载完成了</p>
+
+<h2 id="4-在本地启动个人博客">4 在本地启动个人博客</h2>
+
+<pre><code>hugo server -t m10c --buildDrafts
+</code></pre>
+
+<p>这时候就可以通过<a href="http://localhost:1313/">点击这里</a>（<a href="http://localhost:1313/）访问了，但这时候我们的博客网站是空的。">http://localhost:1313/）访问了，但这时候我们的博客网站是空的。</a></p>
+
+<h2 id="5-实际写一篇文章">5 实际写一篇文章</h2>
+
+<pre><code>hugo new post/blog.md
+</code></pre>
+
+<p>意思是我们在post目录下创建了一个名为blog的博客文件,他被存放在了content目录下面,content/post/blog.md,  .md是  markdown 的缩写,很多博客网站都支持markdown编辑器，比如CSDN 写博客导入这个文件然后进行编辑，也可以下载  markdownPad   还有VScode等等。
+我们可以尝试把我的CSDN博客复制一篇放进blog.md 面
+然后我们在本地启动，依然是刚才的代码</p>
+
+<pre><code>hugo server -t m10c --buildDrafts
+</code></pre>
+
+<p>这时候我们的blog.md文件夹就被放进了我们的博客网站，访问刚才的网址就会发现多了一篇博客
+到这里我们的博客网站就搭建完成了，但是这个时候我们的博客网站只能在本地访问</p>
+
+<h2 id="6-将个人博客部署到远端服务器">6 将个人博客部署到远端服务器</h2>
+
+<p>点击右上角的加号
+<img src="https://img-blog.csdnimg.cn/20190830195614887.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" />选择新建仓库 New repository
+名称必须是这个<img src="https://img-blog.csdnimg.cn/20190830195737337.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" />
+利用下面的代码将进行部署</p>
+
+<pre><code>hugo --theme=m10c --baseUrl=&quot;https://fiveyang.github.io/&quot; --buildDrafts
+</code></pre>
+
+<p>这样在myblog文件夹下面就会出生成一个public文件夹，在里面存放着你的博客网站相关的信息，并且帮你转化成了一个HTML界面，接下来就是把这个public文件传到GitHub上
+首先进入 public文件夹下面</p>
+
+<pre><code> git init
+</code></pre>
+
+<p>,这时候在public文件夹下面了一个.git 文件（千万不要动），然后</p>
+
+<pre><code>git add *
+</code></pre>
+
+<p>然后写一个提交信息</p>
+
+<pre><code>git commit -m &quot;我的第一篇hugo博客&quot;
+</code></pre>
+
+<p>然后将public文件和远端的GitHub进行关联</p>
+
+<pre><code>git remote add origin https://github.com/fiveyang/fiveyang.github.io.git
+</code></pre>
+
+<p>然后再把它推上去</p>
+
+<pre><code>git push -u origin master 
+</code></pre>
+
+<p>输入用户名和密码，这里可能是一个弹窗的方式在你的GitHub个人界面打开,Hugo搭建就此完成</p>
+
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/" data-id="58bca268bba3f6f91e529ab15962c5b5" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+
+    
+
+</article>
+
+
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "spf13" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+    </section>
+
+   	
+    	<aside id="sidebar">
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">
+        
+    </h3>
+    <div class="widget">
+        <ul id="recent-post">
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/" class="thumbnail">
+                    
+                        <span class="thumbnail-image thumbnail-none"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/" class="title">hugo 博客搭建步骤</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-08-31 15:21:52 &#43;0800 CST" itemprop="datePublished">2019-08-31</time>
+                    </p>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+    
+	</div>
+</div>
+
+<footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019
+      Powered by <a href="//gohugo.io">Hugo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>.
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://fiveyang.github.io/fancybox/jquery.fancybox.pack.js"></script>
+<script src="https://fiveyang.github.io/js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+</body>
+</html>

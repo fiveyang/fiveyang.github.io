@@ -12,11 +12,11 @@
     
     
     <item>
-      <title>First</title>
-      <link>https://fiveyang.github.io/2019/08/31/first/</link>
+      <title>hugo 博客搭建步骤</title>
+      <link>https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/</link>
       <pubDate>Sat, 31 Aug 2019 15:21:52 +0800</pubDate>
       
-      <guid>https://fiveyang.github.io/2019/08/31/first/</guid>
+      <guid>https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/</guid>
       <description>1 安装Hugo hugo下载地址 下载64位，查看hugo是否安装成功
 hugo version  2 使用Hugo来生成博客 hugo new site myblog  这样我的User/win 10/里面就生成了一个mybolg 文件夹，那么这个文件夹就代表着我们的博客网站 这里需要这一点，我们的电脑上面必须要安装并配置好了Git，配置到用户名和密码就结束了，具体参见廖雪峰教程。我的username 程杨,email 872742416@qq.com
 3 下载并设置主题 点击下载主题这里以 m10c 为例 在myblog目录下运行这一段代码
