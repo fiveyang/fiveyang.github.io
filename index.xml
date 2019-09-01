@@ -34,11 +34,11 @@ package java_test1; /* * 2019/7/23 * 构造器内部的多态方法的行为 * *
     </item>
     
     <item>
-      <title>多台复习笔记-4</title>
-      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E5%8F%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/</link>
+      <title>多态复习笔记-4</title>
+      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/</link>
       <pubDate>Sun, 01 Sep 2019 10:31:27 +0800</pubDate>
       
-      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E5%8F%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/</guid>
+      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/</guid>
       <description>多态复习笔记-4 构造器的调用顺序 package java_test1; /* * 2019/7/23 * 构造器与多态-构造器的调用顺序 * */ class Meal{ Meal(){ System.out.println(&amp;quot;Meal()&amp;quot;); } } class Bread{ Bread(){ System.out.println(&amp;quot;Bread()&amp;quot;); } } class Cheese{ Cheese(){ System.out.println(&amp;quot;Cheese()&amp;quot;); } } class Lettuce{ Lettuce(){ System.out.println(&amp;quot;Lettuce()&amp;quot;); } } class Lunch extends Meal{ Lunch(){ System.out.println(&amp;quot;Lunch()&amp;quot;); } } class PortableLunch extends Lunch{ PortableLunch(){ System.out.println(&amp;quot;PortableLunch()&amp;quot;); } } public class Sandwich extends PortableLunch{ private Bread b=new Bread(); private Cheese c=new Cheese(); private Lettuce l=new Lettuce(); public Sandwich() { System.</description>
     </item>
     
@@ -53,11 +53,11 @@ package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Supe
     </item>
     
     <item>
-      <title>多台复习笔记-2</title>
-      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E5%8F%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/</link>
+      <title>多态复习笔记-2</title>
+      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/</link>
       <pubDate>Sun, 01 Sep 2019 10:31:15 +0800</pubDate>
       
-      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E5%8F%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/</guid>
+      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/</guid>
       <description>多态复习笔记-2 缺陷：覆盖私有方法 package java_test1; /* * 2019/7/23 * 覆盖问题 * */ public class PrivateOverride { private void f() { System.out.println(&amp;quot;private f()&amp;quot;); } public static void main(String[] args) { PrivateOverride po=new Derived(); po.f(); } } class Derived extends PrivateOverride{ public void f() { System.out.println(&amp;quot;public f()&amp;quot;); } } //output:private f()  我们期望输出的是public f() ，但是由于private 的方法被认为是final方法，而且对于导出类是屏蔽的，这种情况下Derived的f()方法就被认为是一个全新的方法。 + 结论：只有非private方法才可以被覆盖，所以我们在多态的使用时候要将基类的方法设置成非private。</description>
     </item>
     
