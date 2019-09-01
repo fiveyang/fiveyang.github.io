@@ -6,17 +6,76 @@
     <description>Recent content on Icarus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 31 Aug 2019 15:21:52 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 01 Sep 2019 10:53:33 +0800</lastBuildDate>
     
 	<atom:link href="https://fiveyang.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>hugo 博客搭建步骤</title>
-      <link>https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/</link>
+      <title>多态复习总结</title>
+      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Sun, 01 Sep 2019 10:53:33 +0800</pubDate>
+      
+      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/</guid>
+      <description>多态复习总结 现在我们可以理解多态的定义了
+多态首先是建立在继承的基础上的，先有继承才能有多态。多态是指不同的子类在继承父类后分别都重写覆盖了父类的方法，即父类同一个方法，在继承的子类中表现出不同的形式。多态成立的另一个条件是在创建子类时候必须使用父类new子类的方式。
+多态（Polymorphism）按字面的意思就是“多种状态”。在面向对象语言中，接口的多种不同的实现方式即为多态。引用Charlie Calverts对多态的描述——多态性是允许你将父对象设置成为一个或更多的他的子对象相等的技术，赋值之后，父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作（摘自“Delphi4 编程技术内幕”）。</description>
+    </item>
+    
+    <item>
+      <title>多态复习笔记-5</title>
+      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-5/</link>
+      <pubDate>Sun, 01 Sep 2019 10:31:32 +0800</pubDate>
+      
+      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-5/</guid>
+      <description>多态复习笔记-5 构造器内部的多态方法的行为 在前面的笔记中我们知道了构造器的调用顺序，首先是调用了基类的构造器，假如我们将动态绑定的方法放在了构造器中，那么在调用Glyph的构造器中的draw方法实际上应该调用的是导出类RoundGlyph 中所覆盖后的draw方法，此时我们会发现一个问题：这个导出类RoundGlyph 中所覆盖后的draw方法此时并没有初始化而被调用，那么为什么没有出现问题呢？
+观察运行结果我们得出结论：在其他任何事件发生之前，将分配给对象的存储空间设置为二进制的零，这样有一个优点，就是所有东西都至少初始化为零，那么进行上述操作的时候就不会出现异常。这一点可以加在前面笔记构造器调用顺序三条顺序的最前面
+package java_test1; /* * 2019/7/23 * 构造器内部的多态方法的行为 * */ class Glyph { void draw() { System.out.println(&amp;quot;Glyph.draw()&amp;quot;); } Glyph() { System.out.println(&amp;quot;Glyph() before draw()&amp;quot;); draw(); System.out.println(&amp;quot;Glyph() after draw()&amp;quot;); } } class RoundGlyph extends Glyph { private int radius = 1; RoundGlyph(int r) { radius = r; System.out.println(&amp;quot;RoundGlyph.RoundGlyph(), radius = &amp;quot; + radius); } void draw() { System.out.println(&amp;quot;RoundGlyph.draw(), radius = &amp;quot; + radius); } } public class PolyConstructors { public static void main(String[] args) { new RoundGlyph(5); } } //output: // Glyph() before draw() // RoundGlyph.</description>
+    </item>
+    
+    <item>
+      <title>多台复习笔记-4</title>
+      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E5%8F%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/</link>
+      <pubDate>Sun, 01 Sep 2019 10:31:27 +0800</pubDate>
+      
+      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E5%8F%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/</guid>
+      <description>多态复习笔记-4 构造器的调用顺序 package java_test1; /* * 2019/7/23 * 构造器与多态-构造器的调用顺序 * */ class Meal{ Meal(){ System.out.println(&amp;quot;Meal()&amp;quot;); } } class Bread{ Bread(){ System.out.println(&amp;quot;Bread()&amp;quot;); } } class Cheese{ Cheese(){ System.out.println(&amp;quot;Cheese()&amp;quot;); } } class Lettuce{ Lettuce(){ System.out.println(&amp;quot;Lettuce()&amp;quot;); } } class Lunch extends Meal{ Lunch(){ System.out.println(&amp;quot;Lunch()&amp;quot;); } } class PortableLunch extends Lunch{ PortableLunch(){ System.out.println(&amp;quot;PortableLunch()&amp;quot;); } } public class Sandwich extends PortableLunch{ private Bread b=new Bread(); private Cheese c=new Cheese(); private Lettuce l=new Lettuce(); public Sandwich() { System.</description>
+    </item>
+    
+    <item>
+      <title>多态复习笔记-3</title>
+      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/</link>
+      <pubDate>Sun, 01 Sep 2019 10:31:21 +0800</pubDate>
+      
+      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/</guid>
+      <description>多态复习笔记-3 缺陷：域与静态方法 域的缺陷:
+package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Super{ public int field=0; public int getField() {return field;} } class Sub extends Super{ public int field=1; public int getField() {return field;} public int getSuperField() {return super.field;} } public class FieldAccess { public static void main(String[] args) { Super sup=new Sub(); System.out.println(&amp;quot;sup.field=&amp;quot;+sup.field+ &amp;quot;,sup.getField()=&amp;quot;+sup.getField()); Sub sub=new Sub(); System.out.println(&amp;quot;sub.field=&amp;quot;+sub.field+ &amp;quot;,sub.getField()=&amp;quot;+sub.getField()+ &amp;quot;,sub.getSuperField()=&amp;quot;+sub.getSuperField()); } } //output: //sup.field=0,sup.getField()=1 //sub.field=1,sub.getField()=1,sub.getSuperField()=0  当Sub对象转化为Super引用时候，任何域访问操作都将由编译器解析，因此不是多态的。当我们将域设置为public的时候，我们调用的field是依据他的引用类型，比如sup.field他是Sub对象赋给Super引用，那么调用她输出的就是0，这和我们的方法覆盖不一样。 + 通常我们将所有的域设置为private类型，然后我们调用方法访问他们</description>
+    </item>
+    
+    <item>
+      <title>多台复习笔记-2</title>
+      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E5%8F%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/</link>
+      <pubDate>Sun, 01 Sep 2019 10:31:15 +0800</pubDate>
+      
+      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E5%8F%B0%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/</guid>
+      <description>多态复习笔记-2 缺陷：覆盖私有方法 package java_test1; /* * 2019/7/23 * 覆盖问题 * */ public class PrivateOverride { private void f() { System.out.println(&amp;quot;private f()&amp;quot;); } public static void main(String[] args) { PrivateOverride po=new Derived(); po.f(); } } class Derived extends PrivateOverride{ public void f() { System.out.println(&amp;quot;public f()&amp;quot;); } } //output:private f()  我们期望输出的是public f() ，但是由于private 的方法被认为是final方法，而且对于导出类是屏蔽的，这种情况下Derived的f()方法就被认为是一个全新的方法。 + 结论：只有非private方法才可以被覆盖，所以我们在多态的使用时候要将基类的方法设置成非private。</description>
+    </item>
+    
+    <item>
+      <title>多态复习笔记-1</title>
+      <link>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-1/</link>
+      <pubDate>Sun, 01 Sep 2019 10:20:00 +0800</pubDate>
+      
+      <guid>https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-1/</guid>
+      <description>多态复习笔记-1 再论向上转型 package java_test1; /* * 2019/7/22 * 多台测试向上转型 * */ //创建一个乐谱枚举类型 enum Note{ MIDDLE_C,C_SHARP,B_FLAT; } //创建一个instrument乐器类型 class instrument{ public void play(Note n) { System.out.println(&amp;quot;instrument.play()&amp;quot;); } } //创建一个Wind管乐器类型，继承自instrument //注意这里和instrument类型的play方法不同，她多输出了一个n class Wind extends instrument{ public void play(Note n) { System.out.println(&amp;quot;Wind.play()&amp;quot;+n); } } public class Music { //演奏方法 public static void tune(instrument i) { i.play(Note.MIDDLE_C); } public static void main(String[] args) { Wind w=new Wind(); tune(w); } } //output:Wind.play()MIDDLE_C   music.</description>
+    </item>
+    
+    <item>
+      <title>我的第一篇博客</title>
+      <link>https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</link>
       <pubDate>Sat, 31 Aug 2019 15:21:52 +0800</pubDate>
       
-      <guid>https://fiveyang.github.io/2019/08/31/hugo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/</guid>
+      <guid>https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</guid>
       <description>我的第一篇博客（实际上写了N遍）</description>
     </item>
     
