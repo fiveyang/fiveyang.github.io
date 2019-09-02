@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Servlet基础 &middot; Icarus</title>
+    <meta name="generator" content="Hugo 0.57.2" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="fiveyang">
+    
+      <meta name="description" content="静态博客">
+    
+    
+    <link rel="canonical" href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/"/>
+    <link rel="icon" href="https://fiveyang.github.io/favicon.ico">
+    <link rel="apple-touch-icon" href="https://fiveyang.github.io/apple-touch-icon.png"/>
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/style.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/monokai.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/fancybox/jquery.fancybox.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+    <meta property="og:title" content="Servlet基础" />
+<meta property="og:description" content="2.1Servlet 概述 如今，Servlet 在普遍使用的MVC模式的Web开发中仍占据重要地位，目前流行的Web框架都基于Servlet技术，如Struts、Webwork、Spring MVC 。只有掌握了Servlet才能跟那个掌握Java Web编程思想的核心和精髓。
+MVC：MVC全名是Model View Controller，是模型(model)－视图(view)－控制器(controller)的缩写，一种软件设计典范，用一种业务逻辑、数据、界面显示分离的方法组织代码，将业务逻辑聚集到一个部件里面，在改进和个性化定制界面及用户交互的同时，不需要重新编写业务逻辑。
+2.1.1 Servlet简介 Servlet对请求的处理和响应过程 1）接受HTTP请求 2）去的请求信息，包括请求头和请求参数数据 3）调用其他Java类方法，完成具体的业务功能 4）实现到其他Web组件的跳转（包括重定向和请求转发） 5）生成HTTP响应（包括HTML显影和非HTML响应）
+Servlet具有的特点 1）高效：在传统的CGI中，每个请求都需要建立一个进程，而Servlet每个请求采用轻量级的线程来处理；另外如果有N个并发的请求，CGI 需要重复装载代码N次，而Servlet只需要装载一次 2）方便： Servlet提供了大量的实用工具例程 3）交互轻松，Servlet还能够在各个程序之间共享数据，是的数据库连接池之类的功能很容易实现 4）可移植性：java特性嘛
+Servlet运行在服务端，由Servlet容器（引擎）管理
+我们使用的Servlet 3.0 需要Tomcat 7.0 以上版本的Web服务器
+2.1.2 Servlet体系结构 Servlet API 包含两个软件包 javax.servlet 包 javax.servlet.http 包 Servlet API 主要接口关系图 1.Servlet 接口 所有的Servlet都必须直接或间接的实现javax.servlet.Servlet接口。提供与Servlet生命周期相关的方法。 1 ) init(ServletConfig config) 初始化方法，Servlet实例化之后容器调用该方法执行Servlet实例化，没有正常结束的时候会产生ServletException异常 2） service(ServletRequest req,ServletResponse resp) 服务方法，接受请求和响应，req resp对象含有响应的方法 3 ) destroy() Servlet 的销毁方法 4 ) getServletConfig() 让Servlet 获得ServletConfig对象 5 ) getServletInfo() 返回一个String 包含Servlet信息，例如开发者、创建日期、描述信息等" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" />
+<meta property="article:published_time" content="2019-09-02T22:13:20+08:00" />
+<meta property="article:modified_time" content="2019-09-02T22:13:20+08:00" />
+
+    
+    <meta itemprop="name" content="Servlet基础">
+<meta itemprop="description" content="2.1Servlet 概述 如今，Servlet 在普遍使用的MVC模式的Web开发中仍占据重要地位，目前流行的Web框架都基于Servlet技术，如Struts、Webwork、Spring MVC 。只有掌握了Servlet才能跟那个掌握Java Web编程思想的核心和精髓。
+MVC：MVC全名是Model View Controller，是模型(model)－视图(view)－控制器(controller)的缩写，一种软件设计典范，用一种业务逻辑、数据、界面显示分离的方法组织代码，将业务逻辑聚集到一个部件里面，在改进和个性化定制界面及用户交互的同时，不需要重新编写业务逻辑。
+2.1.1 Servlet简介 Servlet对请求的处理和响应过程 1）接受HTTP请求 2）去的请求信息，包括请求头和请求参数数据 3）调用其他Java类方法，完成具体的业务功能 4）实现到其他Web组件的跳转（包括重定向和请求转发） 5）生成HTTP响应（包括HTML显影和非HTML响应）
+Servlet具有的特点 1）高效：在传统的CGI中，每个请求都需要建立一个进程，而Servlet每个请求采用轻量级的线程来处理；另外如果有N个并发的请求，CGI 需要重复装载代码N次，而Servlet只需要装载一次 2）方便： Servlet提供了大量的实用工具例程 3）交互轻松，Servlet还能够在各个程序之间共享数据，是的数据库连接池之类的功能很容易实现 4）可移植性：java特性嘛
+Servlet运行在服务端，由Servlet容器（引擎）管理
+我们使用的Servlet 3.0 需要Tomcat 7.0 以上版本的Web服务器
+2.1.2 Servlet体系结构 Servlet API 包含两个软件包 javax.servlet 包 javax.servlet.http 包 Servlet API 主要接口关系图 1.Servlet 接口 所有的Servlet都必须直接或间接的实现javax.servlet.Servlet接口。提供与Servlet生命周期相关的方法。 1 ) init(ServletConfig config) 初始化方法，Servlet实例化之后容器调用该方法执行Servlet实例化，没有正常结束的时候会产生ServletException异常 2） service(ServletRequest req,ServletResponse resp) 服务方法，接受请求和响应，req resp对象含有响应的方法 3 ) destroy() Servlet 的销毁方法 4 ) getServletConfig() 让Servlet 获得ServletConfig对象 5 ) getServletInfo() 返回一个String 包含Servlet信息，例如开发者、创建日期、描述信息等">
+
+
+<meta itemprop="datePublished" content="2019-09-02T22:13:20&#43;08:00" />
+<meta itemprop="dateModified" content="2019-09-02T22:13:20&#43;08:00" />
+<meta itemprop="wordCount" content="210">
+
+
+
+<meta itemprop="keywords" content="" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Servlet基础"/>
+<meta name="twitter:description" content="2.1Servlet 概述 如今，Servlet 在普遍使用的MVC模式的Web开发中仍占据重要地位，目前流行的Web框架都基于Servlet技术，如Struts、Webwork、Spring MVC 。只有掌握了Servlet才能跟那个掌握Java Web编程思想的核心和精髓。
+MVC：MVC全名是Model View Controller，是模型(model)－视图(view)－控制器(controller)的缩写，一种软件设计典范，用一种业务逻辑、数据、界面显示分离的方法组织代码，将业务逻辑聚集到一个部件里面，在改进和个性化定制界面及用户交互的同时，不需要重新编写业务逻辑。
+2.1.1 Servlet简介 Servlet对请求的处理和响应过程 1）接受HTTP请求 2）去的请求信息，包括请求头和请求参数数据 3）调用其他Java类方法，完成具体的业务功能 4）实现到其他Web组件的跳转（包括重定向和请求转发） 5）生成HTTP响应（包括HTML显影和非HTML响应）
+Servlet具有的特点 1）高效：在传统的CGI中，每个请求都需要建立一个进程，而Servlet每个请求采用轻量级的线程来处理；另外如果有N个并发的请求，CGI 需要重复装载代码N次，而Servlet只需要装载一次 2）方便： Servlet提供了大量的实用工具例程 3）交互轻松，Servlet还能够在各个程序之间共享数据，是的数据库连接池之类的功能很容易实现 4）可移植性：java特性嘛
+Servlet运行在服务端，由Servlet容器（引擎）管理
+我们使用的Servlet 3.0 需要Tomcat 7.0 以上版本的Web服务器
+2.1.2 Servlet体系结构 Servlet API 包含两个软件包 javax.servlet 包 javax.servlet.http 包 Servlet API 主要接口关系图 1.Servlet 接口 所有的Servlet都必须直接或间接的实现javax.servlet.Servlet接口。提供与Servlet生命周期相关的方法。 1 ) init(ServletConfig config) 初始化方法，Servlet实例化之后容器调用该方法执行Servlet实例化，没有正常结束的时候会产生ServletException异常 2） service(ServletRequest req,ServletResponse resp) 服务方法，接受请求和响应，req resp对象含有响应的方法 3 ) destroy() Servlet 的销毁方法 4 ) getServletConfig() 让Servlet 获得ServletConfig对象 5 ) getServletInfo() 返回一个String 包含Servlet信息，例如开发者、创建日期、描述信息等"/>
+<meta name="twitter:site" content="@fiveyang"/>
+
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+
+<div id="container">
+	<header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="https://fiveyang.github.io" id="logo">
+          
+          <i class="logo" style="background-image: url('https://fiveyang.github.io/css/images/avator2.png')"></i>
+          
+          <span class="site-title">Icarus</span>
+      </a>
+      <nav id="main-nav">
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/">主页</a>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a>
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a>
+          
+          
+      </nav>
+        <nav id="sub-nav">
+          <div class="profile" id="profile-nav">
+            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="https://fiveyang.github.io/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+          </div>
+        </nav>
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+              <input type="search" name="q" class="search-form-input" placeholder="">
+              <button type="submit" class="search-form-submit">
+              </button>
+              <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+         </form>
+        </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tbody>
+          <tr>
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/">主页</a></td>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a></td>
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a></td>
+          
+          
+          <td>
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+          <input type="search" name="q" class="search-form-input" placeholder="Search">
+          <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</header>
+
+   	
+   	<div class="outer">
+   	
+    	<aside id="profile">
+  <div class="inner profile-inner">
+    <div class="base-info profile-block">
+      
+      <img id="avatar" src="https://www.gravatar.com/avatar/3a766dd0c7a341ce48a934871b9e38b0?s=100&d=identicon"/>
+      
+      <h2 id="name">fiveyang</h2>
+      <h3 id="title">程序员</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>郑州大学</span>
+      
+          <a id="follow" href="https://github.com/fiveyang">
+              
+          </a>
+      
+    </div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        14
+        <span></span>
+      </div>
+      <div class="article-info-block">
+        
+          0
+        
+        <span>
+            
+        </span>
+      </div>
+    </div>
+    <div class="profile-block social-links">
+      <table>
+        <tr>
+          
+<td><a href="//github.com/fiveyang" target="_blank" title="GitHub"><i class="fa fa-github"></i></a></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<td><a href="//twitter.com/fiveyang" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></td>
+
+
+          <td><a href="https://fiveyang.github.io/index.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</aside>
+
+    
+
+    <section id="main">
+    
+    <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+            <img src="https://fiveyang.github.io/css/images/timg-3.jpg" class="article-banner">
+        
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/">
+    <h1 class="article-title" itemprop="name">
+        Servlet基础
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:13:20 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            210
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+<h2 id="2-1servlet-概述">2.1Servlet 概述</h2>
+
+<p>如今，Servlet 在普遍使用的MVC模式的Web开发中仍占据重要地位，目前流行的Web框架都基于Servlet技术，如Struts、Webwork、Spring MVC 。只有掌握了Servlet才能跟那个掌握Java Web编程思想的核心和精髓。</p>
+
+<p><strong>MVC：MVC全名是Model View Controller，是模型(model)－视图(view)－控制器(controller)的缩写，一种软件设计典范，用一种业务逻辑、数据、界面显示分离的方法组织代码，将业务逻辑聚集到一个部件里面，在改进和个性化定制界面及用户交互的同时，不需要重新编写业务逻辑。</strong></p>
+
+<h3 id="2-1-1-servlet简介">2.1.1 Servlet简介</h3>
+
+<p><strong>Servlet对请求的处理和响应过程</strong>
+1）接受HTTP请求
+2）去的请求信息，包括请求头和请求参数数据
+3）调用其他Java类方法，完成具体的业务功能
+4）实现到其他Web组件的跳转（包括重定向和请求转发）
+5）生成HTTP响应（包括HTML显影和非HTML响应）</p>
+
+<p><strong>Servlet具有的特点</strong>
+1）高效：在传统的CGI中，每个请求都需要建立一个进程，而Servlet每个请求采用轻量级的线程来处理；另外如果有N个并发的请求，CGI 需要重复装载代码N次，而Servlet只需要装载一次
+2）方便： Servlet提供了大量的实用工具例程
+3）交互轻松，Servlet还能够在各个程序之间共享数据，是的数据库连接池之类的功能很容易实现
+4）可移植性：java特性嘛</p>
+
+<p>Servlet运行在服务端，由Servlet容器（引擎）管理</p>
+
+<p><strong>我们使用的Servlet 3.0 需要Tomcat 7.0 以上版本的Web服务器</strong></p>
+
+<h3 id="2-1-2-servlet体系结构">2.1.2 Servlet体系结构</h3>
+
+<p><strong>Servlet API 包含两个软件包</strong>
+javax.servlet 包
+javax.servlet.http 包
+<strong>Servlet API 主要接口关系图</strong>
+<img src="https://img-blog.csdnimg.cn/20190820222147949.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="Servlet API 主要接口关系图" /><strong>1.Servlet 接口</strong>
+所有的Servlet都必须直接或间接的实现javax.servlet.Servlet接口。提供与Servlet生命周期相关的方法。
+1 )   init(ServletConfig config)  初始化方法，Servlet实例化之后容器调用该方法执行Servlet实例化，没有正常结束的时候会产生ServletException异常
+2） service(ServletRequest req,ServletResponse resp)    服务方法，接受请求和响应，req  resp对象含有响应的方法
+3 )  destroy()  Servlet 的销毁方法
+4 )  getServletConfig()  让Servlet 获得ServletConfig对象
+5 )  getServletInfo()  返回一个String 包含Servlet信息，例如开发者、创建日期、描述信息等</p>
+
+<p><strong>注意：一般的Servlet 通过继承GenericServlet或者HttpServlet类实现Servlet接口</strong></p>
+
+<p><strong>2.GenericServlet</strong>
+我们不用，直接用他的子类</p>
+
+<p><strong>3.HttpServlet</strong>
+1）service(ServletRequest req,ServletResponse resp)  实现并重写了原来的方法，这个方法会自动判断用户的请求方式是GET还是POST,并调用doGet和doPost
+2）doGet(HttpServletRequest req,HttpServletResponse resp)  处理HTTP Get请求
+3）doPost(HttpServletRequest req,HttpServletResponse resp)   处理HTTP POST请求</p>
+
+<h3 id="2-1-3-servlet生命周期">2.1.3 Servlet生命周期</h3>
+
+<p>生命周期图
+<img src="https://img-blog.csdnimg.cn/20190820225223231.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" />生命周期时序图
+<img src="https://img-blog.csdnimg.cn/20190820225359493.gif" alt="在这里插入图片描述" /></p>
+
+<h3 id="2-2-1-基于web-xml的配置方式">2.2.1 基于web.xml的配置方式</h3>
+
+<p>Servlet 2.5 采用web.xml  3.0 采用注解  ，创建Servlet不需要配置xml了。
+关于xml 我会单独写博客记录
+记得勾选  Generate web.xml deployment descriptor</p>
+
+<h3 id="2-2-2-数据处理">2.2.2 数据处理</h3>
+
+<p><strong>1.处理超链接请求数据</strong></p>
+
+<pre><code class="language-html">&lt;a href=&quot;TestServlet?pageNo=2&amp;String=CY&quot;&gt;点击&lt;/a&gt;
+</code></pre>
+
+<p>指定了Servlet 以及参数值
+<strong>2.Form表单请求数据</strong>
+弄一个项目里面的Form</p>
+
+<pre><code class="language-html">&lt;form action=&quot;ApplicantLoginServlet&quot; method=&quot;post&quot;
+				onsubmit=&quot;return validate();&quot;&gt;
+				&lt;div class=&quot;login_l&quot;&gt;
+					&lt;p class=&quot;font14&quot; style=&quot;color: gray&quot;&gt;使用注册邮箱登录&lt;/p&gt;
+					&lt;div class=&quot;span1&quot;&gt;
+						&lt;label class=&quot;tn-form-label&quot;&gt;邮箱：&lt;/label&gt; &lt;input class=&quot;tn-textbox&quot;
+							type=&quot;text&quot; name=&quot;email&quot; id=&quot;email&quot; value=&quot;&lt;%=applicantEmail%&gt;&quot;&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;span1&quot;&gt;
+						&lt;label class=&quot;tn-form-label&quot;&gt;密码：&lt;/label&gt; &lt;input class=&quot;tn-textbox&quot;
+							type=&quot;password&quot; name=&quot;password&quot; id=&quot;password&quot; value=&quot;&lt;%=applicantPwd%&gt;&quot;&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;tn-form-row-button&quot;&gt;
+						&lt;div class=&quot;span1&quot;&gt;
+							&lt;input name=&quot;submit&quot; type=&quot;submit&quot; class=&quot;tn-button-text&quot;
+								value=&quot;登   录&quot;&gt; &lt;span class=&quot;it-register-text&quot;&gt; &lt;input
+								checked=&quot;checked&quot; name=&quot;rememberMe&quot; id=&quot;rememberMe&quot;
+								class=&quot;tn-checkbox&quot; type=&quot;checkbox&quot; value=&quot;true&quot;&gt; &lt;label
+								for=&quot;RememberPassword&quot; style=&quot;color: gray&quot;&gt; 记住密码&lt;/label&gt;&lt;/span&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class=&quot;clear&quot;&gt;&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/form&gt;
+</code></pre>
+
+<p>action指定了Servlet，method指定请求方式，onsubmit指定提交脚本。
+这两种方式产生一个ServletRequest对象并进一步被封装成HttpServletRequest对象
+这个对象的处理方法
+1）String getParameter（String name）值
+2）String[] getParameterValues(String name) 值数组
+3 )  Enumeration getParameterNames() 所有参数名</p>
+
+<h2 id="2-3-重定向和请求转发">2.3 重定向和请求转发</h2>
+
+<p>有时间再来补充
+区别：
+1、重定向是两次请求，转发是一次请求，因此转发的速度要快于重定向</p>
+
+<p>2、重定向之后地址栏上的地址会发生变化，变化成第二次请求的地址，转发之后地址栏上的地址不会变化，还是第一次请求的地址</p>
+
+<p>3、转发是服务器行为，重定向是客户端行为。重定向时浏览器上的网址改变 ,转发是浏览器上的网址不变</p>
+
+<p>4、重定向是两次request，转发只有一次请求</p>
+
+<p>5、重定向时的网址可以是任何网址，转发的网址必须是本站点的网址</p>
+
+<p>QQ：872742416
+（个人学习使用）材料整理自《Java Web技术及应用》及网络，侵删。</p>
+
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" data-id="c654b72acc4b19034d35113c00ca7365" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+
+    
+<nav id="article-nav">
+    
+    <a href="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          
+      </strong>
+      <div class="article-nav-title">Java Web 入门</div>
+    </a>
+    
+
+    
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          
+      </strong>
+      <div class="article-nav-title">Servlet核心接口</div>
+    </a>
+    
+</nav>
+
+
+</article>
+
+
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fiveyang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+    </section>
+
+   	
+    	<aside id="sidebar">
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">
+        
+    </h3>
+    <div class="widget">
+        <ul id="recent-post">
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="Servlet基础" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="title">会话跟踪</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:29:04 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="Servlet基础" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="title">会话跟踪技术-Session</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:23:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="Servlet基础" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="title">会话跟踪技术-cookie</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:21:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-4.jpg)" alt="Servlet基础" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="title">Servlet核心接口</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:17:32 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-3.jpg)" alt="Servlet基础" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="title">Servlet基础</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:13:20 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+    
+	</div>
+</div>
+
+<footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019
+      Powered by <a href="//gohugo.io">Hugo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>.
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://fiveyang.github.io/fancybox/jquery.fancybox.pack.js"></script>
+<script src="https://fiveyang.github.io/js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+</body>
+</html>

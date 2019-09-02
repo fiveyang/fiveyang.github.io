@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Servlet核心接口 &middot; Icarus</title>
+    <meta name="generator" content="Hugo 0.57.2" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="fiveyang">
+    
+      <meta name="description" content="静态博客">
+    
+    
+    <link rel="canonical" href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/"/>
+    <link rel="icon" href="https://fiveyang.github.io/favicon.ico">
+    <link rel="apple-touch-icon" href="https://fiveyang.github.io/apple-touch-icon.png"/>
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/style.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/monokai.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/fancybox/jquery.fancybox.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+    <meta property="og:title" content="Servlet核心接口" />
+<meta property="og:description" content="3.1 Servlet核心接口 主要是介绍四个接口 &#43; ServletConfig接口：用于获取Servlet初始化参数和ServletContext对象 &#43; ServletContext接口：代表当前Servlet运行环境，Servlet可以通过ServletContext对象来访问Servlet容器中的各种资源 &#43; HttpServletRequest接口：用于封装Http请求信息 &#43; HTTPServletResponse接口：用于封装Http响应消息
+3.2 ServletConfig接口 （生命周期相关）Servlet在初始化一个Servlet的时候，将为改Servlet创建一个唯一的ServletConfig对象，然后调用init（ServletConfig config），将这个对象存储到此Servlet中（参见上一篇的时序图）
+这个接口可以访问两项内容：Servlet初始化参数和ServletContext对象 Servlet初始化参数可以通过以下形式在web.xml文件中配置
+&lt;init-param&gt; &lt;param-name&gt;user&lt;/param-name&gt; &lt;param-value&gt;cy&lt;/param-value&gt; &lt;/init-param&gt;  然后通过下面的方式调用
+String user=config.getInitParameter(&quot;user&quot;);  第二种和ServletContext相关，放后面
+3.3 ServletContext 接口 （生命周期相关）Web应用启动时，会创建一个唯一的ServletContext对象供Servlet容器的所有Servlet使用，Servlet对象通过这个Context对象访问容器的各种资源，所以ServletContext代表当前Servlet运行环境
+这个接口有两种获取方式：通过ServletConfig接口的getServletContext（）方法获得ServletContext对象。二是通过GenericServlet抽象类的getServletContext（）方法获得，但是实际上我们知道GenericServlet是继承了ServletConfig接口所以才有getServletContext（）的。
+ServletContext接口的几种类型的方法： &#43; 获取应用范围的初始化参数的方法 &#43; 获取应用范围域属性的方法 &#43; 获取当前Web应用信息的方法 &#43; 获取当前容器信息和输出日志的方法 &#43; 获取服务端文件资源的方法
+3.3.1 获取应用的初始化参数 和前面的ServletConfig很像，也是先在web.xml中配置相关参数，然后通过ServletContext 对象的方法来获取这些参数 通过以下方式配置在web.xml
+&lt;context-param&gt; &lt;param-name&gt;webSite&lt;/param-name&gt; &lt;param-value&gt;www.itshixun.com&lt;/param-value&gt; &lt;/context-param&gt; &lt;context-param&gt; &lt;param-name&gt;adminEmail&lt;/param-name&gt; &lt;param-value&gt;fengjj@itshixun.com&lt;/param-value&gt; &lt;/context-param&gt;  获取方式
+// 使用ServletContext对象获取所有初始化参数 Enumeration&lt;String&gt; paramNames = super.getServletContext() .getInitParameterNames(); // 使用ServletContext对象获取某个初始化参数 String webSite = super." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" />
+<meta property="article:published_time" content="2019-09-02T22:17:32+08:00" />
+<meta property="article:modified_time" content="2019-09-02T22:17:32+08:00" />
+
+    
+    <meta itemprop="name" content="Servlet核心接口">
+<meta itemprop="description" content="3.1 Servlet核心接口 主要是介绍四个接口 &#43; ServletConfig接口：用于获取Servlet初始化参数和ServletContext对象 &#43; ServletContext接口：代表当前Servlet运行环境，Servlet可以通过ServletContext对象来访问Servlet容器中的各种资源 &#43; HttpServletRequest接口：用于封装Http请求信息 &#43; HTTPServletResponse接口：用于封装Http响应消息
+3.2 ServletConfig接口 （生命周期相关）Servlet在初始化一个Servlet的时候，将为改Servlet创建一个唯一的ServletConfig对象，然后调用init（ServletConfig config），将这个对象存储到此Servlet中（参见上一篇的时序图）
+这个接口可以访问两项内容：Servlet初始化参数和ServletContext对象 Servlet初始化参数可以通过以下形式在web.xml文件中配置
+&lt;init-param&gt; &lt;param-name&gt;user&lt;/param-name&gt; &lt;param-value&gt;cy&lt;/param-value&gt; &lt;/init-param&gt;  然后通过下面的方式调用
+String user=config.getInitParameter(&quot;user&quot;);  第二种和ServletContext相关，放后面
+3.3 ServletContext 接口 （生命周期相关）Web应用启动时，会创建一个唯一的ServletContext对象供Servlet容器的所有Servlet使用，Servlet对象通过这个Context对象访问容器的各种资源，所以ServletContext代表当前Servlet运行环境
+这个接口有两种获取方式：通过ServletConfig接口的getServletContext（）方法获得ServletContext对象。二是通过GenericServlet抽象类的getServletContext（）方法获得，但是实际上我们知道GenericServlet是继承了ServletConfig接口所以才有getServletContext（）的。
+ServletContext接口的几种类型的方法： &#43; 获取应用范围的初始化参数的方法 &#43; 获取应用范围域属性的方法 &#43; 获取当前Web应用信息的方法 &#43; 获取当前容器信息和输出日志的方法 &#43; 获取服务端文件资源的方法
+3.3.1 获取应用的初始化参数 和前面的ServletConfig很像，也是先在web.xml中配置相关参数，然后通过ServletContext 对象的方法来获取这些参数 通过以下方式配置在web.xml
+&lt;context-param&gt; &lt;param-name&gt;webSite&lt;/param-name&gt; &lt;param-value&gt;www.itshixun.com&lt;/param-value&gt; &lt;/context-param&gt; &lt;context-param&gt; &lt;param-name&gt;adminEmail&lt;/param-name&gt; &lt;param-value&gt;fengjj@itshixun.com&lt;/param-value&gt; &lt;/context-param&gt;  获取方式
+// 使用ServletContext对象获取所有初始化参数 Enumeration&lt;String&gt; paramNames = super.getServletContext() .getInitParameterNames(); // 使用ServletContext对象获取某个初始化参数 String webSite = super.">
+
+
+<meta itemprop="datePublished" content="2019-09-02T22:17:32&#43;08:00" />
+<meta itemprop="dateModified" content="2019-09-02T22:17:32&#43;08:00" />
+<meta itemprop="wordCount" content="200">
+
+
+
+<meta itemprop="keywords" content="" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Servlet核心接口"/>
+<meta name="twitter:description" content="3.1 Servlet核心接口 主要是介绍四个接口 &#43; ServletConfig接口：用于获取Servlet初始化参数和ServletContext对象 &#43; ServletContext接口：代表当前Servlet运行环境，Servlet可以通过ServletContext对象来访问Servlet容器中的各种资源 &#43; HttpServletRequest接口：用于封装Http请求信息 &#43; HTTPServletResponse接口：用于封装Http响应消息
+3.2 ServletConfig接口 （生命周期相关）Servlet在初始化一个Servlet的时候，将为改Servlet创建一个唯一的ServletConfig对象，然后调用init（ServletConfig config），将这个对象存储到此Servlet中（参见上一篇的时序图）
+这个接口可以访问两项内容：Servlet初始化参数和ServletContext对象 Servlet初始化参数可以通过以下形式在web.xml文件中配置
+&lt;init-param&gt; &lt;param-name&gt;user&lt;/param-name&gt; &lt;param-value&gt;cy&lt;/param-value&gt; &lt;/init-param&gt;  然后通过下面的方式调用
+String user=config.getInitParameter(&quot;user&quot;);  第二种和ServletContext相关，放后面
+3.3 ServletContext 接口 （生命周期相关）Web应用启动时，会创建一个唯一的ServletContext对象供Servlet容器的所有Servlet使用，Servlet对象通过这个Context对象访问容器的各种资源，所以ServletContext代表当前Servlet运行环境
+这个接口有两种获取方式：通过ServletConfig接口的getServletContext（）方法获得ServletContext对象。二是通过GenericServlet抽象类的getServletContext（）方法获得，但是实际上我们知道GenericServlet是继承了ServletConfig接口所以才有getServletContext（）的。
+ServletContext接口的几种类型的方法： &#43; 获取应用范围的初始化参数的方法 &#43; 获取应用范围域属性的方法 &#43; 获取当前Web应用信息的方法 &#43; 获取当前容器信息和输出日志的方法 &#43; 获取服务端文件资源的方法
+3.3.1 获取应用的初始化参数 和前面的ServletConfig很像，也是先在web.xml中配置相关参数，然后通过ServletContext 对象的方法来获取这些参数 通过以下方式配置在web.xml
+&lt;context-param&gt; &lt;param-name&gt;webSite&lt;/param-name&gt; &lt;param-value&gt;www.itshixun.com&lt;/param-value&gt; &lt;/context-param&gt; &lt;context-param&gt; &lt;param-name&gt;adminEmail&lt;/param-name&gt; &lt;param-value&gt;fengjj@itshixun.com&lt;/param-value&gt; &lt;/context-param&gt;  获取方式
+// 使用ServletContext对象获取所有初始化参数 Enumeration&lt;String&gt; paramNames = super.getServletContext() .getInitParameterNames(); // 使用ServletContext对象获取某个初始化参数 String webSite = super."/>
+<meta name="twitter:site" content="@fiveyang"/>
+
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+
+<div id="container">
+	<header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="https://fiveyang.github.io" id="logo">
+          
+          <i class="logo" style="background-image: url('https://fiveyang.github.io/css/images/avator2.png')"></i>
+          
+          <span class="site-title">Icarus</span>
+      </a>
+      <nav id="main-nav">
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/">主页</a>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a>
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a>
+          
+          
+      </nav>
+        <nav id="sub-nav">
+          <div class="profile" id="profile-nav">
+            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="https://fiveyang.github.io/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+          </div>
+        </nav>
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+              <input type="search" name="q" class="search-form-input" placeholder="">
+              <button type="submit" class="search-form-submit">
+              </button>
+              <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+         </form>
+        </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tbody>
+          <tr>
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/">主页</a></td>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a></td>
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a></td>
+          
+          
+          <td>
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+          <input type="search" name="q" class="search-form-input" placeholder="Search">
+          <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</header>
+
+   	
+   	<div class="outer">
+   	
+    	<aside id="profile">
+  <div class="inner profile-inner">
+    <div class="base-info profile-block">
+      
+      <img id="avatar" src="https://www.gravatar.com/avatar/3a766dd0c7a341ce48a934871b9e38b0?s=100&d=identicon"/>
+      
+      <h2 id="name">fiveyang</h2>
+      <h3 id="title">程序员</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>郑州大学</span>
+      
+          <a id="follow" href="https://github.com/fiveyang">
+              
+          </a>
+      
+    </div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        14
+        <span></span>
+      </div>
+      <div class="article-info-block">
+        
+          0
+        
+        <span>
+            
+        </span>
+      </div>
+    </div>
+    <div class="profile-block social-links">
+      <table>
+        <tr>
+          
+<td><a href="//github.com/fiveyang" target="_blank" title="GitHub"><i class="fa fa-github"></i></a></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<td><a href="//twitter.com/fiveyang" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></td>
+
+
+          <td><a href="https://fiveyang.github.io/index.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</aside>
+
+    
+
+    <section id="main">
+    
+    <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+            <img src="https://fiveyang.github.io/css/images/timg-4.jpg" class="article-banner">
+        
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/">
+    <h1 class="article-title" itemprop="name">
+        Servlet核心接口
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:17:32 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            200
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+<h2 id="3-1-servlet核心接口">3.1 Servlet核心接口</h2>
+
+<p>主要是介绍四个接口
++ ServletConfig接口：用于获取Servlet初始化参数和ServletContext对象
++ ServletContext接口：代表当前Servlet运行环境，Servlet可以通过ServletContext对象来访问Servlet容器中的各种资源
++ HttpServletRequest接口：用于封装Http请求信息
++ HTTPServletResponse接口：用于封装Http响应消息</p>
+
+<h2 id="3-2-servletconfig接口">3.2 ServletConfig接口</h2>
+
+<p>（生命周期相关）Servlet在初始化一个Servlet的时候，将为改Servlet创建一个唯一的ServletConfig对象，然后调用init（ServletConfig config），将这个对象存储到此Servlet中（参见上一篇的时序图）</p>
+
+<p>这个接口可以访问两项内容：Servlet初始化参数和ServletContext对象
+Servlet初始化参数可以通过以下形式在web.xml文件中配置</p>
+
+<pre><code class="language-xml">&lt;init-param&gt;
+ 	&lt;param-name&gt;user&lt;/param-name&gt;
+ 	&lt;param-value&gt;cy&lt;/param-value&gt;
+&lt;/init-param&gt;
+</code></pre>
+
+<p>然后通过下面的方式调用</p>
+
+<pre><code class="language-java">String user=config.getInitParameter(&quot;user&quot;);
+</code></pre>
+
+<p>第二种和ServletContext相关，放后面</p>
+
+<h2 id="3-3-servletcontext-接口">3.3 ServletContext 接口</h2>
+
+<p>（生命周期相关）Web应用启动时，会创建一个唯一的ServletContext对象供Servlet容器的所有Servlet使用，Servlet对象通过这个Context对象访问容器的各种资源，所以ServletContext代表当前Servlet运行环境</p>
+
+<p>这个接口有<strong>两种获取方式</strong>：通过ServletConfig接口的getServletContext（）方法获得ServletContext对象。二是通过GenericServlet抽象类的getServletContext（）方法获得，但是实际上我们知道GenericServlet是继承了ServletConfig接口所以才有getServletContext（）的。</p>
+
+<p>ServletContext接口的<strong>几种类型的方法</strong>：
++ 获取应用范围的初始化参数的方法
++ 获取应用范围域属性的方法
++ 获取当前Web应用信息的方法
++ 获取当前容器信息和输出日志的方法
++ 获取服务端文件资源的方法</p>
+
+<h3 id="3-3-1-获取应用的初始化参数">3.3.1 获取应用的初始化参数</h3>
+
+<p>和前面的ServletConfig很像，也是先在web.xml中配置相关参数，然后通过ServletContext 对象的方法来获取这些参数
+通过以下方式配置在web.xml</p>
+
+<pre><code class="language-xml">&lt;context-param&gt;
+    &lt;param-name&gt;webSite&lt;/param-name&gt;
+    &lt;param-value&gt;www.itshixun.com&lt;/param-value&gt;
+  &lt;/context-param&gt;
+  &lt;context-param&gt;
+    &lt;param-name&gt;adminEmail&lt;/param-name&gt;
+    &lt;param-value&gt;fengjj@itshixun.com&lt;/param-value&gt;
+  &lt;/context-param&gt;
+</code></pre>
+
+<p>获取方式</p>
+
+<pre><code class="language-java">// 使用ServletContext对象获取所有初始化参数
+Enumeration&lt;String&gt; paramNames = super.getServletContext()
+				.getInitParameterNames();
+// 使用ServletContext对象获取某个初始化参数
+String webSite = super.getServletContext().getInitParameter(&quot;webSite&quot;);
+String adminEmail = super.getServletContext().getInitParameter(&quot;adminEmail&quot;);
+</code></pre>
+
+<p>所使用的方法
++ String getInitParameter(String name) 某个参数
++ Enumeration getInitParameterNames()  所有参数，用Enumeration存放</p>
+
+<p><strong>Enumeration遍历方式</strong></p>
+
+<pre><code class="language-java">while (paramNames.hasMoreElements()) {
+			//由于使用了泛型这里就可以不用类型转换  使用String
+			String name = paramNames.nextElement();
+			out.print(name + &quot;&amp;nbsp;&quot;);
+		}
+</code></pre>
+
+<h3 id="3-3-2-存取应用域属性">3.3.2 存取应用域属性</h3>
+
+<p>简述一下
++ void setAttribute(String name ,Object object)   存放数据
++ Object getAttribute(String name)  取出
++ Enumeration getAttributeNames() 取出所有
++ removeAttribute(String name ) 移除</p>
+
+<h3 id="3-3-3-获取应用信息">3.3.3 获取应用信息</h3>
+
+<p>简述
++ getContextPath()  返回当前Web应用的根路径
++ getServletContextName()  返回Web应用的名字 即<web-app>元素中<display-name>元素的值
++ getRequestDispatcher(String path)翻一个用于其他Web组件转发请求的RequestDispatcher对象
++ getContext(String uripath)  返回URL地址，必须是“/”开头的绝对路径</p>
+
+<h3 id="3-3-4-获取容器信息">3.3.4 获取容器信息</h3>
+
+<ul>
+<li>getServletInfo() 返回Web容器的名字和版本</li>
+<li>getMajorVersion() 返回Web容器支持的Servlet API主版本号</li>
+<li>getMinorVersion()  返回Web容器支持的Servlet API次版本号</li>
+<li>log(String msg)  用于记录一般的日志</li>
+
+<li><p>log(String message,Throwable throw) 用于记录异常的堆栈日志</p>
+
+<h3 id="3-3-5-获取服务器文件资源">3.3.5 获取服务器文件资源</h3></li>
+
+<li><p>getResourceAsStream(String path)  返回一个读取参数的指定的文件的输入流 必须“/”开头</p></li>
+
+<li><p>getResource(String path)  返回由path指定的资源路径对应的一个URL对象，参数路径必须以“/”开头</p></li>
+
+<li><p>getRealPath(String pah)根据参数指定的虚路径，返回文件一同中的真实路径</p></li>
+
+<li><p>getMimeType(String file) 返回参数指定的MIME类型</p>
+
+<h2 id="3-4-httpservletrequest接口">3.4 HTTPServletRequest接口</h2>
+
+<p>在Servlet中提到了service(ServletRequest req,ServletResponse resp)方法 ，这是一个用于服务的方法 ，在其中用户的请求产生一个ServletRequest对象并进一步被封装成HttpServletRequest对象。</p></li>
+</ul>
+
+<p>HttpServletRequest是专门用户HTTP协议的子接口，用于封装HTTP请求信息
+相关的方法很多 HttpServletResponse 差不多理解</p>
+
+<p><strong>以下内容几乎没有用到过</strong></p>
+
+<h3 id="3-4-1-获取请求行信息">3.4.1 获取请求行信息</h3>
+
+<h3 id="3-4-2-获取请求头信息">3.4.2 获取请求头信息</h3>
+
+<h3 id="3-4-3-获取请求正文">3.4.3 获取请求正文</h3>
+
+<h3 id="3-4-4-请求参数的中文问题">3.4.4 请求参数的中文问题</h3>
+
+<h3 id="3-3-5-获取网络连接的信息">3.3.5 获取网络连接的信息</h3>
+
+<h3 id="3-4-6-存取请求域属性">3.4.6 存取请求域属性</h3>
+
+<h2 id="3-5-httpservletresponse接口">3.5 HttpServletResponse接口</h2>
+
+<h3 id="3-5-1-设置响应状态">3.5.1 设置响应状态</h3>
+
+<h3 id="3-5-2-构建响应消息头">3.5.2 构建响应消息头</h3>
+
+<h3 id="3-5-3-创建响应正文">3.5.3 创建响应正文</h3>
+
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" data-id="f9159f0bb84d388844034635e780e056" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+
+    
+<nav id="article-nav">
+    
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          
+      </strong>
+      <div class="article-nav-title">Servlet基础</div>
+    </a>
+    
+
+    
+    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          
+      </strong>
+      <div class="article-nav-title">会话跟踪技术-cookie</div>
+    </a>
+    
+</nav>
+
+
+</article>
+
+
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fiveyang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+    </section>
+
+   	
+    	<aside id="sidebar">
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">
+        
+    </h3>
+    <div class="widget">
+        <ul id="recent-post">
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="Servlet核心接口" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="title">会话跟踪</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:29:04 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="Servlet核心接口" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="title">会话跟踪技术-Session</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:23:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="Servlet核心接口" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="title">会话跟踪技术-cookie</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:21:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-4.jpg)" alt="Servlet核心接口" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="title">Servlet核心接口</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:17:32 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-3.jpg)" alt="Servlet核心接口" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="title">Servlet基础</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:13:20 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+    
+	</div>
+</div>
+
+<footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019
+      Powered by <a href="//gohugo.io">Hugo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>.
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://fiveyang.github.io/fancybox/jquery.fancybox.pack.js"></script>
+<script src="https://fiveyang.github.io/js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Java Web 入门 &middot; Icarus</title>
+    <meta name="generator" content="Hugo 0.57.2" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="fiveyang">
+    
+      <meta name="description" content="静态博客">
+    
+    
+    <link rel="canonical" href="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/"/>
+    <link rel="icon" href="https://fiveyang.github.io/favicon.ico">
+    <link rel="apple-touch-icon" href="https://fiveyang.github.io/apple-touch-icon.png"/>
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/style.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/monokai.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/fancybox/jquery.fancybox.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+    <meta property="og:title" content="Java Web 入门" />
+<meta property="og:description" content="1.1 Web应用概述 1.1.1Web应用简介 背景：信息共享、电子商务交易、在线办公、在线业务办理促进了Web应用的发展。
+发展：最初阶段Web应用只是一个静态的网站，所有的网页都是由固定的静态HTML页 面组成，当页面内容需要更改的时候就需要通过修改整个HTML页面实现。而为了实现与用户的交互与内容的实时更新，动态网站随之而生。
+动态网站必须具备的几个特征： 1）交互性：根据用户的操作以及请求网页会动态改变并响应。 2）自动更新：无需手动更新页面，系统会自动生成新的页面，从而大幅度减少网站的维护成本。 3）多样性：不同时间、不同用户访问同一网站可能会显示不同的内容。
+注意：实际应用中使用动静结合网站中频繁更新的使用动态网页，不需要频繁更新的使用静态网页。
+下面介绍一下几个动态网页技术 1 )CGI（通用网关接口），因为编写困难逐渐被新的动态网页技术替代。 2）ASP和ASP.NET（动态服务器页面），ASP本质上采用的是一种脚本语言，除了使用大量的组件没有其他方法提高开发效率，并且只能运行在Windows系统上，平台兼容性差。后来微软推出了ASP.NET，成为主流动态网站技术之一。 3）PHP（超文本预处理语言），语法独特、支持多平台。成为最火热的脚本语言一。 4）Servlet 改正了CGI程序的缺点，但是在界面设计方面十分的困难，需要在java中插入大量的HTML代码，每次改动都需要重新编译，于是产生了JSP技术。 5）JSP 一种实现java和HTML代码混合的技术。
+注意：JSP后面会讲到实际上就是java文件，所以能够完成Servlet能完成的所有工作，但是他并不是来替代Servlet。二者是一种互补的关系，JSP设计页面简单，Servlet涉及页面困难，但是便于书写java代码，所以二者结合实现业务逻辑分离。
+1.1.2 Web应用架构 C/S结构：即Client/Server(客户机/服务器)结构，是大家熟知的软件系统体系结构，通过将任务合理分配到Client端和Server端，降低了系统的通讯开销，可以充分利用两端硬件环境的优势。开发C/S架构可以采用多种语言，包括Java,C&#43;&#43;,C#，以及Dephi等
+B/S结构：即Browser/Server(浏览器/服务器)结构，是随着Internet技术的兴起，对C/S结构的一种变化或者改进的结构。在这种结构下，用户界面完全通过WWW浏览器实现。前端 在大部分企业就是做浏览器端展现相关的工作，会用到html,css,js,ps,ai等等，而“后端”的主要工作室程序开发、数据处理了，比如：php，asp，mysql，mssql。 区别： &#43; 硬件环境不同，C/S通常是建立在专用的网络上，小范围的网络环境。而B/S是建立在广域网上的，适应范围强，通常有操作系统和浏览器就行； &#43; C/结构比B/S结构更安全，因为用户群相对固定，对信息的保护更强； &#43; B/S结构维护升级比较简单，而C/S结构维护升级相对困难；
+1.1.3Web应用的运行过程 1）输入网址 2）发送请求 3）SQL请求 4）返回请求 5）返回响应结果 6）显示页面内容
+1.1.4 Java Web应用优势 1）平台无关性：因为java具有平台无关性 2）效率高：当Servlet和JSP接收到请求后，在相同的进程中将创建另一个线程来处理该请求 3）可访问API：Servlet和JSP是java的一整套解决方案，可以使用Java API 并且可以利用java语言提供的强大功能
+1.2Java Web应用开发 需要准备的环境及工具
+JDK 我们一般采用的JDK8，因为稳定！
+Eclipse 我是用的是2018-9 ，使用的时候记得调整为黑色主题（好看），假如安装Eclipse的时候忘记勾选JavaEE 记得在market中下载相关插件。
+Tomcat 我们使用的是8.0 如果下载不到8.0 只有8.5或者以上，可以把Tomcat中的配置文件改成8.0 然后就能正常使用 Tomcat8 只支持JDK7 &#43;版本
+Eclipse中Tomcat配置 见书
+QQ：872742416 （个人学习使用）材料整理自《Java Web技术及应用》及网络，侵删。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/" />
+<meta property="article:published_time" content="2019-09-02T22:08:30+08:00" />
+<meta property="article:modified_time" content="2019-09-02T22:08:30+08:00" />
+
+    
+    <meta itemprop="name" content="Java Web 入门">
+<meta itemprop="description" content="1.1 Web应用概述 1.1.1Web应用简介 背景：信息共享、电子商务交易、在线办公、在线业务办理促进了Web应用的发展。
+发展：最初阶段Web应用只是一个静态的网站，所有的网页都是由固定的静态HTML页 面组成，当页面内容需要更改的时候就需要通过修改整个HTML页面实现。而为了实现与用户的交互与内容的实时更新，动态网站随之而生。
+动态网站必须具备的几个特征： 1）交互性：根据用户的操作以及请求网页会动态改变并响应。 2）自动更新：无需手动更新页面，系统会自动生成新的页面，从而大幅度减少网站的维护成本。 3）多样性：不同时间、不同用户访问同一网站可能会显示不同的内容。
+注意：实际应用中使用动静结合网站中频繁更新的使用动态网页，不需要频繁更新的使用静态网页。
+下面介绍一下几个动态网页技术 1 )CGI（通用网关接口），因为编写困难逐渐被新的动态网页技术替代。 2）ASP和ASP.NET（动态服务器页面），ASP本质上采用的是一种脚本语言，除了使用大量的组件没有其他方法提高开发效率，并且只能运行在Windows系统上，平台兼容性差。后来微软推出了ASP.NET，成为主流动态网站技术之一。 3）PHP（超文本预处理语言），语法独特、支持多平台。成为最火热的脚本语言一。 4）Servlet 改正了CGI程序的缺点，但是在界面设计方面十分的困难，需要在java中插入大量的HTML代码，每次改动都需要重新编译，于是产生了JSP技术。 5）JSP 一种实现java和HTML代码混合的技术。
+注意：JSP后面会讲到实际上就是java文件，所以能够完成Servlet能完成的所有工作，但是他并不是来替代Servlet。二者是一种互补的关系，JSP设计页面简单，Servlet涉及页面困难，但是便于书写java代码，所以二者结合实现业务逻辑分离。
+1.1.2 Web应用架构 C/S结构：即Client/Server(客户机/服务器)结构，是大家熟知的软件系统体系结构，通过将任务合理分配到Client端和Server端，降低了系统的通讯开销，可以充分利用两端硬件环境的优势。开发C/S架构可以采用多种语言，包括Java,C&#43;&#43;,C#，以及Dephi等
+B/S结构：即Browser/Server(浏览器/服务器)结构，是随着Internet技术的兴起，对C/S结构的一种变化或者改进的结构。在这种结构下，用户界面完全通过WWW浏览器实现。前端 在大部分企业就是做浏览器端展现相关的工作，会用到html,css,js,ps,ai等等，而“后端”的主要工作室程序开发、数据处理了，比如：php，asp，mysql，mssql。 区别： &#43; 硬件环境不同，C/S通常是建立在专用的网络上，小范围的网络环境。而B/S是建立在广域网上的，适应范围强，通常有操作系统和浏览器就行； &#43; C/结构比B/S结构更安全，因为用户群相对固定，对信息的保护更强； &#43; B/S结构维护升级比较简单，而C/S结构维护升级相对困难；
+1.1.3Web应用的运行过程 1）输入网址 2）发送请求 3）SQL请求 4）返回请求 5）返回响应结果 6）显示页面内容
+1.1.4 Java Web应用优势 1）平台无关性：因为java具有平台无关性 2）效率高：当Servlet和JSP接收到请求后，在相同的进程中将创建另一个线程来处理该请求 3）可访问API：Servlet和JSP是java的一整套解决方案，可以使用Java API 并且可以利用java语言提供的强大功能
+1.2Java Web应用开发 需要准备的环境及工具
+JDK 我们一般采用的JDK8，因为稳定！
+Eclipse 我是用的是2018-9 ，使用的时候记得调整为黑色主题（好看），假如安装Eclipse的时候忘记勾选JavaEE 记得在market中下载相关插件。
+Tomcat 我们使用的是8.0 如果下载不到8.0 只有8.5或者以上，可以把Tomcat中的配置文件改成8.0 然后就能正常使用 Tomcat8 只支持JDK7 &#43;版本
+Eclipse中Tomcat配置 见书
+QQ：872742416 （个人学习使用）材料整理自《Java Web技术及应用》及网络，侵删。">
+
+
+<meta itemprop="datePublished" content="2019-09-02T22:08:30&#43;08:00" />
+<meta itemprop="dateModified" content="2019-09-02T22:08:30&#43;08:00" />
+<meta itemprop="wordCount" content="70">
+
+
+
+<meta itemprop="keywords" content="" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java Web 入门"/>
+<meta name="twitter:description" content="1.1 Web应用概述 1.1.1Web应用简介 背景：信息共享、电子商务交易、在线办公、在线业务办理促进了Web应用的发展。
+发展：最初阶段Web应用只是一个静态的网站，所有的网页都是由固定的静态HTML页 面组成，当页面内容需要更改的时候就需要通过修改整个HTML页面实现。而为了实现与用户的交互与内容的实时更新，动态网站随之而生。
+动态网站必须具备的几个特征： 1）交互性：根据用户的操作以及请求网页会动态改变并响应。 2）自动更新：无需手动更新页面，系统会自动生成新的页面，从而大幅度减少网站的维护成本。 3）多样性：不同时间、不同用户访问同一网站可能会显示不同的内容。
+注意：实际应用中使用动静结合网站中频繁更新的使用动态网页，不需要频繁更新的使用静态网页。
+下面介绍一下几个动态网页技术 1 )CGI（通用网关接口），因为编写困难逐渐被新的动态网页技术替代。 2）ASP和ASP.NET（动态服务器页面），ASP本质上采用的是一种脚本语言，除了使用大量的组件没有其他方法提高开发效率，并且只能运行在Windows系统上，平台兼容性差。后来微软推出了ASP.NET，成为主流动态网站技术之一。 3）PHP（超文本预处理语言），语法独特、支持多平台。成为最火热的脚本语言一。 4）Servlet 改正了CGI程序的缺点，但是在界面设计方面十分的困难，需要在java中插入大量的HTML代码，每次改动都需要重新编译，于是产生了JSP技术。 5）JSP 一种实现java和HTML代码混合的技术。
+注意：JSP后面会讲到实际上就是java文件，所以能够完成Servlet能完成的所有工作，但是他并不是来替代Servlet。二者是一种互补的关系，JSP设计页面简单，Servlet涉及页面困难，但是便于书写java代码，所以二者结合实现业务逻辑分离。
+1.1.2 Web应用架构 C/S结构：即Client/Server(客户机/服务器)结构，是大家熟知的软件系统体系结构，通过将任务合理分配到Client端和Server端，降低了系统的通讯开销，可以充分利用两端硬件环境的优势。开发C/S架构可以采用多种语言，包括Java,C&#43;&#43;,C#，以及Dephi等
+B/S结构：即Browser/Server(浏览器/服务器)结构，是随着Internet技术的兴起，对C/S结构的一种变化或者改进的结构。在这种结构下，用户界面完全通过WWW浏览器实现。前端 在大部分企业就是做浏览器端展现相关的工作，会用到html,css,js,ps,ai等等，而“后端”的主要工作室程序开发、数据处理了，比如：php，asp，mysql，mssql。 区别： &#43; 硬件环境不同，C/S通常是建立在专用的网络上，小范围的网络环境。而B/S是建立在广域网上的，适应范围强，通常有操作系统和浏览器就行； &#43; C/结构比B/S结构更安全，因为用户群相对固定，对信息的保护更强； &#43; B/S结构维护升级比较简单，而C/S结构维护升级相对困难；
+1.1.3Web应用的运行过程 1）输入网址 2）发送请求 3）SQL请求 4）返回请求 5）返回响应结果 6）显示页面内容
+1.1.4 Java Web应用优势 1）平台无关性：因为java具有平台无关性 2）效率高：当Servlet和JSP接收到请求后，在相同的进程中将创建另一个线程来处理该请求 3）可访问API：Servlet和JSP是java的一整套解决方案，可以使用Java API 并且可以利用java语言提供的强大功能
+1.2Java Web应用开发 需要准备的环境及工具
+JDK 我们一般采用的JDK8，因为稳定！
+Eclipse 我是用的是2018-9 ，使用的时候记得调整为黑色主题（好看），假如安装Eclipse的时候忘记勾选JavaEE 记得在market中下载相关插件。
+Tomcat 我们使用的是8.0 如果下载不到8.0 只有8.5或者以上，可以把Tomcat中的配置文件改成8.0 然后就能正常使用 Tomcat8 只支持JDK7 &#43;版本
+Eclipse中Tomcat配置 见书
+QQ：872742416 （个人学习使用）材料整理自《Java Web技术及应用》及网络，侵删。"/>
+<meta name="twitter:site" content="@fiveyang"/>
+
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+
+<div id="container">
+	<header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="https://fiveyang.github.io" id="logo">
+          
+          <i class="logo" style="background-image: url('https://fiveyang.github.io/css/images/avator2.png')"></i>
+          
+          <span class="site-title">Icarus</span>
+      </a>
+      <nav id="main-nav">
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/">主页</a>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a>
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a>
+          
+          
+      </nav>
+        <nav id="sub-nav">
+          <div class="profile" id="profile-nav">
+            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="https://fiveyang.github.io/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+          </div>
+        </nav>
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+              <input type="search" name="q" class="search-form-input" placeholder="">
+              <button type="submit" class="search-form-submit">
+              </button>
+              <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+         </form>
+        </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tbody>
+          <tr>
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/">主页</a></td>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a></td>
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a></td>
+          
+          
+          <td>
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+          <input type="search" name="q" class="search-form-input" placeholder="Search">
+          <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</header>
+
+   	
+   	<div class="outer">
+   	
+    	<aside id="profile">
+  <div class="inner profile-inner">
+    <div class="base-info profile-block">
+      
+      <img id="avatar" src="https://www.gravatar.com/avatar/3a766dd0c7a341ce48a934871b9e38b0?s=100&d=identicon"/>
+      
+      <h2 id="name">fiveyang</h2>
+      <h3 id="title">程序员</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>郑州大学</span>
+      
+          <a id="follow" href="https://github.com/fiveyang">
+              
+          </a>
+      
+    </div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        14
+        <span></span>
+      </div>
+      <div class="article-info-block">
+        
+          0
+        
+        <span>
+            
+        </span>
+      </div>
+    </div>
+    <div class="profile-block social-links">
+      <table>
+        <tr>
+          
+<td><a href="//github.com/fiveyang" target="_blank" title="GitHub"><i class="fa fa-github"></i></a></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<td><a href="//twitter.com/fiveyang" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></td>
+
+
+          <td><a href="https://fiveyang.github.io/index.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</aside>
+
+    
+
+    <section id="main">
+    
+    <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+            <img src="https://fiveyang.github.io/css/images/timg-2.jpg" class="article-banner">
+        
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/">
+    <h1 class="article-title" itemprop="name">
+        Java Web 入门
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:08:30 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            70
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+<h2 id="1-1-web应用概述">1.1 Web应用概述</h2>
+
+<h3 id="1-1-1web应用简介">1.1.1Web应用简介</h3>
+
+<p>背景：信息共享、电子商务交易、在线办公、在线业务办理促进了Web应用的发展。</p>
+
+<p>发展：最初阶段Web应用只是一个静态的网站，所有的网页都是由固定的静态HTML页
+面组成，当页面内容需要更改的时候就需要通过修改整个HTML页面实现。而为了实现与用户的交互与内容的实时更新，<strong>动态网站</strong>随之而生。</p>
+
+<p><strong>动态网站</strong>必须具备的几个<strong>特征</strong>：
+1）交互性：根据用户的操作以及请求网页会动态改变并响应。
+2）自动更新：无需手动更新页面，系统会自动生成新的页面，从而大幅度减少网站的维护成本。
+3）多样性：不同时间、不同用户访问同一网站可能会显示不同的内容。</p>
+
+<p><strong>注意：实际应用中使用动静结合网站中频繁更新的使用动态网页，不需要频繁更新的使用静态网页。</strong></p>
+
+<p>下面介绍一下几个动态网页技术
+1 )CGI（通用网关接口），因为编写困难逐渐被新的动态网页技术替代。
+2）ASP和ASP.NET（动态服务器页面），ASP本质上采用的是一种脚本语言，除了使用大量的组件没有其他方法提高开发效率，并且只能运行在Windows系统上，平台兼容性差。后来微软推出了ASP.NET，成为主流动态网站技术之一。
+3）PHP（超文本预处理语言），语法独特、支持多平台。成为最火热的脚本语言一。
+4）Servlet  改正了CGI程序的缺点，但是在界面设计方面十分的困难，需要在java中插入大量的HTML代码，每次改动都需要重新编译，于是产生了JSP技术。
+5）JSP 一种实现java和HTML代码混合的技术。</p>
+
+<p><strong>注意：</strong>JSP后面会讲到实际上就是java文件，所以能够完成Servlet能完成的所有工作，但是他并不是来替代Servlet。二者是一种互补的关系，JSP设计页面简单，Servlet涉及页面困难，但是便于书写java代码，所以<strong>二者结合实现业务逻辑分离</strong>。</p>
+
+<h3 id="1-1-2-web应用架构">1.1.2 Web应用架构</h3>
+
+<p><strong>C/S结构</strong>：即Client/Server(客户机/服务器)结构，是大家熟知的软件系统体系结构，通过将任务合理分配到Client端和Server端，降低了系统的通讯开销，可以充分利用两端硬件环境的优势。开发C/S架构可以采用多种语言，包括Java,C++,C#，以及Dephi等</p>
+
+<p><strong>B/S结构</strong>：即Browser/Server(浏览器/服务器)结构，是随着Internet技术的兴起，对C/S结构的一种变化或者改进的结构。在这种结构下，用户界面完全通过WWW浏览器实现。前端 在大部分企业就是做浏览器端展现相关的工作，会用到html,css,js,ps,ai等等，而“后端”的主要工作室程序开发、数据处理了，比如：php，asp，mysql，mssql。
+<img src="https://img-blog.csdnimg.cn/20190820193136435.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" />区别：
++ 硬件环境不同，C/S通常是建立在专用的网络上，小范围的网络环境。而B/S是建立在广域网上的，适应范围强，通常有操作系统和浏览器就行；
++ C/结构比B/S结构更安全，因为用户群相对固定，对信息的保护更强；
++ B/S结构维护升级比较简单，而C/S结构维护升级相对困难；</p>
+
+<h3 id="1-1-3web应用的运行过程">1.1.3Web应用的运行过程</h3>
+
+<p>1）输入网址
+2）发送请求
+3）SQL请求
+4）返回请求
+5）返回响应结果
+6）显示页面内容</p>
+
+<h3 id="1-1-4-java-web应用优势">1.1.4 Java Web应用优势</h3>
+
+<p>1）平台无关性：因为java具有平台无关性
+2）效率高：当Servlet和JSP接收到请求后，在相同的进程中将创建另一个线程来处理该请求
+3）可访问API：Servlet和JSP是java的一整套解决方案，可以使用Java API 并且可以利用java语言提供的强大功能</p>
+
+<h2 id="1-2java-web应用开发">1.2Java Web应用开发</h2>
+
+<p>需要准备的环境及工具</p>
+
+<h3 id="jdk">JDK</h3>
+
+<p>我们一般采用的JDK8，因为稳定！</p>
+
+<h3 id="eclipse">Eclipse</h3>
+
+<p>我是用的是2018-9  ，使用的时候记得调整为黑色主题（好看），假如安装Eclipse的时候忘记勾选JavaEE  记得在market中下载相关插件。</p>
+
+<h3 id="tomcat">Tomcat</h3>
+
+<p>我们使用的是8.0  如果下载不到8.0  只有8.5或者以上，可以把Tomcat中的配置文件改成8.0  然后就能正常使用   Tomcat8  只支持JDK7 +版本</p>
+
+<h3 id="eclipse中tomcat配置">Eclipse中Tomcat配置</h3>
+
+<p>见书</p>
+
+<p>QQ：872742416
+（个人学习使用）材料整理自《Java Web技术及应用》及网络，侵删。</p>
+
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/" data-id="69bb2dfebf01b15758a670e828d8a30e" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+
+    
+<nav id="article-nav">
+    
+    <a href="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          
+      </strong>
+      <div class="article-nav-title">并发进程</div>
+    </a>
+    
+
+    
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          
+      </strong>
+      <div class="article-nav-title">Servlet基础</div>
+    </a>
+    
+</nav>
+
+
+</article>
+
+
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fiveyang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+    </section>
+
+   	
+    	<aside id="sidebar">
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">
+        
+    </h3>
+    <div class="widget">
+        <ul id="recent-post">
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="Java Web 入门" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="title">会话跟踪</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:29:04 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="Java Web 入门" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="title">会话跟踪技术-Session</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:23:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="Java Web 入门" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="title">会话跟踪技术-cookie</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:21:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-4.jpg)" alt="Java Web 入门" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="title">Servlet核心接口</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:17:32 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-3.jpg)" alt="Java Web 入门" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="title">Servlet基础</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:13:20 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+    
+	</div>
+</div>
+
+<footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019
+      Powered by <a href="//gohugo.io">Hugo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>.
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://fiveyang.github.io/fancybox/jquery.fancybox.pack.js"></script>
+<script src="https://fiveyang.github.io/js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>多态复习笔记-3 &middot; Icarus</title>
+    <title>并发进程 &middot; Icarus</title>
     <meta name="generator" content="Hugo 0.57.2" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -10,7 +10,7 @@
       <meta name="description" content="静态博客">
     
     
-    <link rel="canonical" href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/"/>
+    <link rel="canonical" href="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/"/>
     <link rel="icon" href="https://fiveyang.github.io/favicon.ico">
     <link rel="apple-touch-icon" href="https://fiveyang.github.io/apple-touch-icon.png"/>
     <link rel="stylesheet" href="https://fiveyang.github.io/css/style.css">
@@ -20,32 +20,83 @@
     
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
-    <meta property="og:title" content="多态复习笔记-3" />
-<meta property="og:description" content="多态复习笔记-3 缺陷：域与静态方法 域的缺陷:
-package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Super{ public int field=0; public int getField() {return field;} } class Sub extends Super{ public int field=1; public int getField() {return field;} public int getSuperField() {return super.field;} } public class FieldAccess { public static void main(String[] args) { Super sup=new Sub(); System.out.println(&quot;sup.field=&quot;&#43;sup.field&#43; &quot;,sup.getField()=&quot;&#43;sup.getField()); Sub sub=new Sub(); System.out.println(&quot;sub.field=&quot;&#43;sub.field&#43; &quot;,sub.getField()=&quot;&#43;sub.getField()&#43; &quot;,sub.getSuperField()=&quot;&#43;sub.getSuperField()); } } //output: //sup.field=0,sup.getField()=1 //sub.field=1,sub.getField()=1,sub.getSuperField()=0  当Sub对象转化为Super引用时候，任何域访问操作都将由编译器解析，因此不是多态的。当我们将域设置为public的时候，我们调用的field是依据他的引用类型，比如sup.field他是Sub对象赋给Super引用，那么调用她输出的就是0，这和我们的方法覆盖不一样。 &#43; 通常我们将所有的域设置为private类型，然后我们调用方法访问他们" />
+    <meta property="og:title" content="并发进程" />
+<meta property="og:description" content="并发进程 1 程序执行的顺序性 1.1 程序执行顺序性  程序执行的顺序性包括两个定义：程序内部的顺序性和程序外部的顺序性
+ 内部：程序内部的顺序性是指单线程进程执行时呈现程序内部的顺序性
+外部：程序外部的顺序性是指多个进程之间的顺序执行关系，这人写进程在时间上按照次序严格有效的执行，完成一个作业级的任务。
+2 程序执行的并发性 2.1 程序并发性的含义 进程的并发性是指一组进程在执行时间上是重叠的，即一个进程执行的第一条指令是在另一条指令结束前开始的。 &gt; 并发的实质是一个处理器在几个进程之间的多路复用
+2.2 并发程序设计  把一个程序编制成若干个可同时执行的程序模块的方法
+ 如果这些模块属于同一个进程（说明这个程序是一个单线程，这个单线程通过多个线程分别实现这些模块），在进程内部执行，则称为并发多线程程序设计
+如果模块属于不同的进程（说明这个程序是通过多个进程实现不同的功能模块），则称为并发多进程程序设计。
+2.3 并发进程分类  并发进程之间的关系分为两类：无关的和交互的
+ 无关的并发进程：一组并发进程分别在不同的变量集合上操作
+交互的并发进程：一组并发进程共享某些变量
+ 并发进程的无关性是进程的执行与实践无关的一个充分条件，又称为Bernstein条件。相关定义可以参考下方链接。
+https://baike.baidu.com/item/Bernstein%E6%9D%A1%E4%BB%B6/5452747?fr=aladdin
+大概意思是用这个Bernstein条件用来确定那些进程是可以并发的。
+ 3 与时间有关的错误  对于一组交互并发的进程，若执行的相对速度无法相互控制，则会出现与时间有关的错误，与时间有关的错误有两种表现形式：结果不唯一和永远等待
+ 3.1 结果不唯一 购机票问题，可能会出现同一张票卖给两个乘客的情况，正确的做法是执行购买操作时只能一先一后不能同时执行。
+3.2 永远等待 借书还书问题，合作进程之间等待、唤醒之类的同步信号发送次序颠倒时
+4 进程的交互 4.1 进程之间的竞争关系  竞争关系时由于并发进程共用一套计算机系统资源引起的
+ 死锁：一组已经获得部分资源的进程等待获得其他进程所占用的资源，最终该组进程陷入死锁僵局 &gt; 解决方式：进程互斥&ndash;若干进程要使用同一共享资源时，最多只允许一个进程使用
+饥饿：一个进程由于其他进程总是优于它而被无限期拖延 &gt;解决方式：FCFS（先来先服务）策略" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/" />
-<meta property="article:published_time" content="2019-09-01T10:31:21+08:00" />
-<meta property="article:modified_time" content="2019-09-01T10:31:21+08:00" />
+<meta property="og:url" content="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/" />
+<meta property="article:published_time" content="2019-09-02T22:02:33+08:00" />
+<meta property="article:modified_time" content="2019-09-02T22:02:33+08:00" />
 
     
-    <meta itemprop="name" content="多态复习笔记-3">
-<meta itemprop="description" content="多态复习笔记-3 缺陷：域与静态方法 域的缺陷:
-package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Super{ public int field=0; public int getField() {return field;} } class Sub extends Super{ public int field=1; public int getField() {return field;} public int getSuperField() {return super.field;} } public class FieldAccess { public static void main(String[] args) { Super sup=new Sub(); System.out.println(&quot;sup.field=&quot;&#43;sup.field&#43; &quot;,sup.getField()=&quot;&#43;sup.getField()); Sub sub=new Sub(); System.out.println(&quot;sub.field=&quot;&#43;sub.field&#43; &quot;,sub.getField()=&quot;&#43;sub.getField()&#43; &quot;,sub.getSuperField()=&quot;&#43;sub.getSuperField()); } } //output: //sup.field=0,sup.getField()=1 //sub.field=1,sub.getField()=1,sub.getSuperField()=0  当Sub对象转化为Super引用时候，任何域访问操作都将由编译器解析，因此不是多态的。当我们将域设置为public的时候，我们调用的field是依据他的引用类型，比如sup.field他是Sub对象赋给Super引用，那么调用她输出的就是0，这和我们的方法覆盖不一样。 &#43; 通常我们将所有的域设置为private类型，然后我们调用方法访问他们">
+    <meta itemprop="name" content="并发进程">
+<meta itemprop="description" content="并发进程 1 程序执行的顺序性 1.1 程序执行顺序性  程序执行的顺序性包括两个定义：程序内部的顺序性和程序外部的顺序性
+ 内部：程序内部的顺序性是指单线程进程执行时呈现程序内部的顺序性
+外部：程序外部的顺序性是指多个进程之间的顺序执行关系，这人写进程在时间上按照次序严格有效的执行，完成一个作业级的任务。
+2 程序执行的并发性 2.1 程序并发性的含义 进程的并发性是指一组进程在执行时间上是重叠的，即一个进程执行的第一条指令是在另一条指令结束前开始的。 &gt; 并发的实质是一个处理器在几个进程之间的多路复用
+2.2 并发程序设计  把一个程序编制成若干个可同时执行的程序模块的方法
+ 如果这些模块属于同一个进程（说明这个程序是一个单线程，这个单线程通过多个线程分别实现这些模块），在进程内部执行，则称为并发多线程程序设计
+如果模块属于不同的进程（说明这个程序是通过多个进程实现不同的功能模块），则称为并发多进程程序设计。
+2.3 并发进程分类  并发进程之间的关系分为两类：无关的和交互的
+ 无关的并发进程：一组并发进程分别在不同的变量集合上操作
+交互的并发进程：一组并发进程共享某些变量
+ 并发进程的无关性是进程的执行与实践无关的一个充分条件，又称为Bernstein条件。相关定义可以参考下方链接。
+https://baike.baidu.com/item/Bernstein%E6%9D%A1%E4%BB%B6/5452747?fr=aladdin
+大概意思是用这个Bernstein条件用来确定那些进程是可以并发的。
+ 3 与时间有关的错误  对于一组交互并发的进程，若执行的相对速度无法相互控制，则会出现与时间有关的错误，与时间有关的错误有两种表现形式：结果不唯一和永远等待
+ 3.1 结果不唯一 购机票问题，可能会出现同一张票卖给两个乘客的情况，正确的做法是执行购买操作时只能一先一后不能同时执行。
+3.2 永远等待 借书还书问题，合作进程之间等待、唤醒之类的同步信号发送次序颠倒时
+4 进程的交互 4.1 进程之间的竞争关系  竞争关系时由于并发进程共用一套计算机系统资源引起的
+ 死锁：一组已经获得部分资源的进程等待获得其他进程所占用的资源，最终该组进程陷入死锁僵局 &gt; 解决方式：进程互斥&ndash;若干进程要使用同一共享资源时，最多只允许一个进程使用
+饥饿：一个进程由于其他进程总是优于它而被无限期拖延 &gt;解决方式：FCFS（先来先服务）策略">
 
 
-<meta itemprop="datePublished" content="2019-09-01T10:31:21&#43;08:00" />
-<meta itemprop="dateModified" content="2019-09-01T10:31:21&#43;08:00" />
-<meta itemprop="wordCount" content="143">
+<meta itemprop="datePublished" content="2019-09-02T22:02:33&#43;08:00" />
+<meta itemprop="dateModified" content="2019-09-02T22:02:33&#43;08:00" />
+<meta itemprop="wordCount" content="47">
 
 
 
 <meta itemprop="keywords" content="" />
 
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="多态复习笔记-3"/>
-<meta name="twitter:description" content="多态复习笔记-3 缺陷：域与静态方法 域的缺陷:
-package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Super{ public int field=0; public int getField() {return field;} } class Sub extends Super{ public int field=1; public int getField() {return field;} public int getSuperField() {return super.field;} } public class FieldAccess { public static void main(String[] args) { Super sup=new Sub(); System.out.println(&quot;sup.field=&quot;&#43;sup.field&#43; &quot;,sup.getField()=&quot;&#43;sup.getField()); Sub sub=new Sub(); System.out.println(&quot;sub.field=&quot;&#43;sub.field&#43; &quot;,sub.getField()=&quot;&#43;sub.getField()&#43; &quot;,sub.getSuperField()=&quot;&#43;sub.getSuperField()); } } //output: //sup.field=0,sup.getField()=1 //sub.field=1,sub.getField()=1,sub.getSuperField()=0  当Sub对象转化为Super引用时候，任何域访问操作都将由编译器解析，因此不是多态的。当我们将域设置为public的时候，我们调用的field是依据他的引用类型，比如sup.field他是Sub对象赋给Super引用，那么调用她输出的就是0，这和我们的方法覆盖不一样。 &#43; 通常我们将所有的域设置为private类型，然后我们调用方法访问他们"/>
+<meta name="twitter:title" content="并发进程"/>
+<meta name="twitter:description" content="并发进程 1 程序执行的顺序性 1.1 程序执行顺序性  程序执行的顺序性包括两个定义：程序内部的顺序性和程序外部的顺序性
+ 内部：程序内部的顺序性是指单线程进程执行时呈现程序内部的顺序性
+外部：程序外部的顺序性是指多个进程之间的顺序执行关系，这人写进程在时间上按照次序严格有效的执行，完成一个作业级的任务。
+2 程序执行的并发性 2.1 程序并发性的含义 进程的并发性是指一组进程在执行时间上是重叠的，即一个进程执行的第一条指令是在另一条指令结束前开始的。 &gt; 并发的实质是一个处理器在几个进程之间的多路复用
+2.2 并发程序设计  把一个程序编制成若干个可同时执行的程序模块的方法
+ 如果这些模块属于同一个进程（说明这个程序是一个单线程，这个单线程通过多个线程分别实现这些模块），在进程内部执行，则称为并发多线程程序设计
+如果模块属于不同的进程（说明这个程序是通过多个进程实现不同的功能模块），则称为并发多进程程序设计。
+2.3 并发进程分类  并发进程之间的关系分为两类：无关的和交互的
+ 无关的并发进程：一组并发进程分别在不同的变量集合上操作
+交互的并发进程：一组并发进程共享某些变量
+ 并发进程的无关性是进程的执行与实践无关的一个充分条件，又称为Bernstein条件。相关定义可以参考下方链接。
+https://baike.baidu.com/item/Bernstein%E6%9D%A1%E4%BB%B6/5452747?fr=aladdin
+大概意思是用这个Bernstein条件用来确定那些进程是可以并发的。
+ 3 与时间有关的错误  对于一组交互并发的进程，若执行的相对速度无法相互控制，则会出现与时间有关的错误，与时间有关的错误有两种表现形式：结果不唯一和永远等待
+ 3.1 结果不唯一 购机票问题，可能会出现同一张票卖给两个乘客的情况，正确的做法是执行购买操作时只能一先一后不能同时执行。
+3.2 永远等待 借书还书问题，合作进程之间等待、唤醒之类的同步信号发送次序颠倒时
+4 进程的交互 4.1 进程之间的竞争关系  竞争关系时由于并发进程共用一套计算机系统资源引起的
+ 死锁：一组已经获得部分资源的进程等待获得其他进程所占用的资源，最终该组进程陷入死锁僵局 &gt; 解决方式：进程互斥&ndash;若干进程要使用同一共享资源时，最多只允许一个进程使用
+饥饿：一个进程由于其他进程总是优于它而被无限期拖延 &gt;解决方式：FCFS（先来先服务）策略"/>
 <meta name="twitter:site" content="@fiveyang"/>
 
     
@@ -253,13 +304,13 @@ package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Supe
     <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
     <div class="article-inner">
         
-            <img src="https://fiveyang.github.io/css/images/pic_4.png" class="article-banner">
+            <img src="https://fiveyang.github.io/css/images/timg-1.jpg" class="article-banner">
         
 
         <header class="article-header">
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/">
+    <a href="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/">
     <h1 class="article-title" itemprop="name">
-        多态复习笔记-3
+        并发进程
     </h1>
     </a>
     <div class="article-meta">
@@ -267,9 +318,9 @@ package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Supe
         
         <div class="article-date">
             <i class="fa fa-calendar"></i>
-            <time datetime="2019-09-01 10:31:21 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
+            <time datetime="2019-09-02 22:02:33 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
             &middot;
-            143
+            47
             
             &middot;
             1
@@ -285,96 +336,91 @@ package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Supe
         <div class="article-entry" itemprop="articleBody">
             
 
-<h1 id="多态复习笔记-3">多态复习笔记-3</h1>
+<h1 id="并发进程">并发进程</h1>
 
-<h2 id="缺陷-域与静态方法">缺陷：域与静态方法</h2>
+<h2 id="1-程序执行的顺序性">1 程序执行的顺序性</h2>
 
-<p>域的缺陷:</p>
+<h3 id="1-1-程序执行顺序性">1.1 程序执行顺序性</h3>
 
-<pre><code class="language-java">package java_test1;
-/*
- * 2019/7/23
- * 缺陷：域与静态方法
- * */
-class Super{
-	public int field=0;
-	public int getField() {return field;}
-}
+<blockquote>
+<p>程序执行的顺序性包括两个定义：程序内部的顺序性和程序外部的顺序性</p>
+</blockquote>
 
-class Sub extends Super{
-	public int field=1;
-	public int getField() {return field;}
-	public int getSuperField() {return super.field;}
-}
+<p>内部：程序内部的顺序性是指单线程进程执行时呈现程序内部的顺序性</p>
 
-public class FieldAccess {
-	public static void main(String[] args) {
-		Super sup=new Sub();
-		System.out.println(&quot;sup.field=&quot;+sup.field+
-				&quot;,sup.getField()=&quot;+sup.getField());
-		Sub sub=new Sub();
-		System.out.println(&quot;sub.field=&quot;+sub.field+
-				&quot;,sub.getField()=&quot;+sub.getField()+
-				&quot;,sub.getSuperField()=&quot;+sub.getSuperField());
-	}
-}
-//output:
-//sup.field=0,sup.getField()=1
-//sub.field=1,sub.getField()=1,sub.getSuperField()=0
-</code></pre>
+<p>外部：程序外部的顺序性是指多个进程之间的顺序执行关系，这人写进程在时间上按照次序严格有效的执行，完成一个作业级的任务。</p>
 
-<p>当Sub对象转化为Super引用时候，任何域访问操作都将由编译器解析，因此不是多态的。当我们将域设置为public的时候，我们调用的field是依据他的引用类型，比如sup.field他是Sub对象赋给Super引用，那么调用她输出的就是0，这和我们的方法覆盖不一样。
-+ 通常我们将所有的域设置为private类型，然后我们调用方法访问他们</p>
+<h2 id="2-程序执行的并发性">2 程序执行的并发性</h2>
 
-<p>静态方法的缺陷:</p>
+<h3 id="2-1-程序并发性的含义">2.1 程序并发性的含义</h3>
 
-<pre><code class="language-java">package java_test1;
-/*
- * 2019/7/23
- * 缺陷：域与静态方法
- * */
-class StaticSuper{
-	public static String staticGet(){
-		return &quot;Base StaticGet()&quot;;
-	}
-	public String dynamicGet() {
-		return &quot;Base dynamicGet()&quot;;
-	}
-}
+<p>进程的并发性是指一组进程在执行时间上是重叠的，即一个进程执行的第一条指令是在另一条指令结束前开始的。
+&gt; 并发的实质是一个处理器在几个进程之间的多路复用</p>
 
-class StaticSub extends StaticSuper{
-	public static String staticGet(){
-		return &quot;Derived StaticGet()&quot;;
-	}
-	public String dynamicGet() {
-		return &quot;Derived dynamicGet()&quot;;
-	}
-}
+<h3 id="2-2-并发程序设计">2.2 并发程序设计</h3>
 
-public class StaticPolymorphism {
-	public static void main(String[] args) {
-		StaticSuper sup=new StaticSub();
-		System.out.println(sup.staticGet());
-		System.out.println(sup.dynamicGet());
-	}
-}
-//output:
-//Base StaticGet()
-//Derived dynamicGet()
-</code></pre>
+<blockquote>
+<p>把一个程序编制成若干个可同时执行的程序模块的方法</p>
+</blockquote>
 
-<ul>
-<li>如果一个方法是静态的，那么他的行为就不具有多态性</li>
-</ul>
+<p>如果这些模块属于同一个进程（说明这个程序是一个单线程，这个单线程通过多个线程分别实现这些模块），在进程内部执行，则称为<strong>并发多线程程序设计</strong></p>
+
+<p>如果模块属于不同的进程（说明这个程序是通过多个进程实现不同的功能模块），则称为<strong>并发多进程程序设计</strong>。</p>
+
+<h3 id="2-3-并发进程分类">2.3 并发进程分类</h3>
+
+<blockquote>
+<p>并发进程之间的关系分为两类：无关的和交互的</p>
+</blockquote>
+
+<p>无关的并发进程：一组并发进程分别在不同的变量集合上操作</p>
+
+<p>交互的并发进程：一组并发进程共享某些变量</p>
+
+<blockquote>
+<p>并发进程的无关性是进程的执行与实践无关的一个充分条件，又称为Bernstein条件。相关定义可以参考下方链接。</p>
+
+<p><a href="https://baike.baidu.com/item/Bernstein%E6%9D%A1%E4%BB%B6/5452747?fr=aladdin" title="Bernstein条件">https://baike.baidu.com/item/Bernstein%E6%9D%A1%E4%BB%B6/5452747?fr=aladdin</a></p>
+
+<p>大概意思是用这个Bernstein条件用来确定那些进程是可以并发的。</p>
+</blockquote>
+
+<h2 id="3-与时间有关的错误">3 与时间有关的错误</h2>
+
+<blockquote>
+<p>对于一组交互并发的进程，若执行的相对速度无法相互控制，则会出现与时间有关的错误，与时间有关的错误有两种表现形式：结果不唯一和永远等待</p>
+</blockquote>
+
+<h3 id="3-1-结果不唯一">3.1 结果不唯一</h3>
+
+<p>购机票问题，可能会出现同一张票卖给两个乘客的情况，正确的做法是执行购买操作时只能一先一后不能同时执行。</p>
+
+<h3 id="3-2-永远等待">3.2 永远等待</h3>
+
+<p>借书还书问题，合作进程之间等待、唤醒之类的同步信号发送次序颠倒时</p>
+
+<h2 id="4-进程的交互">4 进程的交互</h2>
+
+<h3 id="4-1-进程之间的竞争关系">4.1 进程之间的竞争关系</h3>
+
+<blockquote>
+<p>竞争关系时由于并发进程共用一套计算机系统资源引起的</p>
+</blockquote>
+
+<p>死锁：一组已经获得部分资源的进程等待获得其他进程所占用的资源，最终该组进程陷入死锁僵局
+&gt; 解决方式：进程互斥&ndash;若干进程要使用同一共享资源时，最多只允许一个进程使用</p>
+
+<p>饥饿：一个进程由于其他进程总是优于它而被无限期拖延
+&gt;解决方式：FCFS（先来先服务）策略</p>
 
         </div>
         <footer class="article-footer">
-    <a data-url="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/" data-id="cf6ea79dec32c308bd4c0aea7eb3255f" class="article-share-link">
+    <a data-url="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/" data-id="110ba622d79baa72ed45b0d7c5e537d1" class="article-share-link">
         <i class="fa fa-share"></i>
         
     </a>
     
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/#disqus_thread" class="article-comment-link">
+    <a href="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/#disqus_thread" class="article-comment-link">
         
     </a>
     
@@ -450,20 +496,20 @@ public class StaticPolymorphism {
     
 <nav id="article-nav">
     
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">
           
       </strong>
-      <div class="article-nav-title">多态复习笔记-2</div>
+      <div class="article-nav-title">多态复习总结</div>
     </a>
     
 
     
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">
           
       </strong>
-      <div class="article-nav-title">多态复习笔记-4</div>
+      <div class="article-nav-title">Java Web 入门</div>
     </a>
     
 </nav>
@@ -514,7 +560,7 @@ public class StaticPolymorphism {
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="多态复习笔记-3" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="并发进程" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
@@ -531,7 +577,7 @@ public class StaticPolymorphism {
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="多态复习笔记-3" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="并发进程" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
@@ -548,7 +594,7 @@ public class StaticPolymorphism {
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="多态复习笔记-3" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="并发进程" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
@@ -565,7 +611,7 @@ public class StaticPolymorphism {
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-4.jpg)" alt="多态复习笔记-3" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-4.jpg)" alt="并发进程" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
@@ -582,7 +628,7 @@ public class StaticPolymorphism {
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-3.jpg)" alt="多态复习笔记-3" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-3.jpg)" alt="并发进程" class="thumbnail-image"></span>
                     
                     </a>
                 </div>

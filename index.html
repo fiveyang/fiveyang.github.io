@@ -28,7 +28,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://fiveyang.github.io/" />
 
-<meta property="og:updated_time" content="2019-09-01T10:53:33+08:00" />
+<meta property="og:updated_time" content="2019-09-02T22:29:04+08:00" />
 
     
     <meta itemprop="name" content="Icarus">
@@ -160,7 +160,7 @@
     </div>
     <div class="article-info profile-block">
       <div class="article-info-block">
-        7
+        14
         <span></span>
       </div>
       <div class="article-info-block">
@@ -243,6 +243,940 @@
     <section id="main">
     
     
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" itemprop="url">
+            <img src="https://fiveyang.github.io/css/images/timg-7.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/">
+    <h1 class="article-title" itemprop="name">
+        会话跟踪
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:29:04 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            36
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                 4.1 无状态的HTTP协议 Internet协议可以分为有状态协议和无状态协议。HTTP协议是一种无状态协议，采用“连接-请求-应答-关闭”模式，一旦客户端请求结束吴福气就会中断连接，当下一个请求发送时，服务器把这个请求看成一个新的连接，然而对于交互式的Web应用，保持状态是非常重要的，而会话跟踪技术就是来解决这些问题的。
+4.2 会话跟踪技术  会话跟踪技术是一种在客户端和服务器间保持HTTP状态的解决方案，从开发角度考虑，就是使上一次请求传递的数据能够维持状态到下一次请求，并且辨认出是否相同的客户端发送出来的
+  Cookie技术 Session技术 URL重写技术 隐藏表单域技术  4.2.1 Cookie技术 参见会话跟踪-cookie
+4.2.2 Session技术 参见会话跟踪-session
+4.2.3 URL重写技术 参见URL重写技术
+4.2.4 隐藏表单域 在Form表单中定义隐藏域
+&lt;form action=&quot;xx&quot; method=&quot;POST&quot;&gt; &lt;input type=&quot;hidden&quot; name=&quot;userID&quot; value=&quot;10010&quot;&gt; &lt;input type=&quot;submit&quot; value=&quot;提交&quot;&gt; &lt;/form&gt;  隐藏域的获取
+String flag=request.getParameter(&quot;userID&quot;);  
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" data-id="fe4c358f337afb03793de7d09eb7977a" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" itemprop="url">
+            <img src="https://fiveyang.github.io/css/images/timg-6.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/">
+    <h1 class="article-title" itemprop="name">
+        会话跟踪技术-Session
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:23:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            35
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                 Session定义  Session技术是指使用HTTPSession对象事先会话跟踪的技术，是一种在服务端包吃会话跟踪的解决方案。
+ HttpSession对象会在用户第一次访问服务器的时候由容器创建（注意只有访问JSP、Servlet等程序的时候才会创建，访问HTML、IMAGE等静态资源的时候不会创建）。当用户调用其失效方法（invalidate（））或超过其最大不活动时间时会失效，再次期间用户和服务器之间的多次请求都属于一个会话
+Session如何实现识别用户 服务器在创建会话对象时，会为其分配一个唯一的惠华表示：SessionId，以“JSESSIONID”为属性名保存在客户端的Cookie中，在用户的随后请求中，服务器通过这个ID来识别不同的用户，从而实现对每个用户的会话跟踪。这也是为什么我们说Session依赖于Cookie技术，所当我们使用Session的时候记得搞清楚本地浏览器是否接受Cookie，并且设置Cookie的存活时间（这个我不怎么确定）
+Session对象获取 前面提到过Session对象是容器帮我们创建的，我们获取是通过
+HttpSession session=request.getSession(); //或者 HttpSession session=request.getSession(true);  存取会话域属性 //存取会话域属性 session.setAttribute(&quot;username&quot;,&quot;QST&quot;); //通过属性名“username”从会话域中获取属性值 String name=(String)session.getAttribute(&quot;username&quot;); //通过属性名将属性从会话中移除 session.reMoveAttribute(&quot;name&quot;);  获取和设置会话的最大不活动时间 获取 int time=session.getMaxInactiveInterval(); &gt; 以秒为单位，默认时间为1800秒
+可以在web.xml 中配置会话最大不活动时间
+&lt;session-config&gt; &lt;session-time&gt;10&lt;/session-time&gt; &lt;/session-config&gt;  或者在代码中设置
+session.setMaxInactiveInterval(600);  设置会话失效 session.invalidate();  
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" data-id="7dd846ca8573f61cd4c9998e689db5ed" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" itemprop="url">
+            <img src="https://fiveyang.github.io/css/images/timg-5.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/">
+    <h1 class="article-title" itemprop="name">
+        会话跟踪技术-cookie
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:21:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            35
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                 Cookie是干嘛的？ Cookie是会话跟踪技术的一种，是某些网站为了辨别用户身份而在存储在用户终端上的身份信息。
+Cookie对象的创建 Cookie cookie=new Cookie(&quot;name&quot;,&quot;value&quot;); response.addCookie(cookie);  显然，Cookie的创建是通过两个String类型参数，第一个表示Cookie名，第二格表示Cookie值，如果一个站点需要存储一个用户的用户名和他的密码，那么我们就需要分别对他的用户名和密码分别设置一个Cookie，然后通过response 的addCookie方法将他反映到客户端。
+获取并遍历客户Cookie Cookie[] cookies=request.getCookies(); if(cookies!=null&amp;&amp;cookies.length&gt;0) { for(Cookie c:cookies) { out.println(&quot;属性名：&quot;+c.getName()); out.println(&quot;属性值：&quot;+c.getValue()); } }  设置Cookie访问路径 cookie.setPath(&quot;/chapter04/jsp/&quot;); //某个应用的访问路径  cookie.aetPath(&quot;/&quot;); //所有应用的访问路径  设置Cookie的存活时间 cookie.setMaxAge(7*24*60*60);  默认状态下Cookie保存在浏览器内存中，在浏览器关闭时失效，这种Cookie被称为临时Cookie（或会话Cookie），可以通过上面的方式设置Cookie的存活时间，接受一个int参数，参数为正值表示其存活时间，0表示删除对应的Cookie对象，为负值表示Cookie对象设置为临时对象。
+Cookie相关缺点  Cookie可能被浏览器禁用，即时访问的同一个页面不同浏览器保存的Cookie是不能相互访问的 Cookie 可能被删因为每个Cookie都是硬盘上的文件，可能被用户删除 Cookie的大小和数量受限制，一般的浏览器只允许一个站点保存20个Cookie，大小不能超过4KB Cookie的安全性不高，所有的Cookie都是以出文本的形式记录在文件中，因此如果要保存用户名密码等信息，最好事先经过加密处理  
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" data-id="b2d2b5aa63aa9e871754bdb2c1936799" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" itemprop="url">
+            <img src="https://fiveyang.github.io/css/images/timg-4.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/">
+    <h1 class="article-title" itemprop="name">
+        Servlet核心接口
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:17:32 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            200
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                3.1 Servlet核心接口 主要是介绍四个接口 + ServletConfig接口：用于获取Servlet初始化参数和ServletContext对象 + ServletContext接口：代表当前Servlet运行环境，Servlet可以通过ServletContext对象来访问Servlet容器中的各种资源 + HttpServletRequest接口：用于封装Http请求信息 + HTTPServletResponse接口：用于封装Http响应消息
+3.2 ServletConfig接口 （生命周期相关）Servlet在初始化一个Servlet的时候，将为改Servlet创建一个唯一的ServletConfig对象，然后调用init（ServletConfig config），将这个对象存储到此Servlet中（参见上一篇的时序图）
+这个接口可以访问两项内容：Servlet初始化参数和ServletContext对象 Servlet初始化参数可以通过以下形式在web.xml文件中配置
+&lt;init-param&gt; &lt;param-name&gt;user&lt;/param-name&gt; &lt;param-value&gt;cy&lt;/param-value&gt; &lt;/init-param&gt;  然后通过下面的方式调用
+String user=config.getInitParameter(&quot;user&quot;);  第二种和ServletContext相关，放后面
+3.3 ServletContext 接口 （生命周期相关）Web应用启动时，会创建一个唯一的ServletContext对象供Servlet容器的所有Servlet使用，Servlet对象通过这个Context对象访问容器的各种资源，所以ServletContext代表当前Servlet运行环境
+这个接口有两种获取方式：通过ServletConfig接口的getServletContext（）方法获得ServletContext对象。二是通过GenericServlet抽象类的getServletContext（）方法获得，但是实际上我们知道GenericServlet是继承了ServletConfig接口所以才有getServletContext（）的。
+ServletContext接口的几种类型的方法： + 获取应用范围的初始化参数的方法 + 获取应用范围域属性的方法 + 获取当前Web应用信息的方法 + 获取当前容器信息和输出日志的方法 + 获取服务端文件资源的方法
+3.3.1 获取应用的初始化参数 和前面的ServletConfig很像，也是先在web.xml中配置相关参数，然后通过ServletContext 对象的方法来获取这些参数 通过以下方式配置在web.xml
+&lt;context-param&gt; &lt;param-name&gt;webSite&lt;/param-name&gt; &lt;param-value&gt;www.itshixun.com&lt;/param-value&gt; &lt;/context-param&gt; &lt;context-param&gt; &lt;param-name&gt;adminEmail&lt;/param-name&gt; &lt;param-value&gt;fengjj@itshixun.com&lt;/param-value&gt; &lt;/context-param&gt;  获取方式
+// 使用ServletContext对象获取所有初始化参数 Enumeration&lt;String&gt; paramNames = super.getServletContext() .getInitParameterNames(); // 使用ServletContext对象获取某个初始化参数 String webSite = super.
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" data-id="f9159f0bb84d388844034635e780e056" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" itemprop="url">
+            <img src="https://fiveyang.github.io/css/images/timg-3.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/">
+    <h1 class="article-title" itemprop="name">
+        Servlet基础
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:13:20 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            210
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                2.1Servlet 概述 如今，Servlet 在普遍使用的MVC模式的Web开发中仍占据重要地位，目前流行的Web框架都基于Servlet技术，如Struts、Webwork、Spring MVC 。只有掌握了Servlet才能跟那个掌握Java Web编程思想的核心和精髓。
+MVC：MVC全名是Model View Controller，是模型(model)－视图(view)－控制器(controller)的缩写，一种软件设计典范，用一种业务逻辑、数据、界面显示分离的方法组织代码，将业务逻辑聚集到一个部件里面，在改进和个性化定制界面及用户交互的同时，不需要重新编写业务逻辑。
+2.1.1 Servlet简介 Servlet对请求的处理和响应过程 1）接受HTTP请求 2）去的请求信息，包括请求头和请求参数数据 3）调用其他Java类方法，完成具体的业务功能 4）实现到其他Web组件的跳转（包括重定向和请求转发） 5）生成HTTP响应（包括HTML显影和非HTML响应）
+Servlet具有的特点 1）高效：在传统的CGI中，每个请求都需要建立一个进程，而Servlet每个请求采用轻量级的线程来处理；另外如果有N个并发的请求，CGI 需要重复装载代码N次，而Servlet只需要装载一次 2）方便： Servlet提供了大量的实用工具例程 3）交互轻松，Servlet还能够在各个程序之间共享数据，是的数据库连接池之类的功能很容易实现 4）可移植性：java特性嘛
+Servlet运行在服务端，由Servlet容器（引擎）管理
+我们使用的Servlet 3.0 需要Tomcat 7.0 以上版本的Web服务器
+2.1.2 Servlet体系结构 Servlet API 包含两个软件包 javax.servlet 包 javax.servlet.http 包 Servlet API 主要接口关系图 1.Servlet 接口 所有的Servlet都必须直接或间接的实现javax.servlet.Servlet接口。提供与Servlet生命周期相关的方法。 1 ) init(ServletConfig config) 初始化方法，Servlet实例化之后容器调用该方法执行Servlet实例化，没有正常结束的时候会产生ServletException异常 2） service(ServletRequest req,ServletResponse resp) 服务方法，接受请求和响应，req resp对象含有响应的方法 3 ) destroy() Servlet 的销毁方法 4 ) getServletConfig() 让Servlet 获得ServletConfig对象 5 ) getServletInfo() 返回一个String 包含Servlet信息，例如开发者、创建日期、描述信息等
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" data-id="c654b72acc4b19034d35113c00ca7365" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/" itemprop="url">
+            <img src="https://fiveyang.github.io/css/images/timg-2.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/">
+    <h1 class="article-title" itemprop="name">
+        Java Web 入门
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:08:30 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            70
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                1.1 Web应用概述 1.1.1Web应用简介 背景：信息共享、电子商务交易、在线办公、在线业务办理促进了Web应用的发展。
+发展：最初阶段Web应用只是一个静态的网站，所有的网页都是由固定的静态HTML页 面组成，当页面内容需要更改的时候就需要通过修改整个HTML页面实现。而为了实现与用户的交互与内容的实时更新，动态网站随之而生。
+动态网站必须具备的几个特征： 1）交互性：根据用户的操作以及请求网页会动态改变并响应。 2）自动更新：无需手动更新页面，系统会自动生成新的页面，从而大幅度减少网站的维护成本。 3）多样性：不同时间、不同用户访问同一网站可能会显示不同的内容。
+注意：实际应用中使用动静结合网站中频繁更新的使用动态网页，不需要频繁更新的使用静态网页。
+下面介绍一下几个动态网页技术 1 )CGI（通用网关接口），因为编写困难逐渐被新的动态网页技术替代。 2）ASP和ASP.NET（动态服务器页面），ASP本质上采用的是一种脚本语言，除了使用大量的组件没有其他方法提高开发效率，并且只能运行在Windows系统上，平台兼容性差。后来微软推出了ASP.NET，成为主流动态网站技术之一。 3）PHP（超文本预处理语言），语法独特、支持多平台。成为最火热的脚本语言一。 4）Servlet 改正了CGI程序的缺点，但是在界面设计方面十分的困难，需要在java中插入大量的HTML代码，每次改动都需要重新编译，于是产生了JSP技术。 5）JSP 一种实现java和HTML代码混合的技术。
+注意：JSP后面会讲到实际上就是java文件，所以能够完成Servlet能完成的所有工作，但是他并不是来替代Servlet。二者是一种互补的关系，JSP设计页面简单，Servlet涉及页面困难，但是便于书写java代码，所以二者结合实现业务逻辑分离。
+1.1.2 Web应用架构 C/S结构：即Client/Server(客户机/服务器)结构，是大家熟知的软件系统体系结构，通过将任务合理分配到Client端和Server端，降低了系统的通讯开销，可以充分利用两端硬件环境的优势。开发C/S架构可以采用多种语言，包括Java,C++,C#，以及Dephi等
+B/S结构：即Browser/Server(浏览器/服务器)结构，是随着Internet技术的兴起，对C/S结构的一种变化或者改进的结构。在这种结构下，用户界面完全通过WWW浏览器实现。前端 在大部分企业就是做浏览器端展现相关的工作，会用到html,css,js,ps,ai等等，而“后端”的主要工作室程序开发、数据处理了，比如：php，asp，mysql，mssql。 区别： + 硬件环境不同，C/S通常是建立在专用的网络上，小范围的网络环境。而B/S是建立在广域网上的，适应范围强，通常有操作系统和浏览器就行； + C/结构比B/S结构更安全，因为用户群相对固定，对信息的保护更强； + B/S结构维护升级比较简单，而C/S结构维护升级相对困难；
+1.1.3Web应用的运行过程 1）输入网址 2）发送请求 3）SQL请求 4）返回请求 5）返回响应结果 6）显示页面内容
+1.1.4 Java Web应用优势 1）平台无关性：因为java具有平台无关性 2）效率高：当Servlet和JSP接收到请求后，在相同的进程中将创建另一个线程来处理该请求 3）可访问API：Servlet和JSP是java的一整套解决方案，可以使用Java API 并且可以利用java语言提供的强大功能
+1.2Java Web应用开发 需要准备的环境及工具
+JDK 我们一般采用的JDK8，因为稳定！
+Eclipse 我是用的是2018-9 ，使用的时候记得调整为黑色主题（好看），假如安装Eclipse的时候忘记勾选JavaEE 记得在market中下载相关插件。
+Tomcat 我们使用的是8.0 如果下载不到8.0 只有8.5或者以上，可以把Tomcat中的配置文件改成8.0 然后就能正常使用 Tomcat8 只支持JDK7 +版本
+Eclipse中Tomcat配置 见书
+QQ：872742416 （个人学习使用）材料整理自《Java Web技术及应用》及网络，侵删。
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/" data-id="69bb2dfebf01b15758a670e828d8a30e" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/java-web-%E5%85%A5%E9%97%A8/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/" itemprop="url">
+            <img src="https://fiveyang.github.io/css/images/timg-1.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/">
+    <h1 class="article-title" itemprop="name">
+        并发进程
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-02 22:02:33 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+            &middot;
+            47
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                并发进程 1 程序执行的顺序性 1.1 程序执行顺序性  程序执行的顺序性包括两个定义：程序内部的顺序性和程序外部的顺序性
+ 内部：程序内部的顺序性是指单线程进程执行时呈现程序内部的顺序性
+外部：程序外部的顺序性是指多个进程之间的顺序执行关系，这人写进程在时间上按照次序严格有效的执行，完成一个作业级的任务。
+2 程序执行的并发性 2.1 程序并发性的含义 进程的并发性是指一组进程在执行时间上是重叠的，即一个进程执行的第一条指令是在另一条指令结束前开始的。 &gt; 并发的实质是一个处理器在几个进程之间的多路复用
+2.2 并发程序设计  把一个程序编制成若干个可同时执行的程序模块的方法
+ 如果这些模块属于同一个进程（说明这个程序是一个单线程，这个单线程通过多个线程分别实现这些模块），在进程内部执行，则称为并发多线程程序设计
+如果模块属于不同的进程（说明这个程序是通过多个进程实现不同的功能模块），则称为并发多进程程序设计。
+2.3 并发进程分类  并发进程之间的关系分为两类：无关的和交互的
+ 无关的并发进程：一组并发进程分别在不同的变量集合上操作
+交互的并发进程：一组并发进程共享某些变量
+ 并发进程的无关性是进程的执行与实践无关的一个充分条件，又称为Bernstein条件。相关定义可以参考下方链接。
+https://baike.baidu.com/item/Bernstein%E6%9D%A1%E4%BB%B6/5452747?fr=aladdin
+大概意思是用这个Bernstein条件用来确定那些进程是可以并发的。
+ 3 与时间有关的错误  对于一组交互并发的进程，若执行的相对速度无法相互控制，则会出现与时间有关的错误，与时间有关的错误有两种表现形式：结果不唯一和永远等待
+ 3.1 结果不唯一 购机票问题，可能会出现同一张票卖给两个乘客的情况，正确的做法是执行购买操作时只能一先一后不能同时执行。
+3.2 永远等待 借书还书问题，合作进程之间等待、唤醒之类的同步信号发送次序颠倒时
+4 进程的交互 4.1 进程之间的竞争关系  竞争关系时由于并发进程共用一套计算机系统资源引起的
+ 死锁：一组已经获得部分资源的进程等待获得其他进程所占用的资源，最终该组进程陷入死锁僵局 &gt; 解决方式：进程互斥&ndash;若干进程要使用同一共享资源时，最多只允许一个进程使用
+饥饿：一个进程由于其他进程总是优于它而被无限期拖延 &gt;解决方式：FCFS（先来先服务）策略
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/" data-id="110ba622d79baa72ed45b0d7c5e537d1" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/02/%E5%B9%B6%E5%8F%91%E8%BF%9B%E7%A8%8B/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
 
 <article class="article article-type-post" itemscope="" itemprop="blogPost">
     <div class="article-inner">
@@ -620,505 +1554,15 @@ package java_test1; /* * 2019/7/23 * 构造器内部的多态方法的行为 * *
     </div>
 </article>
 
-<article class="article article-type-post" itemscope="" itemprop="blogPost">
-    <div class="article-inner">
-        
-        <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/" itemprop="url">
-            <img src="https://fiveyang.github.io/css/images/pic_4.png" class="article-banner">
-        
-        </a>
-
-        <header class="article-header">
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/">
-    <h1 class="article-title" itemprop="name">
-        多态复习笔记-3
-    </h1>
-    </a>
-    <div class="article-meta">
-
-        
-        <div class="article-date">
-            <i class="fa fa-calendar"></i>
-            <time datetime="2019-09-01 10:31:21 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
-            &middot;
-            143
-            
-            &middot;
-            1
-            
-        </div>
-        
-        
-
-        
-    </div>
-</header>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>
-                多态复习笔记-3 缺陷：域与静态方法 域的缺陷:
-package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Super{ public int field=0; public int getField() {return field;} } class Sub extends Super{ public int field=1; public int getField() {return field;} public int getSuperField() {return super.field;} } public class FieldAccess { public static void main(String[] args) { Super sup=new Sub(); System.out.println(&quot;sup.field=&quot;+sup.field+ &quot;,sup.getField()=&quot;+sup.getField()); Sub sub=new Sub(); System.out.println(&quot;sub.field=&quot;+sub.field+ &quot;,sub.getField()=&quot;+sub.getField()+ &quot;,sub.getSuperField()=&quot;+sub.getSuperField()); } } //output: //sup.field=0,sup.getField()=1 //sub.field=1,sub.getField()=1,sub.getSuperField()=0  当Sub对象转化为Super引用时候，任何域访问操作都将由编译器解析，因此不是多态的。当我们将域设置为public的时候，我们调用的field是依据他的引用类型，比如sup.field他是Sub对象赋给Super引用，那么调用她输出的就是0，这和我们的方法覆盖不一样。 + 通常我们将所有的域设置为private类型，然后我们调用方法访问他们
-            </p>
-            <p class="article-more-link">
-                <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/">
-                    
-                </a>
-            </p>
-        </div>
-        <footer class="article-footer">
-    <a data-url="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/" data-id="cf6ea79dec32c308bd4c0aea7eb3255f" class="article-share-link">
-        <i class="fa fa-share"></i>
-        
-    </a>
-    
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/#disqus_thread" class="article-comment-link">
-        
-    </a>
-    
-
-    <script>
-    (function ($) {
-        
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-    </script>
-</footer>
-
-    </div>
-</article>
-
-<article class="article article-type-post" itemscope="" itemprop="blogPost">
-    <div class="article-inner">
-        
-        <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/" itemprop="url">
-            <img src="https://fiveyang.github.io/css/images/pic_3.png" class="article-banner">
-        
-        </a>
-
-        <header class="article-header">
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/">
-    <h1 class="article-title" itemprop="name">
-        多态复习笔记-2
-    </h1>
-    </a>
-    <div class="article-meta">
-
-        
-        <div class="article-date">
-            <i class="fa fa-calendar"></i>
-            <time datetime="2019-09-01 10:31:15 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
-            &middot;
-            54
-            
-            &middot;
-            1
-            
-        </div>
-        
-        
-
-        
-    </div>
-</header>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>
-                多态复习笔记-2 缺陷：覆盖私有方法 package java_test1; /* * 2019/7/23 * 覆盖问题 * */ public class PrivateOverride { private void f() { System.out.println(&quot;private f()&quot;); } public static void main(String[] args) { PrivateOverride po=new Derived(); po.f(); } } class Derived extends PrivateOverride{ public void f() { System.out.println(&quot;public f()&quot;); } } //output:private f()  我们期望输出的是public f() ，但是由于private 的方法被认为是final方法，而且对于导出类是屏蔽的，这种情况下Derived的f()方法就被认为是一个全新的方法。 + 结论：只有非private方法才可以被覆盖，所以我们在多态的使用时候要将基类的方法设置成非private。
-            </p>
-            <p class="article-more-link">
-                <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/">
-                    
-                </a>
-            </p>
-        </div>
-        <footer class="article-footer">
-    <a data-url="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/" data-id="594de05e5b6fb88f72c923cbc49181b8" class="article-share-link">
-        <i class="fa fa-share"></i>
-        
-    </a>
-    
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/#disqus_thread" class="article-comment-link">
-        
-    </a>
-    
-
-    <script>
-    (function ($) {
-        
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-    </script>
-</footer>
-
-    </div>
-</article>
-
-<article class="article article-type-post" itemscope="" itemprop="blogPost">
-    <div class="article-inner">
-        
-        <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-1/" itemprop="url">
-            <img src="https://fiveyang.github.io/css/images/pic_2.png" class="article-banner">
-        
-        </a>
-
-        <header class="article-header">
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-1/">
-    <h1 class="article-title" itemprop="name">
-        多态复习笔记-1
-    </h1>
-    </a>
-    <div class="article-meta">
-
-        
-        <div class="article-date">
-            <i class="fa fa-calendar"></i>
-            <time datetime="2019-09-01 10:20:00 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
-            &middot;
-            72
-            
-            &middot;
-            1
-            
-        </div>
-        
-        
-
-        
-    </div>
-</header>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>
-                多态复习笔记-1 再论向上转型 package java_test1; /* * 2019/7/22 * 多台测试向上转型 * */ //创建一个乐谱枚举类型 enum Note{ MIDDLE_C,C_SHARP,B_FLAT; } //创建一个instrument乐器类型 class instrument{ public void play(Note n) { System.out.println(&quot;instrument.play()&quot;); } } //创建一个Wind管乐器类型，继承自instrument //注意这里和instrument类型的play方法不同，她多输出了一个n class Wind extends instrument{ public void play(Note n) { System.out.println(&quot;Wind.play()&quot;+n); } } public class Music { //演奏方法 public static void tune(instrument i) { i.play(Note.MIDDLE_C); } public static void main(String[] args) { Wind w=new Wind(); tune(w); } } //output:Wind.play()MIDDLE_C   music.
-            </p>
-            <p class="article-more-link">
-                <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-1/">
-                    
-                </a>
-            </p>
-        </div>
-        <footer class="article-footer">
-    <a data-url="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-1/" data-id="9a68749e376c6f9f8dde17c0442dc0f0" class="article-share-link">
-        <i class="fa fa-share"></i>
-        
-    </a>
-    
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-1/#disqus_thread" class="article-comment-link">
-        
-    </a>
-    
-
-    <script>
-    (function ($) {
-        
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-    </script>
-</footer>
-
-    </div>
-</article>
-
-<article class="article article-type-post" itemscope="" itemprop="blogPost">
-    <div class="article-inner">
-        
-        <a href="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" itemprop="url">
-            <img src="https://fiveyang.github.io/css/images/avator4.png" class="article-banner">
-        
-        </a>
-
-        <header class="article-header">
-    <a href="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
-    <h1 class="article-title" itemprop="name">
-        我的第一篇博客
-    </h1>
-    </a>
-    <div class="article-meta">
-
-        
-        <div class="article-date">
-            <i class="fa fa-calendar"></i>
-            <time datetime="2019-08-31 15:21:52 &#43;0800 CST" itemprop="datePublished">2019-08-31</time>
-            &middot;
-            1
-            
-            &middot;
-            1
-            
-        </div>
-        
-        
-
-        
-    </div>
-</header>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>
-                我的第一篇博客（实际上写了N遍）
-            </p>
-            <p class="article-more-link">
-                <a href="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
-                    
-                </a>
-            </p>
-        </div>
-        <footer class="article-footer">
-    <a data-url="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="58bca268bba3f6f91e529ab15962c5b5" class="article-share-link">
-        <i class="fa fa-share"></i>
-        
-    </a>
-    
-    <a href="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/#disqus_thread" class="article-comment-link">
-        
-    </a>
-    
-
-    <script>
-    (function ($) {
-        
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-    </script>
-</footer>
-
-    </div>
-</article>
-
 
 <nav id="page-nav">
+
+    
+    
+        <a class="extend next" rel="next" href="https://fiveyang.github.io/page/2/">
+             »
+        </a>
+    
 
 </nav>
 
@@ -1137,85 +1581,85 @@ package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Supe
             
             <li>
                 <div class="item-thumbnail">
-                    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/" class="thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/pic_7.png)" alt="Icarus" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="Icarus" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
                 <div class="item-inner">
                     
-                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E6%80%BB%E7%BB%93/" class="title">多态复习总结</a></p>
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="title">会话跟踪</a></p>
                     <p class="item-date">
-                        <time datetime="2019-09-01 10:53:33 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
+                        <time datetime="2019-09-02 22:29:04 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
                     </p>
                 </div>
             </li>
             
             <li>
                 <div class="item-thumbnail">
-                    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-5/" class="thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/pic_6.png)" alt="Icarus" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="Icarus" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
                 <div class="item-inner">
                     
-                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-5/" class="title">多态复习笔记-5</a></p>
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="title">会话跟踪技术-Session</a></p>
                     <p class="item-date">
-                        <time datetime="2019-09-01 10:31:32 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
+                        <time datetime="2019-09-02 22:23:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
                     </p>
                 </div>
             </li>
             
             <li>
                 <div class="item-thumbnail">
-                    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/" class="thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/pic_5.png)" alt="Icarus" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="Icarus" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
                 <div class="item-inner">
                     
-                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/" class="title">多态复习笔记-4</a></p>
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="title">会话跟踪技术-cookie</a></p>
                     <p class="item-date">
-                        <time datetime="2019-09-01 10:31:27 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
+                        <time datetime="2019-09-02 22:21:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
                     </p>
                 </div>
             </li>
             
             <li>
                 <div class="item-thumbnail">
-                    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/" class="thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/pic_4.png)" alt="Icarus" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-4.jpg)" alt="Icarus" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
                 <div class="item-inner">
                     
-                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-3/" class="title">多态复习笔记-3</a></p>
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="title">Servlet核心接口</a></p>
                     <p class="item-date">
-                        <time datetime="2019-09-01 10:31:21 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
+                        <time datetime="2019-09-02 22:17:32 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
                     </p>
                 </div>
             </li>
             
             <li>
                 <div class="item-thumbnail">
-                    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/" class="thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/pic_3.png)" alt="Icarus" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-3.jpg)" alt="Icarus" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
                 <div class="item-inner">
                     
-                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-2/" class="title">多态复习笔记-2</a></p>
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="title">Servlet基础</a></p>
                     <p class="item-date">
-                        <time datetime="2019-09-01 10:31:15 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
+                        <time datetime="2019-09-02 22:13:20 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
                     </p>
                 </div>
             </li>
