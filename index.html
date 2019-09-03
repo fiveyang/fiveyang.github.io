@@ -28,7 +28,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://fiveyang.github.io/" />
 
-<meta property="og:updated_time" content="2019-09-02T22:29:04+08:00" />
+<meta property="og:updated_time" content="2019-09-03T21:01:05+08:00" />
 
     
     <meta itemprop="name" content="Icarus">
@@ -160,7 +160,7 @@
     </div>
     <div class="article-info profile-block">
       <div class="article-info-block">
-        14
+        15
         <span></span>
       </div>
       <div class="article-info-block">
@@ -243,6 +243,132 @@
     <section id="main">
     
     
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" itemprop="url">
+            <img src="https://fiveyang.github.io/css/images/" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/">
+    <h1 class="article-title" itemprop="name">
+        临界区
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-03 21:01:05 &#43;0800 CST" itemprop="datePublished">2019-09-03</time>
+            &middot;
+            108
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                临界区的调度原则 临界区与临界资源  并发进程中与共享变量有关的程序段成为临界区，共享变量代表的资源成为临界资源。
+ 临界区调度原则  一次只允许一个进程进入临界区内执行 如果已有进程在临界区，其他视图进入的进程等待 进入临界区内的进程应在有限的时间内进出，一遍使等待进程中的一个进入  实现临界区管理的几种错误算法  两个进程都认为对方不在临界区中，同时进入了临界区 两个进程都认为对方在临界区中，进而永久等待  实现临界区管理的Peterson算法  该算法为每个进程设置一个标志，当该标志为true时表示此进程要进入临界区另外设置一个指示器turn，一直是哪个进程可以进入临界区
+boolean flag[2]; int turn; void procedure0() { while(true) { flag[0]=true; turn=1; while(flag[1]&amp;&amp;turn==1) /*若flag[1]为false，P0就进入临界区；若flag[1]为tureP0循环等待，只要P1退出临界区，P0即可进入*/ { /* donothing*/ } visit();/*访问临界区*/ flag[0]=false;/*访问临界区完成，procedure0释放出临界区*/ /*remainder section*/ }  } void procedure1() { while(true) { flag[1]=true; turn=0; while(flag[0]&amp;&amp;turn==0) { /* donothing*/ ; } visit();/*访问临界区*/ flag[1]=false;/*访问临界区完成，procedure1释放出临界区*/ /*remainder section*/ } } void main() { flag[0]=flag[1]=false; /*start procedure0 and procedure1*/ ; }  在上面的例子中，我们先假设turn被赋值为1，后赋值为0，那么线程0就该进入临界区，线程1则因为flag[0]&amp;&amp;turn==0而等待，当线程0访问临界区结束后释放了临界区资源&ndash;flag[0]=false;，那么此时flag[0]&amp;&amp;turn==0不成立，线程1因此可以运行临界区
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" data-id="d02172c42e82802cab5dfcc9c23f831d" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
 
 <article class="article article-type-post" itemscope="" itemprop="blogPost">
     <div class="article-inner">
@@ -1430,130 +1556,6 @@ package java_test1; /* * 2019/7/23 * 构造器内部的多态方法的行为 * *
     </div>
 </article>
 
-<article class="article article-type-post" itemscope="" itemprop="blogPost">
-    <div class="article-inner">
-        
-        <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/" itemprop="url">
-            <img src="https://fiveyang.github.io/css/images/pic_5.png" class="article-banner">
-        
-        </a>
-
-        <header class="article-header">
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/">
-    <h1 class="article-title" itemprop="name">
-        多态复习笔记-4
-    </h1>
-    </a>
-    <div class="article-meta">
-
-        
-        <div class="article-date">
-            <i class="fa fa-calendar"></i>
-            <time datetime="2019-09-01 10:31:27 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
-            &middot;
-            96
-            
-            &middot;
-            1
-            
-        </div>
-        
-        
-
-        
-    </div>
-</header>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>
-                多态复习笔记-4 构造器的调用顺序 package java_test1; /* * 2019/7/23 * 构造器与多态-构造器的调用顺序 * */ class Meal{ Meal(){ System.out.println(&quot;Meal()&quot;); } } class Bread{ Bread(){ System.out.println(&quot;Bread()&quot;); } } class Cheese{ Cheese(){ System.out.println(&quot;Cheese()&quot;); } } class Lettuce{ Lettuce(){ System.out.println(&quot;Lettuce()&quot;); } } class Lunch extends Meal{ Lunch(){ System.out.println(&quot;Lunch()&quot;); } } class PortableLunch extends Lunch{ PortableLunch(){ System.out.println(&quot;PortableLunch()&quot;); } } public class Sandwich extends PortableLunch{ private Bread b=new Bread(); private Cheese c=new Cheese(); private Lettuce l=new Lettuce(); public Sandwich() { System.
-            </p>
-            <p class="article-more-link">
-                <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/">
-                    
-                </a>
-            </p>
-        </div>
-        <footer class="article-footer">
-    <a data-url="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/" data-id="05d6ac0a9593292a80771e61d8651614" class="article-share-link">
-        <i class="fa fa-share"></i>
-        
-    </a>
-    
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-4/#disqus_thread" class="article-comment-link">
-        
-    </a>
-    
-
-    <script>
-    (function ($) {
-        
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-    </script>
-</footer>
-
-    </div>
-</article>
-
 
 <nav id="page-nav">
 
@@ -1578,6 +1580,23 @@ package java_test1; /* * 2019/7/23 * 构造器内部的多态方法的行为 * *
     </h3>
     <div class="widget">
         <ul id="recent-post">
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/)" alt="Icarus" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" class="title">临界区</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-03 21:01:05 &#43;0800 CST" itemprop="datePublished">2019-09-03</time>
+                    </p>
+                </div>
+            </li>
             
             <li>
                 <div class="item-thumbnail">
@@ -1643,23 +1662,6 @@ package java_test1; /* * 2019/7/23 * 构造器内部的多态方法的行为 * *
                     <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="title">Servlet核心接口</a></p>
                     <p class="item-date">
                         <time datetime="2019-09-02 22:17:32 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
-                    </p>
-                </div>
-            </li>
-            
-            <li>
-                <div class="item-thumbnail">
-                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="thumbnail">
-                    
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-3.jpg)" alt="Icarus" class="thumbnail-image"></span>
-                    
-                    </a>
-                </div>
-                <div class="item-inner">
-                    
-                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E5%9F%BA%E7%A1%80/" class="title">Servlet基础</a></p>
-                    <p class="item-date">
-                        <time datetime="2019-09-02 22:13:20 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
                     </p>
                 </div>
             </li>

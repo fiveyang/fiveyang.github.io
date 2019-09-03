@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>我的第一篇博客 &middot; Icarus</title>
+    <title>临界区 &middot; Icarus</title>
     <meta name="generator" content="Hugo 0.57.2" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -10,7 +10,7 @@
       <meta name="description" content="静态博客">
     
     
-    <link rel="canonical" href="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/"/>
+    <link rel="canonical" href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/"/>
     <link rel="icon" href="https://fiveyang.github.io/favicon.ico">
     <link rel="apple-touch-icon" href="https://fiveyang.github.io/apple-touch-icon.png"/>
     <link rel="stylesheet" href="https://fiveyang.github.io/css/style.css">
@@ -20,29 +20,35 @@
     
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
-    <meta property="og:title" content="我的第一篇博客" />
-<meta property="og:description" content="我的第一篇博客（实际上写了N遍）" />
+    <meta property="og:title" content="临界区" />
+<meta property="og:description" content="临界区的调度原则 临界区与临界资源  并发进程中与共享变量有关的程序段成为临界区，共享变量代表的资源成为临界资源。
+ 临界区调度原则  一次只允许一个进程进入临界区内执行 如果已有进程在临界区，其他视图进入的进程等待 进入临界区内的进程应在有限的时间内进出，一遍使等待进程中的一个进入  实现临界区管理的几种错误算法  两个进程都认为对方不在临界区中，同时进入了临界区 两个进程都认为对方在临界区中，进而永久等待  实现临界区管理的Peterson算法  该算法为每个进程设置一个标志，当该标志为true时表示此进程要进入临界区另外设置一个指示器turn，一直是哪个进程可以进入临界区
+boolean flag[2]; int turn; void procedure0() { while(true) { flag[0]=true; turn=1; while(flag[1]&amp;&amp;turn==1) /*若flag[1]为false，P0就进入临界区；若flag[1]为tureP0循环等待，只要P1退出临界区，P0即可进入*/ { /* donothing*/ } visit();/*访问临界区*/ flag[0]=false;/*访问临界区完成，procedure0释放出临界区*/ /*remainder section*/ }  } void procedure1() { while(true) { flag[1]=true; turn=0; while(flag[0]&amp;&amp;turn==0) { /* donothing*/ ; } visit();/*访问临界区*/ flag[1]=false;/*访问临界区完成，procedure1释放出临界区*/ /*remainder section*/ } } void main() { flag[0]=flag[1]=false; /*start procedure0 and procedure1*/ ; }  在上面的例子中，我们先假设turn被赋值为1，后赋值为0，那么线程0就该进入临界区，线程1则因为flag[0]&amp;&amp;turn==0而等待，当线程0访问临界区结束后释放了临界区资源&ndash;flag[0]=false;，那么此时flag[0]&amp;&amp;turn==0不成立，线程1因此可以运行临界区" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" />
-<meta property="article:published_time" content="2019-08-31T15:21:52+08:00" />
-<meta property="article:modified_time" content="2019-08-31T15:21:52+08:00" />
+<meta property="og:url" content="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" />
+<meta property="article:published_time" content="2019-09-03T21:01:05+08:00" />
+<meta property="article:modified_time" content="2019-09-03T21:01:05+08:00" />
 
     
-    <meta itemprop="name" content="我的第一篇博客">
-<meta itemprop="description" content="我的第一篇博客（实际上写了N遍）">
+    <meta itemprop="name" content="临界区">
+<meta itemprop="description" content="临界区的调度原则 临界区与临界资源  并发进程中与共享变量有关的程序段成为临界区，共享变量代表的资源成为临界资源。
+ 临界区调度原则  一次只允许一个进程进入临界区内执行 如果已有进程在临界区，其他视图进入的进程等待 进入临界区内的进程应在有限的时间内进出，一遍使等待进程中的一个进入  实现临界区管理的几种错误算法  两个进程都认为对方不在临界区中，同时进入了临界区 两个进程都认为对方在临界区中，进而永久等待  实现临界区管理的Peterson算法  该算法为每个进程设置一个标志，当该标志为true时表示此进程要进入临界区另外设置一个指示器turn，一直是哪个进程可以进入临界区
+boolean flag[2]; int turn; void procedure0() { while(true) { flag[0]=true; turn=1; while(flag[1]&amp;&amp;turn==1) /*若flag[1]为false，P0就进入临界区；若flag[1]为tureP0循环等待，只要P1退出临界区，P0即可进入*/ { /* donothing*/ } visit();/*访问临界区*/ flag[0]=false;/*访问临界区完成，procedure0释放出临界区*/ /*remainder section*/ }  } void procedure1() { while(true) { flag[1]=true; turn=0; while(flag[0]&amp;&amp;turn==0) { /* donothing*/ ; } visit();/*访问临界区*/ flag[1]=false;/*访问临界区完成，procedure1释放出临界区*/ /*remainder section*/ } } void main() { flag[0]=flag[1]=false; /*start procedure0 and procedure1*/ ; }  在上面的例子中，我们先假设turn被赋值为1，后赋值为0，那么线程0就该进入临界区，线程1则因为flag[0]&amp;&amp;turn==0而等待，当线程0访问临界区结束后释放了临界区资源&ndash;flag[0]=false;，那么此时flag[0]&amp;&amp;turn==0不成立，线程1因此可以运行临界区">
 
 
-<meta itemprop="datePublished" content="2019-08-31T15:21:52&#43;08:00" />
-<meta itemprop="dateModified" content="2019-08-31T15:21:52&#43;08:00" />
-<meta itemprop="wordCount" content="1">
+<meta itemprop="datePublished" content="2019-09-03T21:01:05&#43;08:00" />
+<meta itemprop="dateModified" content="2019-09-03T21:01:05&#43;08:00" />
+<meta itemprop="wordCount" content="108">
 
 
 
 <meta itemprop="keywords" content="" />
 
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="我的第一篇博客"/>
-<meta name="twitter:description" content="我的第一篇博客（实际上写了N遍）"/>
+<meta name="twitter:title" content="临界区"/>
+<meta name="twitter:description" content="临界区的调度原则 临界区与临界资源  并发进程中与共享变量有关的程序段成为临界区，共享变量代表的资源成为临界资源。
+ 临界区调度原则  一次只允许一个进程进入临界区内执行 如果已有进程在临界区，其他视图进入的进程等待 进入临界区内的进程应在有限的时间内进出，一遍使等待进程中的一个进入  实现临界区管理的几种错误算法  两个进程都认为对方不在临界区中，同时进入了临界区 两个进程都认为对方在临界区中，进而永久等待  实现临界区管理的Peterson算法  该算法为每个进程设置一个标志，当该标志为true时表示此进程要进入临界区另外设置一个指示器turn，一直是哪个进程可以进入临界区
+boolean flag[2]; int turn; void procedure0() { while(true) { flag[0]=true; turn=1; while(flag[1]&amp;&amp;turn==1) /*若flag[1]为false，P0就进入临界区；若flag[1]为tureP0循环等待，只要P1退出临界区，P0即可进入*/ { /* donothing*/ } visit();/*访问临界区*/ flag[0]=false;/*访问临界区完成，procedure0释放出临界区*/ /*remainder section*/ }  } void procedure1() { while(true) { flag[1]=true; turn=0; while(flag[0]&amp;&amp;turn==0) { /* donothing*/ ; } visit();/*访问临界区*/ flag[1]=false;/*访问临界区完成，procedure1释放出临界区*/ /*remainder section*/ } } void main() { flag[0]=flag[1]=false; /*start procedure0 and procedure1*/ ; }  在上面的例子中，我们先假设turn被赋值为1，后赋值为0，那么线程0就该进入临界区，线程1则因为flag[0]&amp;&amp;turn==0而等待，当线程0访问临界区结束后释放了临界区资源&ndash;flag[0]=false;，那么此时flag[0]&amp;&amp;turn==0不成立，线程1因此可以运行临界区"/>
 <meta name="twitter:site" content="@fiveyang"/>
 
     
@@ -250,13 +256,13 @@
     <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
     <div class="article-inner">
         
-            <img src="https://fiveyang.github.io/css/images/avator4.png" class="article-banner">
+            <img src="https://fiveyang.github.io/css/images/" class="article-banner">
         
 
         <header class="article-header">
-    <a href="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
+    <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/">
     <h1 class="article-title" itemprop="name">
-        我的第一篇博客
+        临界区
     </h1>
     </a>
     <div class="article-meta">
@@ -264,9 +270,9 @@
         
         <div class="article-date">
             <i class="fa fa-calendar"></i>
-            <time datetime="2019-08-31 15:21:52 &#43;0800 CST" itemprop="datePublished">2019-08-31</time>
+            <time datetime="2019-09-03 21:01:05 &#43;0800 CST" itemprop="datePublished">2019-09-03</time>
             &middot;
-            1
+            108
             
             &middot;
             1
@@ -280,18 +286,138 @@
 </header>
 
         <div class="article-entry" itemprop="articleBody">
-            <p><img src="https://img-blog.csdnimg.cn/20190831162915607.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="声之形" /></p>
+            
 
-<p>我的第一篇博客（实际上写了N遍）</p>
+<h2 id="临界区的调度原则">临界区的调度原则</h2>
+
+<h3 id="临界区与临界资源">临界区与临界资源</h3>
+
+<blockquote>
+<p>并发进程中与共享变量有关的程序段成为<strong>临界区</strong>，共享变量代表的资源成为临界资源。</p>
+</blockquote>
+
+<h3 id="临界区调度原则">临界区调度原则</h3>
+
+<ul>
+<li>一次只允许一个进程进入临界区内执行</li>
+<li>如果已有进程在临界区，其他视图进入的进程等待</li>
+<li>进入临界区内的进程应在有限的时间内进出，一遍使等待进程中的一个进入</li>
+</ul>
+
+<h3 id="实现临界区管理的几种错误算法">实现临界区管理的几种错误算法</h3>
+
+<ul>
+<li>两个进程都认为对方不在临界区中，同时进入了临界区</li>
+<li>两个进程都认为对方在临界区中，进而永久等待</li>
+</ul>
+
+<h3 id="实现临界区管理的peterson算法">实现临界区管理的Peterson算法</h3>
+
+<blockquote>
+<p>该算法为每个进程设置一个标志，当该标志为true时表示此进程要进入临界区另外设置一个指示器turn，一直是哪个进程可以进入临界区</p>
+
+<pre><code class="language-java">boolean flag[2];
+int turn;
+void procedure0()
+{
+while(true)
+{
+flag[0]=true;
+turn=1;
+while(flag[1]&amp;&amp;turn==1) /*若flag[1]为false，P0就进入临界区；若flag[1]为tureP0循环等待，只要P1退出临界区，P0即可进入*/
+{
+/* donothing*/
+}
+visit();/*访问临界区*/
+flag[0]=false;/*访问临界区完成，procedure0释放出临界区*/
+/*remainder section*/
+}
+</code></pre>
+
+<pre><code class="language-java">}
+void procedure1()
+{
+while(true)
+{
+flag[1]=true;
+turn=0;
+while(flag[0]&amp;&amp;turn==0)
+{
+/* donothing*/ ;
+}
+visit();/*访问临界区*/
+flag[1]=false;/*访问临界区完成，procedure1释放出临界区*/
+/*remainder section*/
+}
+}
+void main()
+{
+flag[0]=flag[1]=false;
+/*start procedure0 and procedure1*/ ;
+}
+</code></pre>
+
+<p>在上面的例子中，我们先假设turn被赋值为1，后赋值为0，那么线程0就该进入临界区，线程1则因为<strong>flag[0]&amp;&amp;turn==0</strong>而等待，当线程0访问临界区结束后释放了临界区资源&ndash;flag[0]=false;，那么此时<strong>flag[0]&amp;&amp;turn==0</strong>不成立，线程1因此可以运行临界区</p>
+</blockquote>
+
+<h3 id="实现临界区管理的硬件设施">实现临界区管理的硬件设施</h3>
+
+<h3 id="关中断">关中断</h3>
+
+<ul>
+<li>进程在进入临界区之前关中断，退出临界区时开中断，关中断期间，进程调度程序失去终端机或的机会，不会切换线程，保证了临界区的互斥执行</li>
+
+<li><p>关中断缺点：限制交叉执行程序的能力，关中断方法不适合多CPU系统，关中断权利赋予给用户十分危险</p>
+
+<h3 id="测试并建立指令">测试并建立指令</h3>
+
+<pre><code class="language-java">TS(X){
+若x=true,则x=false;
+return true;
+否则 return false;
+}
+
+</code></pre></li>
+</ul>
+
+<p>用TS指令实现临界区管理（互斥）的算法如下</p>
+
+<pre><code class="language-java">bool TS(bool &amp;x){
+	if(x){
+	x=false;
+	return true;
+	}
+}
+</code></pre>
+
+<p>利用TS指令实现进程会吃的算法如下</p>
+
+<pre><code class="language-java">bool s=true;
+cobegin
+	process Pi(){
+	//i=1,2,3...n;
+	while(!TS(s))
+	s=true;
+	}
+</code></pre>
+
+<h3 id="对换指令">对换指令</h3>
+
+<pre><code class="language-java">void SWAP(bool &amp;a,bool &amp;b){
+bool temp=a;
+a=b;
+b=temp;
+}
+</code></pre>
 
         </div>
         <footer class="article-footer">
-    <a data-url="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" data-id="58bca268bba3f6f91e529ab15962c5b5" class="article-share-link">
+    <a data-url="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" data-id="d02172c42e82802cab5dfcc9c23f831d" class="article-share-link">
         <i class="fa fa-share"></i>
         
     </a>
     
-    <a href="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/#disqus_thread" class="article-comment-link">
+    <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/#disqus_thread" class="article-comment-link">
         
     </a>
     
@@ -367,14 +493,14 @@
     
 <nav id="article-nav">
     
-
-    
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-1/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">
           
       </strong>
-      <div class="article-nav-title">多态复习笔记-1</div>
+      <div class="article-nav-title">会话跟踪</div>
     </a>
+    
+
     
 </nav>
 
@@ -424,7 +550,7 @@
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/)" alt="我的第一篇博客" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/)" alt="临界区" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
@@ -441,7 +567,7 @@
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="我的第一篇博客" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="临界区" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
@@ -458,7 +584,7 @@
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="我的第一篇博客" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="临界区" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
@@ -475,7 +601,7 @@
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="我的第一篇博客" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="临界区" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
@@ -492,7 +618,7 @@
                 <div class="item-thumbnail">
                     <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="thumbnail">
                     
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-4.jpg)" alt="我的第一篇博客" class="thumbnail-image"></span>
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-4.jpg)" alt="临界区" class="thumbnail-image"></span>
                     
                     </a>
                 </div>
