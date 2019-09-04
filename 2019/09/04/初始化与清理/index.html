@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>初始化与清理 &middot; Icarus</title>
+    <meta name="generator" content="Hugo 0.57.2" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="fiveyang">
+    
+      <meta name="description" content="静态博客">
+    
+    
+    <link rel="canonical" href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/"/>
+    <link rel="icon" href="https://fiveyang.github.io/favicon.ico">
+    <link rel="apple-touch-icon" href="https://fiveyang.github.io/apple-touch-icon.png"/>
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/style.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/monokai.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/fancybox/jquery.fancybox.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+    <meta property="og:title" content="初始化与清理" />
+<meta property="og:description" content="1 this关键字 1.1 this关键字引入 先看一段代码
+package java_test2; /* * 2019/7/24 * this关键字相关测试 * */ class Banana{ void peel(int i) { //do something } } public class BananaPeel { public static void main(String[] args) { Banana a=new Banana(), b=new Banana(); a.peel(1); b.peel(2); } }  peel方法是怎么知道剥的哪一个香蕉的皮呢？实际上编译器暗自做了一些工作，它吧“所操作对象的引用”作为参数传递给了peel()方法。让上述两个方法变成了这样
+Banana.peel(a,1); Banana.peel(b,2);  所以如果我们想在方法内部获得当前对象的引用，但是我们直到程序执行才知道这个引用的标识符怎么办呢，这时候就要使用this关键字，this关键字：this关键字只能在方法内部使用，表示对&rdquo;调用方法的那个对象&rdquo;的引用。 上述代码又变成了这样
+Banana.peel(this,1); Banana.peel(this,2);  1.2 在构造器中调用构造器 说白了就是this.s=s;
+1.3 static的含义 注意下面几点就行了 &#43; 在static方法中只能调用static方法。 &#43; static方法具有全局函数的语义，有些人认为他不是“面相对象”的。
+2 初始化与清理复习笔记-垃圾回收器 2.1 对象存活判定算法  引用计数法：给对象添加一个引用计数器，每当一个地方引用他时，计数器值就加一，当引用失效时，计数器就减一；任何时候计数器为0的对象就是不可能再被使用的（缺点&ndash;很难解决对象之间的相互循环引用问题；主流的Java虚拟机并没有采用引用计数法管理内存）" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" />
+<meta property="article:published_time" content="2019-09-04T23:44:54+08:00" />
+<meta property="article:modified_time" content="2019-09-04T23:44:54+08:00" />
+
+    
+    <meta itemprop="name" content="初始化与清理">
+<meta itemprop="description" content="1 this关键字 1.1 this关键字引入 先看一段代码
+package java_test2; /* * 2019/7/24 * this关键字相关测试 * */ class Banana{ void peel(int i) { //do something } } public class BananaPeel { public static void main(String[] args) { Banana a=new Banana(), b=new Banana(); a.peel(1); b.peel(2); } }  peel方法是怎么知道剥的哪一个香蕉的皮呢？实际上编译器暗自做了一些工作，它吧“所操作对象的引用”作为参数传递给了peel()方法。让上述两个方法变成了这样
+Banana.peel(a,1); Banana.peel(b,2);  所以如果我们想在方法内部获得当前对象的引用，但是我们直到程序执行才知道这个引用的标识符怎么办呢，这时候就要使用this关键字，this关键字：this关键字只能在方法内部使用，表示对&rdquo;调用方法的那个对象&rdquo;的引用。 上述代码又变成了这样
+Banana.peel(this,1); Banana.peel(this,2);  1.2 在构造器中调用构造器 说白了就是this.s=s;
+1.3 static的含义 注意下面几点就行了 &#43; 在static方法中只能调用static方法。 &#43; static方法具有全局函数的语义，有些人认为他不是“面相对象”的。
+2 初始化与清理复习笔记-垃圾回收器 2.1 对象存活判定算法  引用计数法：给对象添加一个引用计数器，每当一个地方引用他时，计数器值就加一，当引用失效时，计数器就减一；任何时候计数器为0的对象就是不可能再被使用的（缺点&ndash;很难解决对象之间的相互循环引用问题；主流的Java虚拟机并没有采用引用计数法管理内存）">
+
+
+<meta itemprop="datePublished" content="2019-09-04T23:44:54&#43;08:00" />
+<meta itemprop="dateModified" content="2019-09-04T23:44:54&#43;08:00" />
+<meta itemprop="wordCount" content="336">
+
+
+
+<meta itemprop="keywords" content="" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="初始化与清理"/>
+<meta name="twitter:description" content="1 this关键字 1.1 this关键字引入 先看一段代码
+package java_test2; /* * 2019/7/24 * this关键字相关测试 * */ class Banana{ void peel(int i) { //do something } } public class BananaPeel { public static void main(String[] args) { Banana a=new Banana(), b=new Banana(); a.peel(1); b.peel(2); } }  peel方法是怎么知道剥的哪一个香蕉的皮呢？实际上编译器暗自做了一些工作，它吧“所操作对象的引用”作为参数传递给了peel()方法。让上述两个方法变成了这样
+Banana.peel(a,1); Banana.peel(b,2);  所以如果我们想在方法内部获得当前对象的引用，但是我们直到程序执行才知道这个引用的标识符怎么办呢，这时候就要使用this关键字，this关键字：this关键字只能在方法内部使用，表示对&rdquo;调用方法的那个对象&rdquo;的引用。 上述代码又变成了这样
+Banana.peel(this,1); Banana.peel(this,2);  1.2 在构造器中调用构造器 说白了就是this.s=s;
+1.3 static的含义 注意下面几点就行了 &#43; 在static方法中只能调用static方法。 &#43; static方法具有全局函数的语义，有些人认为他不是“面相对象”的。
+2 初始化与清理复习笔记-垃圾回收器 2.1 对象存活判定算法  引用计数法：给对象添加一个引用计数器，每当一个地方引用他时，计数器值就加一，当引用失效时，计数器就减一；任何时候计数器为0的对象就是不可能再被使用的（缺点&ndash;很难解决对象之间的相互循环引用问题；主流的Java虚拟机并没有采用引用计数法管理内存）"/>
+<meta name="twitter:site" content="@fiveyang"/>
+
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+
+<div id="container">
+	<header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="https://fiveyang.github.io" id="logo">
+          
+          <i class="logo" style="background-image: url('https://fiveyang.github.io/css/images/avator2.png')"></i>
+          
+          <span class="site-title">Icarus</span>
+      </a>
+      <nav id="main-nav">
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/">主页</a>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a>
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a>
+          
+          
+      </nav>
+        <nav id="sub-nav">
+          <div class="profile" id="profile-nav">
+            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="https://fiveyang.github.io/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+          </div>
+        </nav>
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+              <input type="search" name="q" class="search-form-input" placeholder="">
+              <button type="submit" class="search-form-submit">
+              </button>
+              <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+         </form>
+        </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tbody>
+          <tr>
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/">主页</a></td>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a></td>
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a></td>
+          
+          
+          <td>
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+          <input type="search" name="q" class="search-form-input" placeholder="Search">
+          <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</header>
+
+   	
+   	<div class="outer">
+   	
+    	<aside id="profile">
+  <div class="inner profile-inner">
+    <div class="base-info profile-block">
+      
+      <img id="avatar" src="https://www.gravatar.com/avatar/3a766dd0c7a341ce48a934871b9e38b0?s=100&d=identicon"/>
+      
+      <h2 id="name">fiveyang</h2>
+      <h3 id="title">程序员</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>郑州大学</span>
+      
+          <a id="follow" href="https://github.com/fiveyang">
+              
+          </a>
+      
+    </div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        16
+        <span></span>
+      </div>
+      <div class="article-info-block">
+        
+          0
+        
+        <span>
+            
+        </span>
+      </div>
+    </div>
+    <div class="profile-block social-links">
+      <table>
+        <tr>
+          
+<td><a href="//github.com/fiveyang" target="_blank" title="GitHub"><i class="fa fa-github"></i></a></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<td><a href="//twitter.com/fiveyang" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></td>
+
+
+          <td><a href="https://fiveyang.github.io/index.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</aside>
+
+    
+
+    <section id="main">
+    
+    <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+            <img src="https://fiveyang.github.io/css/images/timg-9.jpg" class="article-banner">
+        
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/">
+    <h1 class="article-title" itemprop="name">
+        初始化与清理
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-04 23:44:54 &#43;0800 CST" itemprop="datePublished">2019-09-04</time>
+            &middot;
+            336
+            
+            &middot;
+            2
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+<h2 id="1-this关键字">1 this关键字</h2>
+
+<h3 id="1-1-this关键字引入">1.1 this关键字引入</h3>
+
+<p>先看一段代码</p>
+
+<pre><code class="language-java">package java_test2;
+/*
+ * 2019/7/24
+ * this关键字相关测试
+ * */
+class Banana{
+	void peel(int i) {
+		//do something
+	}
+}
+public class BananaPeel {
+	public static void main(String[] args) {
+		Banana a=new Banana(),
+			   b=new Banana();
+		a.peel(1);
+		b.peel(2);
+		}
+}
+
+</code></pre>
+
+<p>peel方法是怎么知道剥的哪一个香蕉的皮呢？实际上编译器暗自做了一些工作，它吧“所操作对象的引用”作为参数传递给了peel()方法。让上述两个方法变成了这样</p>
+
+<pre><code class="language-java">Banana.peel(a,1);
+Banana.peel(b,2);
+</code></pre>
+
+<p>所以如果我们想在方法内部获得当前对象的引用，但是我们直到程序执行才知道这个引用的标识符怎么办呢，这时候就要使用this关键字，this关键字：<strong>this关键字只能在方法内部使用，表示对&rdquo;调用方法的那个对象&rdquo;的引用。</strong>
+上述代码又变成了这样</p>
+
+<pre><code class="language-java">Banana.peel(this,1);
+Banana.peel(this,2);
+</code></pre>
+
+<h3 id="1-2-在构造器中调用构造器">1.2 在构造器中调用构造器</h3>
+
+<p>说白了就是this.s=s;</p>
+
+<h3 id="1-3-static的含义">1.3 static的含义</h3>
+
+<p>注意下面几点就行了
++  <strong>在static方法中只能调用static方法。</strong>
++ static方法具有<strong>全局函数</strong>的语义，有些人认为他不是“<strong>面相对象</strong>”的。</p>
+
+<h2 id="2-初始化与清理复习笔记-垃圾回收器">2 初始化与清理复习笔记-垃圾回收器</h2>
+
+<h3 id="2-1-对象存活判定算法">2.1 对象存活判定算法</h3>
+
+<ul>
+<li><p>引用计数法：给对象添加一个引用计数器，每当一个地方引用他时，计数器值就加一，当引用失效时，计数器就减一；任何时候计数器为0的对象就是不可能再被使用的（缺点&ndash;很难解决对象之间的相互循环引用问题；主流的Java虚拟机并没有采用引用计数法管理内存）</p></li>
+
+<li><p>可达性分析算法：通过一系列成为“GC Roots”的对象作为起点，从这些节点向下搜索，搜索所走过的路径称为引用链（Reference Chain），当一个对象到GC Roots没有任何引用链相连接（用图论的说法是，从GC到这个对象不可达），证明此引用是不可用的（另一种解释是《Java 编程思想》对任何活的对象，一定能最终追溯到其存活在堆栈或静态存储区之中的引用，那么我们可通过遍历在堆栈或静态存储区的引用找到所有活的对象，然后再找到这些对象包含的所有引用，如此反复。）</p></li>
+</ul>
+
+<h3 id="2-2-再谈引用">2.2 再谈引用</h3>
+
+<p>在JDK 1.2 之后Java 将引用分为四种
++ 强引用&ndash;Object object=new Object（）
++ 软引用&ndash;内存不够的时候清理，如果还不够抛出异常&ndash;SoftReference类实现软引用
++ 弱引用&ndash;无论内存够不够，清理 只被弱引用关联的对象&ndash;WeakReference类实现弱引用
++ 虚引用&ndash;PhantomReference类实现</p>
+
+<blockquote>
+<p>可达性分析中的不可达对象也并非是非死不可，  一个对象被判定为不可达对象实际上是一种缓刑，他将会被标记并进行一次筛选，筛选的条件就是是否有必要执行finalize()方法，当这个对象没有覆盖finalize()方法或者他的finalize方法已经执行，他就被认为是没必要执行（就是没必要活下去了），相反则将他防止咋子一个F-Queue队列中，并由finalizer线程去执行他，GC会对其进行标记，如果他想活下去就必须与引用关联，否则就活不下去</p>
+</blockquote>
+
+<ul>
+<li>值得注意的是，一个对象只能通过他自己的finalize（）方法自救一次，下一次遇到GC就死了</li>
+</ul>
+
+<h3 id="回收方法区">回收方法区</h3>
+
+<ul>
+<li>废弃常量：常量池中没有被任何引用过的常量</li>
+<li>无用类：（1）该类的所有实例已经被回收，就是Java堆中不存在该类的任何实例（2）加载该类的类加载器（ClassLoader）已经被回收（3）该类对应的java.lang.Class对象没有在任何地方被引用，无任何方法通过反射访问该类的方法</li>
+</ul>
+
+<h3 id="垃圾收集算法">垃圾收集算法</h3>
+
+<ul>
+<li><strong>标记-清除算法</strong>：标记所有需要回收的对象（需要被回收的对象和 活的对象好像不是一样的），在标记完成后统一回收所有被标记的对象&ndash;不足：（1）效率问题，标记和清除两个过程的效率都不高（2）另一个是空间问题，标记清楚之后会产生大量不连续的碎片，空间碎片太多可能会导致以后在程序运行过程中需要分配大量的对象时，无法找到连续的内存而不得不七千出发另一次垃圾收集动作</li>
+<li><strong>复制算法</strong>：（1）分成两块大小相同的两块，当一块的内存使用完了，就将其上活的对象复制到另一块上面，然后把之前的内存空间一次清理掉&ndash;不足：这种算法的代价是将内存缩小为原来的一半，代价过高（2）通过新生代（Eden）+2*survivor+老年代 Eden 80%  survivor 10% 老年代作为担保（公式 Eden+S1=S2+（老年代））</li>
+<li><strong>标记-整理算法</strong>：和标记-清除算法一样，不过后续步骤是让所有存活对象都向一端移动，然后直接清理掉端边界意外的内存</li>
+<li><strong>分代收集算法</strong>：新生代（对象存活率低 复制算法）+老年代（对象存活率高 标记-清除/标记-整理）</li>
+</ul>
+
+<h2 id="基本enum特性">基本enum特性</h2>
+
+<h3 id="enum的一些基本方法">enum的一些基本方法</h3>
+
+<p>通过下面的例子演示enum提供的一些功能（摘抄自《java编程思想》）</p>
+
+<pre><code class="language-java">import static net.mindview.util.Print.*;
+
+enum Shrubbery{
+	GROUND,
+	CRAWLING,
+	HANGING
+}
+
+public class EnumClass {
+	public static void main(String[] args) {
+		for(Shrubbery s:Shrubbery.values()) {
+			print(s+&quot;ordinal:&quot;+s.ordinal());
+			printnb(s.compareTo(Shrubbery.CRAWLING)+&quot; &quot;);
+			print(s==Shrubbery.CRAWLING);
+			print(s.getDeclaringClass());
+			print(s.name());
+			print(&quot;-----------------&quot;);
+		}
+		
+		for(String s:&quot;HANGING CRAWLING GROUND&quot;.split(&quot; &quot;)) {
+			Shrubbery shrub=Enum.valueOf(Shrubbery.class, s);
+			print(shrub);
+		}		
+	}
+}
+</code></pre>
+
+<h3 id="上述代码输出结果">上述代码输出结果</h3>
+
+<pre><code class="language-java">GROUNDordinal:0
+-1 false
+class enumTest.Shrubbery
+GROUND
+-----------------
+CRAWLINGordinal:1
+0 true
+class enumTest.Shrubbery
+CRAWLING
+-----------------
+HANGINGordinal:2
+1 false
+class enumTest.Shrubbery
+HANGING
+-----------------
+HANGING
+CRAWLING
+GROUND
+
+</code></pre>
+
+<h4 id="1-values">（1）values()</h4>
+
+<p>values()方法返回enum实例的数组，所以可以通过foreach语句实现enum实例的遍历。</p>
+
+<h4 id="2-ordinal">（2）ordinal()</h4>
+
+<p>ordinal()方法返回一个int 值，这是每个实例在声明时的次序，从零开始。</p>
+
+<h4 id="3-compareto">（3）compareTo()</h4>
+
+<p>这个方法返回两个enum实例的ordinal()值的差值，返回int值。</p>
+
+<h4 id="4">（4）==</h4>
+
+<p>用==来比较enum实例，它会自动调用equals()方法和hashCode()方法，返回一个布尔值。</p>
+
+<h4 id="5-name">（5）name()</h4>
+
+<p>name()返回enum实例声明时候的名字。</p>
+
+<h4 id="6-valueof">（6）valueOf()</h4>
+
+<p>根据给定的名字返回相应的enum实例，如果不存在给定名字的实例，就会抛出异常。</p>
+
+<h3 id="将静态导入用于enum">将静态导入用于enum</h3>
+
+<p>这个使用的很少。。。</p>
+
+<h2 id="向enum中添加新方法">向enum中添加新方法</h2>
+
+<p>除了不能继承自一个ebum之外，我们基本上可以就将enum视为一个常规的类。我们可以向enum中添加方法，enum中甚至可以有main()方法。</p>
+
+<h3 id="需要注意的地方">需要注意的地方</h3>
+
+<p>（1）如果需要在enum中添加方法或属性，那么就必须在enum实例序列最后添加一个分号；</p>
+
+<p>（2）java要求你必须先定义enum实例，如果你定义的方法或属性出现在enum实例之前，那么在编译时就会得到错误信息；</p>
+
+<p>（3）在enum中可以有main方法，甚至构造器，但是其构造器不能为public，一般是使用private，其实这种权限修饰没有什么作用，我们只能在enum定义的内部使用其构造器。
+下面通过代码演示：</p>
+
+<pre><code class="language-java">public enum OzWitch {
+	WEST(&quot;白日依山尽&quot;),
+	NORTH(&quot;黄河入海流&quot;),
+	EAST(&quot;欲穷千里目&quot;),
+	SOUTH(&quot;更上一层楼&quot;);
+	
+	private String description;
+	
+	private OzWitch(String description) {
+		this.description=description;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public static void main(String[] args) {
+		for(OzWitch s:values()) {
+			System.out.println(s+&quot;:&quot;+s.getDescription());
+		}
+	}
+}
+</code></pre>
+
+<p>输出结果如下：</p>
+
+<pre><code class="language-java">WEST:白日依山尽
+NORTH:黄河入海流
+EAST:欲穷千里目
+SOUTH:更上一层楼
+</code></pre>
+
+<p>有关括号后面的值以及这里的description是什么意思？可以发现这个description是String类型，和括号里面的类型一致，而上面程序输出结果输出description的时候，直接就输出了括号里面的值这里不详细说，因为我也不特别熟悉，这里给一个超链接，可以自己查阅。<a href="https://www.cnblogs.com/linjiqin/archive/2011/02/11/1951632.html">括号赋值详解</a></p>
+
+<h3 id="覆盖enum的方法">覆盖enum的方法</h3>
+
+<p>下面是覆盖toString()方法的代码：</p>
+
+<pre><code class="language-java">public enum SpaceShip {
+	SCOUT,CARGO,TRANSPORT,CRUISER,BATTLESHIP,MOTHERSHIP;
+	
+	public String toString() {
+		String id=name();
+		String lower=id.substring(1).toLowerCase();
+		return id.charAt(0)+lower;
+	}
+	
+	public static void main(String[] args) {
+		for(SpaceShip s:values()) {
+			System.out.println(s);
+		}
+	}
+}
+</code></pre>
+
+<p>上面的代码重写了toString()方法，目的是取得SpaceShip的名字，然后以首字母大写其他字母小写的方式输出</p>
+
+<p>（1）public String substring(int beginIndex)，一般用于返回一个新的字符串，它是此字符串的一个子字符串。该子字符串始于
+指定索引处的字符，一直到此字符串末尾。</p>
+
+<p>（2）charAt(int index)方法返回字符串的第index个字符。</p>
+
+<p>（3）通过+将这个字符和id的子字符串拼接，达到目的。</p>
+
+<h2 id="初始化与清理复习笔记-问题摘要">初始化与清理复习笔记-问题摘要</h2>
+
+<ul>
+<li>为什么要进行初始化和清理？
+初始化：许多C程序的错误都源于程序员忘记初始化变量，如果在用变量之前没有进行初始化，那么就会报错。清理：当使用完一个元素后，他对你已经没有任何影响了，如果你对它不进行清理，这些无用元素所占用的内存空间就会越来越大，直至内存资源用尽。</li>
+<li>用构造器确保初始化
+在创建一个对象时，将会为其叉分配内存空间，对于类中的每一个域，会将其初始化为二进制的零。然后调用相应的构造器。值得注意的是构造器名称和类名称完全相同，所以“每个方法名称必须首字母小写”的编码风格并不适用于构造器。</li>
+
+<li><p>构造器的重载
+1）参数顺序不同可以区分两个构造器（或者方法），但是这么用会使代码难以维护。
+2）<strong>涉及基本类型的重载</strong>我们知道char和int等数据类型在内存中占用的空间大小是不一样的，当参数列表类型“大”，而实际传入的类型“小”的时候，也就是小到大，<strong>在传入时实际参数类型被提升至“大”</strong>（对于char类型有所不同，他会直接提升至int类型然后在按照int类型提升）；<strong>如果传入的实际参数较大，就只能通过类型转换执行窄化转换，如果不这么做编译器就会报错。</strong>
+3）返回值能否作为区分重载的方法呢？答案是不行的，查看下面的代码</p>
+
+<pre><code class="language-java">void f() {
+	//do something1
+	}
+	int f() {
+	//do something2
+		return 1;
+	}
+</code></pre></li>
+</ul>
+
+<p>当我们使用 int x=f();我们的确能区分这里的f()方法是下面的一个。但是当我们需要的是一个方法的副作用而不是他的返回值，比如我需要使用f()来做something1,而我只写了f(),那么编译器怎么知道不去做something2而去做something1呢？所以 ，<strong>返回值来区分重载方法是行不通的</strong>
++ 默认构造器：比如我创建了一个类A,假如我们没有为他创建一个构造器，那么编译器会为我们创建一个无参构造器，而当我们创建了一个带参数的构造器，并没有主动创建一个无参构造器，编译器并不会为我们创建一个无参构造器，那么这时候如果我们使用  new A()，编译器就会报错：<strong>“没有找到匹配的构造器”</strong>
++ 关于泛型接口泛型类泛型方法的概念<a href="https://www.cnblogs.com/JokerShi/p/8117556.html">https://www.cnblogs.com/JokerShi/p/8117556.html</a>
++ 关于Pattern的用法，官方给出的用法是：Pattern p = Pattern.compile(&ldquo;a*b&rdquo;);
+ Matcher m = p.matcher(&ldquo;aaaaab&rdquo;); boolean b = m.matches();这三句，
+ 第一句：将给定的正则表达式编译为模式，第二句：创建一个匹配器，匹配给定的输入与此模式。第三句：尝试将整个区域与模式进行匹配；
+ + 静态数据的初始化：static不能应用于局部变量，因此他只能作用于域，如果一个域是静态的基本类型域，且没有对他进行初始化，那么他就是获得基本类型的标准初值；如果他是一个对象引用就会被置为null，关于实例化构造器之后类内部的行为以后专门写。。
+ + 显示的静态数据初始化：如果一个类中用一个静态块的形式初始化了一些对象，那么当其他类调用这些对象而没有实例化该类对象的时候，并不会执行构造器的相关代码，而<strong>只会执行静态块的对象实例化</strong>（看不懂看书P97）
+ + 非静态实例初始化：先初始化0、null，再初始化、再构造器</p>
+
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" data-id="b452746bc74308aa378c663248c1b371" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+
+    
+<nav id="article-nav">
+    
+    <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          
+      </strong>
+      <div class="article-nav-title">临界区</div>
+    </a>
+    
+
+    
+</nav>
+
+
+</article>
+
+
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fiveyang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+    </section>
+
+   	
+    	<aside id="sidebar">
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">
+        
+    </h3>
+    <div class="widget">
+        <ul id="recent-post">
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-9.jpg)" alt="初始化与清理" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" class="title">初始化与清理</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-04 23:44:54 &#43;0800 CST" itemprop="datePublished">2019-09-04</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/)" alt="初始化与清理" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" class="title">临界区</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-03 21:01:05 &#43;0800 CST" itemprop="datePublished">2019-09-03</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="初始化与清理" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="title">会话跟踪</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:29:04 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="初始化与清理" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="title">会话跟踪技术-Session</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:23:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="初始化与清理" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="title">会话跟踪技术-cookie</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:21:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+    
+	</div>
+</div>
+
+<footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019
+      Powered by <a href="//gohugo.io">Hugo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>.
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://fiveyang.github.io/fancybox/jquery.fancybox.pack.js"></script>
+<script src="https://fiveyang.github.io/js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+</body>
+</html>

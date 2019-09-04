@@ -6,10 +6,24 @@
     <description>Recent content on Icarus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Sep 2019 21:01:05 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 04 Sep 2019 23:44:54 +0800</lastBuildDate>
     
 	<atom:link href="https://fiveyang.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>初始化与清理</title>
+      <link>https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/</link>
+      <pubDate>Wed, 04 Sep 2019 23:44:54 +0800</pubDate>
+      
+      <guid>https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/</guid>
+      <description>1 this关键字 1.1 this关键字引入 先看一段代码
+package java_test2; /* * 2019/7/24 * this关键字相关测试 * */ class Banana{ void peel(int i) { //do something } } public class BananaPeel { public static void main(String[] args) { Banana a=new Banana(), b=new Banana(); a.peel(1); b.peel(2); } }  peel方法是怎么知道剥的哪一个香蕉的皮呢？实际上编译器暗自做了一些工作，它吧“所操作对象的引用”作为参数传递给了peel()方法。让上述两个方法变成了这样
+Banana.peel(a,1); Banana.peel(b,2);  所以如果我们想在方法内部获得当前对象的引用，但是我们直到程序执行才知道这个引用的标识符怎么办呢，这时候就要使用this关键字，this关键字：this关键字只能在方法内部使用，表示对&amp;rdquo;调用方法的那个对象&amp;rdquo;的引用。 上述代码又变成了这样
+Banana.peel(this,1); Banana.peel(this,2);  1.2 在构造器中调用构造器 说白了就是this.s=s;
+1.3 static的含义 注意下面几点就行了 + 在static方法中只能调用static方法。 + static方法具有全局函数的语义，有些人认为他不是“面相对象”的。
+2 初始化与清理复习笔记-垃圾回收器 2.1 对象存活判定算法  引用计数法：给对象添加一个引用计数器，每当一个地方引用他时，计数器值就加一，当引用失效时，计数器就减一；任何时候计数器为0的对象就是不可能再被使用的（缺点&amp;ndash;很难解决对象之间的相互循环引用问题；主流的Java虚拟机并没有采用引用计数法管理内存）</description>
+    </item>
     
     <item>
       <title>临界区</title>

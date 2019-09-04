@@ -28,7 +28,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://fiveyang.github.io/" />
 
-<meta property="og:updated_time" content="2019-09-03T21:01:05+08:00" />
+<meta property="og:updated_time" content="2019-09-04T23:44:54+08:00" />
 
     
     <meta itemprop="name" content="Icarus">
@@ -160,7 +160,7 @@
     </div>
     <div class="article-info profile-block">
       <div class="article-info-block">
-        15
+        16
         <span></span>
       </div>
       <div class="article-info-block">
@@ -243,6 +243,135 @@
     <section id="main">
     
     
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" itemprop="url">
+            <img src="https://fiveyang.github.io/css/images/timg-9.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/">
+    <h1 class="article-title" itemprop="name">
+        初始化与清理
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2019-09-04 23:44:54 &#43;0800 CST" itemprop="datePublished">2019-09-04</time>
+            &middot;
+            336
+            
+            &middot;
+            2
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                1 this关键字 1.1 this关键字引入 先看一段代码
+package java_test2; /* * 2019/7/24 * this关键字相关测试 * */ class Banana{ void peel(int i) { //do something } } public class BananaPeel { public static void main(String[] args) { Banana a=new Banana(), b=new Banana(); a.peel(1); b.peel(2); } }  peel方法是怎么知道剥的哪一个香蕉的皮呢？实际上编译器暗自做了一些工作，它吧“所操作对象的引用”作为参数传递给了peel()方法。让上述两个方法变成了这样
+Banana.peel(a,1); Banana.peel(b,2);  所以如果我们想在方法内部获得当前对象的引用，但是我们直到程序执行才知道这个引用的标识符怎么办呢，这时候就要使用this关键字，this关键字：this关键字只能在方法内部使用，表示对&rdquo;调用方法的那个对象&rdquo;的引用。 上述代码又变成了这样
+Banana.peel(this,1); Banana.peel(this,2);  1.2 在构造器中调用构造器 说白了就是this.s=s;
+1.3 static的含义 注意下面几点就行了 + 在static方法中只能调用static方法。 + static方法具有全局函数的语义，有些人认为他不是“面相对象”的。
+2 初始化与清理复习笔记-垃圾回收器 2.1 对象存活判定算法  引用计数法：给对象添加一个引用计数器，每当一个地方引用他时，计数器值就加一，当引用失效时，计数器就减一；任何时候计数器为0的对象就是不可能再被使用的（缺点&ndash;很难解决对象之间的相互循环引用问题；主流的Java虚拟机并没有采用引用计数法管理内存）
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" data-id="b452746bc74308aa378c663248c1b371" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
 
 <article class="article article-type-post" itemscope="" itemprop="blogPost">
     <div class="article-inner">
@@ -1430,132 +1559,6 @@ https://baike.baidu.com/item/Bernstein%E6%9D%A1%E4%BB%B6/5452747?fr=aladdin
     </div>
 </article>
 
-<article class="article article-type-post" itemscope="" itemprop="blogPost">
-    <div class="article-inner">
-        
-        <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-5/" itemprop="url">
-            <img src="https://fiveyang.github.io/css/images/pic_6.png" class="article-banner">
-        
-        </a>
-
-        <header class="article-header">
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-5/">
-    <h1 class="article-title" itemprop="name">
-        多态复习笔记-5
-    </h1>
-    </a>
-    <div class="article-meta">
-
-        
-        <div class="article-date">
-            <i class="fa fa-calendar"></i>
-            <time datetime="2019-09-01 10:31:32 &#43;0800 CST" itemprop="datePublished">2019-09-01</time>
-            &middot;
-            107
-            
-            &middot;
-            1
-            
-        </div>
-        
-        
-
-        
-    </div>
-</header>
-
-        <div class="article-entry" itemprop="articleBody">
-            <p>
-                多态复习笔记-5 构造器内部的多态方法的行为 在前面的笔记中我们知道了构造器的调用顺序，首先是调用了基类的构造器，假如我们将动态绑定的方法放在了构造器中，那么在调用Glyph的构造器中的draw方法实际上应该调用的是导出类RoundGlyph 中所覆盖后的draw方法，此时我们会发现一个问题：这个导出类RoundGlyph 中所覆盖后的draw方法此时并没有初始化而被调用，那么为什么没有出现问题呢？
-观察运行结果我们得出结论：在其他任何事件发生之前，将分配给对象的存储空间设置为二进制的零，这样有一个优点，就是所有东西都至少初始化为零，那么进行上述操作的时候就不会出现异常。这一点可以加在前面笔记构造器调用顺序三条顺序的最前面
-package java_test1; /* * 2019/7/23 * 构造器内部的多态方法的行为 * */ class Glyph { void draw() { System.out.println(&quot;Glyph.draw()&quot;); } Glyph() { System.out.println(&quot;Glyph() before draw()&quot;); draw(); System.out.println(&quot;Glyph() after draw()&quot;); } } class RoundGlyph extends Glyph { private int radius = 1; RoundGlyph(int r) { radius = r; System.out.println(&quot;RoundGlyph.RoundGlyph(), radius = &quot; + radius); } void draw() { System.out.println(&quot;RoundGlyph.draw(), radius = &quot; + radius); } } public class PolyConstructors { public static void main(String[] args) { new RoundGlyph(5); } } //output: // Glyph() before draw() // RoundGlyph.
-            </p>
-            <p class="article-more-link">
-                <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-5/">
-                    
-                </a>
-            </p>
-        </div>
-        <footer class="article-footer">
-    <a data-url="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-5/" data-id="959ab70641ab2461c4bd8f8e0fd4a894" class="article-share-link">
-        <i class="fa fa-share"></i>
-        
-    </a>
-    
-    <a href="https://fiveyang.github.io/2019/09/01/%E5%A4%9A%E6%80%81%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0-5/#disqus_thread" class="article-comment-link">
-        
-    </a>
-    
-
-    <script>
-    (function ($) {
-        
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-    </script>
-</footer>
-
-    </div>
-</article>
-
 
 <nav id="page-nav">
 
@@ -1580,6 +1583,23 @@ package java_test1; /* * 2019/7/23 * 构造器内部的多态方法的行为 * *
     </h3>
     <div class="widget">
         <ul id="recent-post">
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-9.jpg)" alt="Icarus" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" class="title">初始化与清理</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-04 23:44:54 &#43;0800 CST" itemprop="datePublished">2019-09-04</time>
+                    </p>
+                </div>
+            </li>
             
             <li>
                 <div class="item-thumbnail">
@@ -1645,23 +1665,6 @@ package java_test1; /* * 2019/7/23 * 构造器内部的多态方法的行为 * *
                     <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="title">会话跟踪技术-cookie</a></p>
                     <p class="item-date">
                         <time datetime="2019-09-02 22:21:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
-                    </p>
-                </div>
-            </li>
-            
-            <li>
-                <div class="item-thumbnail">
-                    <a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="thumbnail">
-                    
-                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-4.jpg)" alt="Icarus" class="thumbnail-image"></span>
-                    
-                    </a>
-                </div>
-                <div class="item-inner">
-                    
-                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/servlet%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3/" class="title">Servlet核心接口</a></p>
-                    <p class="item-date">
-                        <time datetime="2019-09-02 22:17:32 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
                     </p>
                 </div>
             </li>
