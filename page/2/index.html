@@ -160,7 +160,7 @@
     </div>
     <div class="article-info profile-block">
       <div class="article-info-block">
-        16
+        17
         <span></span>
       </div>
       <div class="article-info-block">
@@ -918,6 +918,146 @@ package java_test1; /* * 2019/7/23 * 缺陷：域与静态方法 * */ class Supe
     </a>
     
     <a href="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        <a href="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url">
+            <img src="https://fiveyang.github.io/caa/images/timg-10.jpg" class="article-banner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+    <h1 class="article-title" itemprop="name">
+        操作系统
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="0001-01-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">0001-01-01</time>
+            &middot;
+            138
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                进程与线程 主要掌握进程与线程的区别和联系 &gt;进程是系统资源分配的最小单位,线程是程序执行的最小单位； 进程使用独立的数据空间,线程共享进程的数据空间；
+线程调度 简单了解几种线程调度算法以及这两个衡量批处理系统的调度性能 + 周转时间：作业结束完成时间-作业进入系统时间 + 带权周转时间：周转时间/所需运行时间
+先来先服务调度  策略：在到达系统的一批作业中，先来先服务算法（FCFS）按照作业进入系统的先后次序挑选作业，先进入系统优先被挑选，这是一种非剥夺式算法； 效果：有利于CPU繁忙型作业，不利于I/O繁忙型作业；
+优先级调度 策略：优先级调度算法根据确定的优先级选取进程/线程，每次总是选择就绪队列中优先级最高者运行；优先级调度算法可以采用剥夺或者非剥夺方式，如果就绪队列中出现优先级更高的进程/线程，剥夺式调度可立刻执行该进程/线程，非剥夺式等待当前运行进程结束或者出现等待时间主动让出处理器后，才会调度另一进程投入运行。
+ 优先级规定者有是用户或系统；
+ 优先级还可分为静态优先级和动态优先级；
+  多级反馈队列调度  多级反馈队列调度算法建立两个或多个就绪进程队列，每个队列赋予不同的优先级，较高优先级一般分配给较短的时间片。处理器每次从高优先级就绪队列中选取可占用处理器的进程，只有在无进程时，才会从较低优先级就绪队列中选取进程，同一队列中的进程按照先来先服务原则排队。开始工作时，新锦成首先进入高优先级队列等候调度，若能在该优先级的一个时间片内执行完成则进程撤离系统，否则进入低一级队列等候调度，若处理器正在执行低优先级队列进程时，若新的进程到达高优先级就绪队列，则处理器暂停当前低优先级队列进程的执行，转而执行高优先级队列中新到进程，因此，多级反馈队列调度是一种剥夺式调度。 不足：多级反馈队列调度存在饥饿问题，当新的进程不断到来时，低优先级队列中的进程将长时间得不到调度
+时间片轮转调度 调度程序每次将CPU分配给就绪队列中的首进程使用一个时间片，就绪队列中的每个进程轮流运行一个时间片，当这个时间片耗尽时，强迫当前线程让出处理器，排到就绪队列尾部，等候下一轮调度。是一种剥夺式调度，系统消耗在进程切换上的开销比较大，那么时间片大小的选取就显得非常重要。
+高响应比优先调度 响应比=1+已等待时间/作业处理时间
+ 策略：每当调度一个作业的时，都要计算后背作业队中每个作业的响应比，选择响应比最高者投入运行。对于FCFS，只考虑用户等待时间，对于SJF，只考虑计算时间，而高响应比优先调度（HRRF）采用的响应比既考虑了等待时间又考虑了作业处理时间，所以是二者折中的调度算法，是一种非剥夺式调度。
+  进程/线程切换的步骤 进程上下文 进程上下文包含了进程执行所需的所有信息 + 用户地址空间：包括程序代码，数据，用户堆栈等； + 控制信息：进程描述符，内核栈等； + 硬件上下文：（注意中断也要保存硬件上下文只是保存的方法不同）。
+进程切换的步骤  .切换页目录以使用新的地址空间 切换内核栈 切换硬件上下文
+线程切换与进程切换的对比 对于linux来说，线程和进程的最大区别就在于地址空间。对于线程切换，第1步是不需要做的，第2和3步是进程和线程切换都要做的。所以明显是进程切换代价大
+线程切换与进程切换的代价对比 线程上下文切换和进程上下文切换一个最主要的区别是线程的切换虚拟内存空间依然是相同的，但是进程切换是不同的。这两种上下文切换的处理都是通过操作系统内核来完成的。内核的这种切换过程伴随的最显著的性能损耗是将寄存器中的内容切换出。
+ 外一个隐藏的损耗是上下文的切换会扰乱处理器的缓存机制。简单的说，一旦去切换上下文，处理器中所有已经缓存的内存地址一瞬间都作废了。还有一个显著的区别是当你改变虚拟内存空间的时候，处理的页表缓冲（processor’s Translation Lookaside Buffer (TLB)）或者相当的神马东西会被全部刷新，这将导致内存的访问在一段时间内相当的低效。但是在线程的切换中，不会出现这个问题。
+进程间通信 IPC 共享存储  在内存中创建一个共享空间，两个进程对共享空间的访问必须是互斥的（互斥访问通过操作系统提供的工具实现），操作系统只提供共享空间和同步操作工具（P V操作）。
+  共享存储分为两种 + 一种是基于数据结构的共享：比如共享空间只能存放一个长度为10 的数组，这种共享方式速度慢、限制多，是一种低级通信方式。 + 另一种是基于存储区的共享：在内存中划出一块共享存储区，数据的形式、存放位置都由进程控制，而不是操作系统，是一种高级通信方式。
+            </p>
+            <p class="article-more-link">
+                <a href="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+                    
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" data-id="5bda258556fccfde81d25e8614bd51f8" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/#disqus_thread" class="article-comment-link">
         
     </a>
     

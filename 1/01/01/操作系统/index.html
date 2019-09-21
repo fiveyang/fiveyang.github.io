@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>操作系统 &middot; Icarus</title>
+    <meta name="generator" content="Hugo 0.57.2" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="fiveyang">
+    
+      <meta name="description" content="静态博客">
+    
+    
+    <link rel="canonical" href="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <link rel="icon" href="https://fiveyang.github.io/favicon.ico">
+    <link rel="apple-touch-icon" href="https://fiveyang.github.io/apple-touch-icon.png"/>
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/style.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/css/monokai.css">
+    <link rel="stylesheet" href="https://fiveyang.github.io/fancybox/jquery.fancybox.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
+    <meta property="og:title" content="操作系统" />
+<meta property="og:description" content="进程与线程 主要掌握进程与线程的区别和联系 &gt;进程是系统资源分配的最小单位,线程是程序执行的最小单位； 进程使用独立的数据空间,线程共享进程的数据空间；
+线程调度 简单了解几种线程调度算法以及这两个衡量批处理系统的调度性能 &#43; 周转时间：作业结束完成时间-作业进入系统时间 &#43; 带权周转时间：周转时间/所需运行时间
+先来先服务调度  策略：在到达系统的一批作业中，先来先服务算法（FCFS）按照作业进入系统的先后次序挑选作业，先进入系统优先被挑选，这是一种非剥夺式算法； 效果：有利于CPU繁忙型作业，不利于I/O繁忙型作业；
+优先级调度 策略：优先级调度算法根据确定的优先级选取进程/线程，每次总是选择就绪队列中优先级最高者运行；优先级调度算法可以采用剥夺或者非剥夺方式，如果就绪队列中出现优先级更高的进程/线程，剥夺式调度可立刻执行该进程/线程，非剥夺式等待当前运行进程结束或者出现等待时间主动让出处理器后，才会调度另一进程投入运行。
+ 优先级规定者有是用户或系统；
+ 优先级还可分为静态优先级和动态优先级；
+  多级反馈队列调度  多级反馈队列调度算法建立两个或多个就绪进程队列，每个队列赋予不同的优先级，较高优先级一般分配给较短的时间片。处理器每次从高优先级就绪队列中选取可占用处理器的进程，只有在无进程时，才会从较低优先级就绪队列中选取进程，同一队列中的进程按照先来先服务原则排队。开始工作时，新锦成首先进入高优先级队列等候调度，若能在该优先级的一个时间片内执行完成则进程撤离系统，否则进入低一级队列等候调度，若处理器正在执行低优先级队列进程时，若新的进程到达高优先级就绪队列，则处理器暂停当前低优先级队列进程的执行，转而执行高优先级队列中新到进程，因此，多级反馈队列调度是一种剥夺式调度。 不足：多级反馈队列调度存在饥饿问题，当新的进程不断到来时，低优先级队列中的进程将长时间得不到调度
+时间片轮转调度 调度程序每次将CPU分配给就绪队列中的首进程使用一个时间片，就绪队列中的每个进程轮流运行一个时间片，当这个时间片耗尽时，强迫当前线程让出处理器，排到就绪队列尾部，等候下一轮调度。是一种剥夺式调度，系统消耗在进程切换上的开销比较大，那么时间片大小的选取就显得非常重要。
+高响应比优先调度 响应比=1&#43;已等待时间/作业处理时间
+ 策略：每当调度一个作业的时，都要计算后背作业队中每个作业的响应比，选择响应比最高者投入运行。对于FCFS，只考虑用户等待时间，对于SJF，只考虑计算时间，而高响应比优先调度（HRRF）采用的响应比既考虑了等待时间又考虑了作业处理时间，所以是二者折中的调度算法，是一种非剥夺式调度。
+  进程/线程切换的步骤 进程上下文 进程上下文包含了进程执行所需的所有信息 &#43; 用户地址空间：包括程序代码，数据，用户堆栈等； &#43; 控制信息：进程描述符，内核栈等； &#43; 硬件上下文：（注意中断也要保存硬件上下文只是保存的方法不同）。
+进程切换的步骤  .切换页目录以使用新的地址空间 切换内核栈 切换硬件上下文
+线程切换与进程切换的对比 对于linux来说，线程和进程的最大区别就在于地址空间。对于线程切换，第1步是不需要做的，第2和3步是进程和线程切换都要做的。所以明显是进程切换代价大
+线程切换与进程切换的代价对比 线程上下文切换和进程上下文切换一个最主要的区别是线程的切换虚拟内存空间依然是相同的，但是进程切换是不同的。这两种上下文切换的处理都是通过操作系统内核来完成的。内核的这种切换过程伴随的最显著的性能损耗是将寄存器中的内容切换出。
+ 外一个隐藏的损耗是上下文的切换会扰乱处理器的缓存机制。简单的说，一旦去切换上下文，处理器中所有已经缓存的内存地址一瞬间都作废了。还有一个显著的区别是当你改变虚拟内存空间的时候，处理的页表缓冲（processor’s Translation Lookaside Buffer (TLB)）或者相当的神马东西会被全部刷新，这将导致内存的访问在一段时间内相当的低效。但是在线程的切换中，不会出现这个问题。
+进程间通信 IPC 共享存储  在内存中创建一个共享空间，两个进程对共享空间的访问必须是互斥的（互斥访问通过操作系统提供的工具实现），操作系统只提供共享空间和同步操作工具（P V操作）。
+  共享存储分为两种 &#43; 一种是基于数据结构的共享：比如共享空间只能存放一个长度为10 的数组，这种共享方式速度慢、限制多，是一种低级通信方式。 &#43; 另一种是基于存储区的共享：在内存中划出一块共享存储区，数据的形式、存放位置都由进程控制，而不是操作系统，是一种高级通信方式。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" />
+
+
+    
+    <meta itemprop="name" content="操作系统">
+<meta itemprop="description" content="进程与线程 主要掌握进程与线程的区别和联系 &gt;进程是系统资源分配的最小单位,线程是程序执行的最小单位； 进程使用独立的数据空间,线程共享进程的数据空间；
+线程调度 简单了解几种线程调度算法以及这两个衡量批处理系统的调度性能 &#43; 周转时间：作业结束完成时间-作业进入系统时间 &#43; 带权周转时间：周转时间/所需运行时间
+先来先服务调度  策略：在到达系统的一批作业中，先来先服务算法（FCFS）按照作业进入系统的先后次序挑选作业，先进入系统优先被挑选，这是一种非剥夺式算法； 效果：有利于CPU繁忙型作业，不利于I/O繁忙型作业；
+优先级调度 策略：优先级调度算法根据确定的优先级选取进程/线程，每次总是选择就绪队列中优先级最高者运行；优先级调度算法可以采用剥夺或者非剥夺方式，如果就绪队列中出现优先级更高的进程/线程，剥夺式调度可立刻执行该进程/线程，非剥夺式等待当前运行进程结束或者出现等待时间主动让出处理器后，才会调度另一进程投入运行。
+ 优先级规定者有是用户或系统；
+ 优先级还可分为静态优先级和动态优先级；
+  多级反馈队列调度  多级反馈队列调度算法建立两个或多个就绪进程队列，每个队列赋予不同的优先级，较高优先级一般分配给较短的时间片。处理器每次从高优先级就绪队列中选取可占用处理器的进程，只有在无进程时，才会从较低优先级就绪队列中选取进程，同一队列中的进程按照先来先服务原则排队。开始工作时，新锦成首先进入高优先级队列等候调度，若能在该优先级的一个时间片内执行完成则进程撤离系统，否则进入低一级队列等候调度，若处理器正在执行低优先级队列进程时，若新的进程到达高优先级就绪队列，则处理器暂停当前低优先级队列进程的执行，转而执行高优先级队列中新到进程，因此，多级反馈队列调度是一种剥夺式调度。 不足：多级反馈队列调度存在饥饿问题，当新的进程不断到来时，低优先级队列中的进程将长时间得不到调度
+时间片轮转调度 调度程序每次将CPU分配给就绪队列中的首进程使用一个时间片，就绪队列中的每个进程轮流运行一个时间片，当这个时间片耗尽时，强迫当前线程让出处理器，排到就绪队列尾部，等候下一轮调度。是一种剥夺式调度，系统消耗在进程切换上的开销比较大，那么时间片大小的选取就显得非常重要。
+高响应比优先调度 响应比=1&#43;已等待时间/作业处理时间
+ 策略：每当调度一个作业的时，都要计算后背作业队中每个作业的响应比，选择响应比最高者投入运行。对于FCFS，只考虑用户等待时间，对于SJF，只考虑计算时间，而高响应比优先调度（HRRF）采用的响应比既考虑了等待时间又考虑了作业处理时间，所以是二者折中的调度算法，是一种非剥夺式调度。
+  进程/线程切换的步骤 进程上下文 进程上下文包含了进程执行所需的所有信息 &#43; 用户地址空间：包括程序代码，数据，用户堆栈等； &#43; 控制信息：进程描述符，内核栈等； &#43; 硬件上下文：（注意中断也要保存硬件上下文只是保存的方法不同）。
+进程切换的步骤  .切换页目录以使用新的地址空间 切换内核栈 切换硬件上下文
+线程切换与进程切换的对比 对于linux来说，线程和进程的最大区别就在于地址空间。对于线程切换，第1步是不需要做的，第2和3步是进程和线程切换都要做的。所以明显是进程切换代价大
+线程切换与进程切换的代价对比 线程上下文切换和进程上下文切换一个最主要的区别是线程的切换虚拟内存空间依然是相同的，但是进程切换是不同的。这两种上下文切换的处理都是通过操作系统内核来完成的。内核的这种切换过程伴随的最显著的性能损耗是将寄存器中的内容切换出。
+ 外一个隐藏的损耗是上下文的切换会扰乱处理器的缓存机制。简单的说，一旦去切换上下文，处理器中所有已经缓存的内存地址一瞬间都作废了。还有一个显著的区别是当你改变虚拟内存空间的时候，处理的页表缓冲（processor’s Translation Lookaside Buffer (TLB)）或者相当的神马东西会被全部刷新，这将导致内存的访问在一段时间内相当的低效。但是在线程的切换中，不会出现这个问题。
+进程间通信 IPC 共享存储  在内存中创建一个共享空间，两个进程对共享空间的访问必须是互斥的（互斥访问通过操作系统提供的工具实现），操作系统只提供共享空间和同步操作工具（P V操作）。
+  共享存储分为两种 &#43; 一种是基于数据结构的共享：比如共享空间只能存放一个长度为10 的数组，这种共享方式速度慢、限制多，是一种低级通信方式。 &#43; 另一种是基于存储区的共享：在内存中划出一块共享存储区，数据的形式、存放位置都由进程控制，而不是操作系统，是一种高级通信方式。">
+
+
+
+<meta itemprop="wordCount" content="138">
+
+
+
+<meta itemprop="keywords" content="" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="操作系统"/>
+<meta name="twitter:description" content="进程与线程 主要掌握进程与线程的区别和联系 &gt;进程是系统资源分配的最小单位,线程是程序执行的最小单位； 进程使用独立的数据空间,线程共享进程的数据空间；
+线程调度 简单了解几种线程调度算法以及这两个衡量批处理系统的调度性能 &#43; 周转时间：作业结束完成时间-作业进入系统时间 &#43; 带权周转时间：周转时间/所需运行时间
+先来先服务调度  策略：在到达系统的一批作业中，先来先服务算法（FCFS）按照作业进入系统的先后次序挑选作业，先进入系统优先被挑选，这是一种非剥夺式算法； 效果：有利于CPU繁忙型作业，不利于I/O繁忙型作业；
+优先级调度 策略：优先级调度算法根据确定的优先级选取进程/线程，每次总是选择就绪队列中优先级最高者运行；优先级调度算法可以采用剥夺或者非剥夺方式，如果就绪队列中出现优先级更高的进程/线程，剥夺式调度可立刻执行该进程/线程，非剥夺式等待当前运行进程结束或者出现等待时间主动让出处理器后，才会调度另一进程投入运行。
+ 优先级规定者有是用户或系统；
+ 优先级还可分为静态优先级和动态优先级；
+  多级反馈队列调度  多级反馈队列调度算法建立两个或多个就绪进程队列，每个队列赋予不同的优先级，较高优先级一般分配给较短的时间片。处理器每次从高优先级就绪队列中选取可占用处理器的进程，只有在无进程时，才会从较低优先级就绪队列中选取进程，同一队列中的进程按照先来先服务原则排队。开始工作时，新锦成首先进入高优先级队列等候调度，若能在该优先级的一个时间片内执行完成则进程撤离系统，否则进入低一级队列等候调度，若处理器正在执行低优先级队列进程时，若新的进程到达高优先级就绪队列，则处理器暂停当前低优先级队列进程的执行，转而执行高优先级队列中新到进程，因此，多级反馈队列调度是一种剥夺式调度。 不足：多级反馈队列调度存在饥饿问题，当新的进程不断到来时，低优先级队列中的进程将长时间得不到调度
+时间片轮转调度 调度程序每次将CPU分配给就绪队列中的首进程使用一个时间片，就绪队列中的每个进程轮流运行一个时间片，当这个时间片耗尽时，强迫当前线程让出处理器，排到就绪队列尾部，等候下一轮调度。是一种剥夺式调度，系统消耗在进程切换上的开销比较大，那么时间片大小的选取就显得非常重要。
+高响应比优先调度 响应比=1&#43;已等待时间/作业处理时间
+ 策略：每当调度一个作业的时，都要计算后背作业队中每个作业的响应比，选择响应比最高者投入运行。对于FCFS，只考虑用户等待时间，对于SJF，只考虑计算时间，而高响应比优先调度（HRRF）采用的响应比既考虑了等待时间又考虑了作业处理时间，所以是二者折中的调度算法，是一种非剥夺式调度。
+  进程/线程切换的步骤 进程上下文 进程上下文包含了进程执行所需的所有信息 &#43; 用户地址空间：包括程序代码，数据，用户堆栈等； &#43; 控制信息：进程描述符，内核栈等； &#43; 硬件上下文：（注意中断也要保存硬件上下文只是保存的方法不同）。
+进程切换的步骤  .切换页目录以使用新的地址空间 切换内核栈 切换硬件上下文
+线程切换与进程切换的对比 对于linux来说，线程和进程的最大区别就在于地址空间。对于线程切换，第1步是不需要做的，第2和3步是进程和线程切换都要做的。所以明显是进程切换代价大
+线程切换与进程切换的代价对比 线程上下文切换和进程上下文切换一个最主要的区别是线程的切换虚拟内存空间依然是相同的，但是进程切换是不同的。这两种上下文切换的处理都是通过操作系统内核来完成的。内核的这种切换过程伴随的最显著的性能损耗是将寄存器中的内容切换出。
+ 外一个隐藏的损耗是上下文的切换会扰乱处理器的缓存机制。简单的说，一旦去切换上下文，处理器中所有已经缓存的内存地址一瞬间都作废了。还有一个显著的区别是当你改变虚拟内存空间的时候，处理的页表缓冲（processor’s Translation Lookaside Buffer (TLB)）或者相当的神马东西会被全部刷新，这将导致内存的访问在一段时间内相当的低效。但是在线程的切换中，不会出现这个问题。
+进程间通信 IPC 共享存储  在内存中创建一个共享空间，两个进程对共享空间的访问必须是互斥的（互斥访问通过操作系统提供的工具实现），操作系统只提供共享空间和同步操作工具（P V操作）。
+  共享存储分为两种 &#43; 一种是基于数据结构的共享：比如共享空间只能存放一个长度为10 的数组，这种共享方式速度慢、限制多，是一种低级通信方式。 &#43; 另一种是基于存储区的共享：在内存中划出一块共享存储区，数据的形式、存放位置都由进程控制，而不是操作系统，是一种高级通信方式。"/>
+<meta name="twitter:site" content="@fiveyang"/>
+
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+
+<div id="container">
+	<header id="header">
+  <div id="header-main" class="header-inner">
+    <div class="outer">
+      <a href="https://fiveyang.github.io" id="logo">
+          
+          <i class="logo" style="background-image: url('https://fiveyang.github.io/css/images/avator2.png')"></i>
+          
+          <span class="site-title">Icarus</span>
+      </a>
+      <nav id="main-nav">
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/">主页</a>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a>
+          
+          
+          
+          <a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a>
+          
+          
+      </nav>
+        <nav id="sub-nav">
+          <div class="profile" id="profile-nav">
+            <a id="profile-anchor" href="javascript:;"><img class="avatar" src="https://fiveyang.github.io/css/images/avatar.png"><i class="fa fa-caret-down"></i></a>
+          </div>
+        </nav>
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+              <input type="search" name="q" class="search-form-input" placeholder="">
+              <button type="submit" class="search-form-submit">
+              </button>
+              <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+         </form>
+        </div>
+    </div>
+  </div>
+  <div id="main-nav-mobile" class="header-sub header-inner">
+    <table class="menu outer">
+      <tbody>
+          <tr>
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/">主页</a></td>
+          
+          
+          
+          
+          
+          
+
+          
+
+          
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/tags/">标签</a></td>
+          
+          
+          
+          <td><a class="main-nav-link" href="https://fiveyang.github.io/categories/">种类</a></td>
+          
+          
+          <td>
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">
+          <input type="search" name="q" class="search-form-input" placeholder="Search">
+          <input type="hidden" name="sitesearch" value="https://fiveyang.github.io" />
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</header>
+
+   	
+   	<div class="outer">
+   	
+    	<aside id="profile">
+  <div class="inner profile-inner">
+    <div class="base-info profile-block">
+      
+      <img id="avatar" src="https://www.gravatar.com/avatar/3a766dd0c7a341ce48a934871b9e38b0?s=100&d=identicon"/>
+      
+      <h2 id="name">fiveyang</h2>
+      <h3 id="title">程序员</h3>
+      <span id="location"><i class="fa fa-map-marker"></i>郑州大学</span>
+      
+          <a id="follow" href="https://github.com/fiveyang">
+              
+          </a>
+      
+    </div>
+    <div class="article-info profile-block">
+      <div class="article-info-block">
+        17
+        <span></span>
+      </div>
+      <div class="article-info-block">
+        
+          0
+        
+        <span>
+            
+        </span>
+      </div>
+    </div>
+    <div class="profile-block social-links">
+      <table>
+        <tr>
+          
+<td><a href="//github.com/fiveyang" target="_blank" title="GitHub"><i class="fa fa-github"></i></a></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<td><a href="//twitter.com/fiveyang" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></td>
+
+
+          <td><a href="https://fiveyang.github.io/index.xml" target="_blank" title="RSS"><i class="fa fa-rss"></i></a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</aside>
+
+    
+
+    <section id="main">
+    
+    <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+            <img src="https://fiveyang.github.io/caa/images/timg-10.jpg" class="article-banner">
+        
+
+        <header class="article-header">
+    <a href="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+    <h1 class="article-title" itemprop="name">
+        操作系统
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="0001-01-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">0001-01-01</time>
+            &middot;
+            138
+            
+            &middot;
+            1
+            
+        </div>
+        
+        
+
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+
+<h2 id="进程与线程">进程与线程</h2>
+
+<p>主要掌握进程与线程的区别和联系
+&gt;进程是系统资源分配的最小单位,线程是程序执行的最小单位；
+进程使用独立的数据空间,线程共享进程的数据空间；</p>
+
+<h3 id="线程调度">线程调度</h3>
+
+<p>简单了解几种线程调度算法以及这两个衡量批处理系统的调度性能
++ 周转时间：作业结束完成时间-作业进入系统时间
++ 带权周转时间：周转时间/所需运行时间</p>
+
+<h4 id="先来先服务调度">先来先服务调度</h4>
+
+<ul>
+<li>策略：在到达系统的一批作业中，先来先服务算法（FCFS）按照作业进入系统的先后次序挑选作业，先进入系统优先被挑选，这是一种非剥夺式算法；</li>
+
+<li><p>效果：有利于CPU繁忙型作业，不利于I/O繁忙型作业；</p>
+
+<h4 id="优先级调度">优先级调度</h4></li>
+
+<li><p>策略：优先级调度算法根据确定的优先级选取进程/线程，每次总是选择就绪队列中优先级最高者运行；优先级调度算法可以采用剥夺或者非剥夺方式，如果就绪队列中出现优先级更高的进程/线程，剥夺式调度可立刻执行该进程/线程，非剥夺式等待当前运行进程结束或者出现等待时间主动让出处理器后，才会调度另一进程投入运行。</p></li>
+
+<li><p>优先级规定者有是用户或系统；</p></li>
+
+<li><p>优先级还可分为静态优先级和动态优先级；</p></li>
+</ul>
+
+<h4 id="多级反馈队列调度">多级反馈队列调度</h4>
+
+<ul>
+<li>多级反馈队列调度算法建立两个或多个就绪进程队列，每个队列赋予不同的优先级，较高优先级一般分配给较短的时间片。处理器每次从高优先级就绪队列中选取可占用处理器的进程，只有在无进程时，才会从较低优先级就绪队列中选取进程，同一队列中的进程按照先来先服务原则排队。开始工作时，新锦成首先进入高优先级队列等候调度，若能在该优先级的一个时间片内执行完成则进程撤离系统，否则进入低一级队列等候调度，若处理器正在执行低优先级队列进程时，若新的进程到达高优先级就绪队列，则处理器暂停当前低优先级队列进程的执行，转而执行高优先级队列中新到进程，因此，多级反馈队列调度是一种剥夺式调度。</li>
+
+<li><p>不足：多级反馈队列调度存在饥饿问题，当新的进程不断到来时，低优先级队列中的进程将长时间得不到调度</p>
+
+<h4 id="时间片轮转调度">时间片轮转调度</h4></li>
+
+<li><p>调度程序每次将CPU分配给就绪队列中的首进程使用一个时间片，就绪队列中的每个进程轮流运行一个时间片，当这个时间片耗尽时，强迫当前线程让出处理器，排到就绪队列尾部，等候下一轮调度。是一种剥夺式调度，系统消耗在进程切换上的开销比较大，那么时间片大小的选取就显得非常重要。</p>
+
+<h4 id="高响应比优先调度">高响应比优先调度</h4></li>
+
+<li><p>响应比=1+已等待时间/作业处理时间</p></li>
+
+<li><p>策略：每当调度一个作业的时，都要计算后背作业队中每个作业的响应比，选择响应比最高者投入运行。对于FCFS，只考虑用户等待时间，对于SJF，只考虑计算时间，而高响应比优先调度（HRRF）采用的响应比既考虑了等待时间又考虑了作业处理时间，所以是二者折中的调度算法，是一种非剥夺式调度。</p></li>
+</ul>
+
+<h3 id="进程-线程切换的步骤">进程/线程切换的步骤</h3>
+
+<h4 id="进程上下文">进程上下文</h4>
+
+<p>进程上下文包含了进程执行所需的所有信息
++ 用户地址空间：包括程序代码，数据，用户堆栈等；
++ 控制信息：进程描述符，内核栈等；
++ 硬件上下文：（注意中断也要保存硬件上下文只是保存的方法不同）。</p>
+
+<h4 id="进程切换的步骤">进程切换的步骤</h4>
+
+<ul>
+<li>.切换页目录以使用新的地址空间</li>
+<li>切换内核栈</li>
+
+<li><p>切换硬件上下文</p>
+
+<h4 id="线程切换与进程切换的对比">线程切换与进程切换的对比</h4></li>
+
+<li><p>对于linux来说，线程和进程的最大区别就在于地址空间。对于线程切换，第1步是不需要做的，第2和3步是进程和线程切换都要做的。所以明显是进程切换代价大</p>
+
+<h4 id="线程切换与进程切换的代价对比">线程切换与进程切换的代价对比</h4></li>
+
+<li><p>线程上下文切换和进程上下文切换一个最主要的区别是线程的切换虚拟内存空间依然是相同的，但是进程切换是不同的。这两种上下文切换的处理都是通过操作系统内核来完成的。内核的这种切换过程伴随的最显著的性能损耗是将寄存器中的内容切换出。</p></li>
+
+<li><p>外一个隐藏的损耗是上下文的切换会扰乱处理器的缓存机制。简单的说，一旦去切换上下文，处理器中所有已经缓存的内存地址一瞬间都作废了。还有一个显著的区别是当你改变虚拟内存空间的时候，处理的页表缓冲（processor’s Translation Lookaside Buffer (TLB)）或者相当的神马东西会被全部刷新，这将导致内存的访问在一段时间内相当的低效。但是在线程的切换中，不会出现这个问题。</p>
+
+<h3 id="进程间通信-ipc">进程间通信 IPC</h3>
+
+<h4 id="共享存储">共享存储</h4>
+
+<blockquote>
+<p>在内存中创建一个共享空间，两个进程对共享空间的访问必须是互斥的（互斥访问通过操作系统提供的工具实现），操作系统只提供共享空间和同步操作工具（P V操作）。</p>
+</blockquote></li>
+</ul>
+
+<p>共享存储分为两种
++ 一种是基于数据结构的共享：比如共享空间只能存放一个长度为10 的数组，这种共享方式速度慢、限制多，是一种低级通信方式。
++ 另一种是基于存储区的共享：在内存中划出一块共享存储区，数据的形式、存放位置都由进程控制，而不是操作系统，是一种高级通信方式。</p>
+
+<h4 id="管道通信">管道通信</h4>
+
+<ul>
+<li>管道：管道是指用于连接读写进程的一个共享文件，又名pipe文件。其实就是在内存中开辟一个大小固定的缓冲区。管道之恩那个采用半双工通信，如果要实现双向同时通信，则需要设置两个管道。</li>
+<li>各进程要互斥的访问管道</li>
+<li>数据以字符流的形式写入管道，当管道写满时，写进程的write()系统调用将被阻塞，等待读进程将数据取走。当读进程将数据全部取走后，管道变空，此时进程的read()系统调用将会被阻塞。</li>
+<li>如果没写满，就不允许读，如果没读空，就不允许写。</li>
+<li>数据一旦被读出，就从管道中被抛弃，这就意味着读进程最多只能有一个，否则会有都错数据的情况。</li>
+</ul>
+
+<h4 id="消息传递">消息传递</h4>
+
+<ul>
+<li>进程间数据交换以格式化的信息为单位。进程通过操作系统提供的“发送消息/接收消息”两个原语进行数据交换</li>
+<li>格式化的消息分为消息头和消息体：消息头包括：发送进程ID、接受进程ID、消息类型、消息长度等格式化的信息（计算机网络中发送的报文其实就是一种格式化的消息）</li>
+</ul>
+
+<p>消息传递有两种方式
++ 直接通信方式：将消息直接挂到接受进程消息缓冲队列上。
++ 简介通信方式：将消息发送到中间实体（信箱）中，因此也称为信箱通信方式。</p>
+
+<h3 id="协程">协程</h3>
+
+<blockquote>
+<p>简单了解协程更轻量化，是在用户态进行调度，切换的代价比线程上下文切换低很多
+了解：极高的执行效率：因为子程序切换不是线程切换，而是由程序自身控制，因此，没有线程切换的开销，和多线程比，线程数量越多，协程的性能优势就越明显；不需要多线程的锁机制：因为只有一个线程，也不存在同时写变量冲突，在协程中控制共享资源不加锁，只需要判断状态就好了，所以执行效率比多线程高很多。
+了解一些Java的第三方协程框架，比如Kilim  、Fiber .</p>
+
+<h2 id="linux常用命令">Linux常用命令</h2>
+
+<p>重点掌握awk  top  netstat  grep  less  tail</p>
+
+<h2 id="内存分页管理与swap机制-了解">内存分页管理与Swap机制（了解）</h2>
+
+<h3 id="内存分页">内存分页</h3>
+
+<p>分页存储管理将全部内存分成长度相等的若干份，每一块称为一个物理块或页框，作业也自动被系统分为于每个物理块相等的若干份，每一份称为一页或者一个页面。</p>
+
+<h3 id="swap机制">Swap机制</h3>
+
+<p>当Linux内存不足时就会触发swap(交换)机制, swap机制是什么东西呢?
+swap机制其实就是将外存(如硬盘)当内存使用, 怎么可以把外存当内存使用呢? 原理就是当系统内存不够用的时候, 内核会选择某些进程, 把其使用较少的内存的内容交换(swap)到外存中,然后把内存让给需要的进程使用.
+那么Linux内核会把哪些内存交换到外存去呢? 在新版的Linux内核会使用LRU算法计算出那些使用比较少的内存交换到外存中.</p>
+
+<h2 id="任务队列与cpu-load-了解">任务队列与CPU Load（了解）</h2>
+
+<p>CPU利用率:显示的是程序在运行期间实时占用的CPU百分比
+CPU负载:显示的是一段时间内正在使用和等待使用CPU的平均任务数。CPU利用率高，并不意味着负载就一定大。</p>
+</blockquote>
+
+<p><img src="https://img-blog.csdnimg.cn/20190921180322874.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxODcyNzQyNDE2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" />
+上图1个电话亭可以理解为一个CPU核心。从上图的过程中可以看到load的概念，而使用率始终100%。</p>
+
+<h2 id="扩展知识点-了解">扩展知识点(了解)</h2>
+
+<h3 id="内存屏障">内存屏障</h3>
+
+<blockquote>
+<p>内存屏障,也称 内存栅栏， 内存栅障， 屏障指令等， 是一类 同步屏障指令，使得CPU或编译器在对内存随机访问的操作中的一个同步点，使得此点之前的所有读写操作都执行后才可以开始执行此点之后的操作</p>
+
+<h3 id="指令乱序">指令乱序</h3>
+
+<p>只要是熟悉计算机底层系统的同学就会知道，程序里面的每行代码的执行顺序，有可能会被编译器和cpu根据某种策略，给打乱掉，目的是为了性能的提升，让指令的执行能够尽可能的并行起来。知道指令的乱序策略很重要，原因是这样我们就能够通过barrier等指令，在正确的位置告诉cpu或者是编译器，这里我可以接受乱序，那里我不能接受乱序等等。从而，能够在保证代码正确性的前提下，最大限度地发挥机器的性能。
+乱序执行就是说把原来 有序执行的 指令列表，在保证执行结果一致的情况下  根据 指令依赖关系及指令执行周期 重新安排执行顺序。例如以下指令（a = 1;b=a;c=2;d=c）在CPU中就很可能被重排序成为以下的执行顺序（a=1;c=2;b=a;d=c;），这样的话，4条指令都可以高效的在流水线中运转了。</p>
+
+<h3 id="分支预测">分支预测</h3>
+
+<p>从P5时代开始的一种先进的数据处理方法，由CPU来判断程序分支的进行方向，能够更快运算速度。</p>
+
+<h3 id="cpu亲和性-affinty">CPU亲和性（affinty）</h3>
+
+<p>分为软亲和性和硬亲和性</p>
+
+<h4 id="软亲和性">软亲和性</h4>
+
+<p>就是进程要在指定的 CPU 上尽量长时间地运行而不被迁移到其他处理器，Linux 内核进程调度器天生就具有被称为 软 CPU 亲和性（affinity） 的特性，这意味着进程通常不会在处理器之间频繁迁移。这种状态正是我们希望的，因为进程迁移的频率小就意味着产生的负载小。</p>
+
+<h4 id="硬亲和性">硬亲和性</h4>
+
+<p>简单来说就是利用linux内核提供给用户的API，强行将进程或者线程绑定到某一个指定的cpu核运行。</p>
+
+<h3 id="netfilter与iptables">Netfilter与iptables</h3>
+
+<p><a href="https://mp.weixin.qq.com/s?src=3&amp;timestamp=1569048807&amp;ver=1&amp;signature=HndtrC7QbTftpQvxo1enJVS5k5cjJgEpu6HvTv1CMxy4q-ANvisr2DD6wLQzNW6CKH2lu2jeABsyJvF6PQ7FmkDqpO3gH87Dh5FAoQsStMpTgt-Qv0AglQLRU3ARm8d-Q5n4wvkCoC37cQE8tJCiK4YGq5GxZpV0YUV-xY42GKc=">这里有一篇文章</a></p>
+</blockquote>
+
+        </div>
+        <footer class="article-footer">
+    <a data-url="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" data-id="5bda258556fccfde81d25e8614bd51f8" class="article-share-link">
+        <i class="fa fa-share"></i>
+        
+    </a>
+    
+    <a href="https://fiveyang.github.io/1/01/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/#disqus_thread" class="article-comment-link">
+        
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+
+    
+<nav id="article-nav">
+    
+
+    
+    <a href="https://fiveyang.github.io/2019/08/31/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          
+      </strong>
+      <div class="article-nav-title">我的第一篇博客</div>
+    </a>
+    
+</nav>
+
+
+</article>
+
+
+<section id="comments">
+    <div id="disqus_thread">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "fiveyang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+</section>
+
+
+    </section>
+
+   	
+    	<aside id="sidebar">
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">
+        
+    </h3>
+    <div class="widget">
+        <ul id="recent-post">
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-9.jpg)" alt="操作系统" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/04/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%B8%85%E7%90%86/" class="title">初始化与清理</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-04 23:44:54 &#43;0800 CST" itemprop="datePublished">2019-09-04</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/)" alt="操作系统" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/03/%E4%B8%B4%E7%95%8C%E5%8C%BA/" class="title">临界区</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-03 21:01:05 &#43;0800 CST" itemprop="datePublished">2019-09-03</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-7.jpg)" alt="操作系统" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA/" class="title">会话跟踪</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:29:04 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-6.jpg)" alt="操作系统" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-session/" class="title">会话跟踪技术-Session</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:23:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="item-thumbnail">
+                    <a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="thumbnail">
+                    
+                        <span style="background-image:url(https://fiveyang.github.io/css/images/timg-5.jpg)" alt="操作系统" class="thumbnail-image"></span>
+                    
+                    </a>
+                </div>
+                <div class="item-inner">
+                    
+                    <p class="item-title"><a href="https://fiveyang.github.io/2019/09/02/%E4%BC%9A%E8%AF%9D%E8%B7%9F%E8%B8%AA%E6%8A%80%E6%9C%AF-cookie/" class="title">会话跟踪技术-cookie</a></p>
+                    <p class="item-date">
+                        <time datetime="2019-09-02 22:21:43 &#43;0800 CST" itemprop="datePublished">2019-09-02</time>
+                    </p>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+    
+	</div>
+</div>
+
+<footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019
+      Powered by <a href="//gohugo.io">Hugo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>.
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://fiveyang.github.io/fancybox/jquery.fancybox.pack.js"></script>
+<script src="https://fiveyang.github.io/js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+</body>
+</html>
